@@ -1,6 +1,14 @@
-package com.mdem.komunalka.models;
+package com.mdem.komunalka.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "report")
 public class Report {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
   private java.sql.Date date;
   private String description;

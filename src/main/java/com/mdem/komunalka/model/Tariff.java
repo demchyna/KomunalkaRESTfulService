@@ -1,6 +1,14 @@
-package com.mdem.komunalka.models;
+package com.mdem.komunalka.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "tariff")
 public class Tariff {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
   private String nane;
   private String currency;

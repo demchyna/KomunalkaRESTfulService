@@ -87,7 +87,6 @@ CREATE TABLE IF NOT EXISTS `komunalka`.`indicator` (
   `current` INT(11) NOT NULL,
   `date` DATE NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
-  `unit_id` INT(11) NOT NULL,
   `meter_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_indicator_unit_idx` (`unit_id` ASC),

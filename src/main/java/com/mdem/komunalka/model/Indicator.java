@@ -1,13 +1,31 @@
-package com.mdem.komunalka.models;
+package com.mdem.komunalka.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "indicator")
 public class Indicator {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
+
+  @Column(name = "previous")
   private Long previous;
+
+  @Column(name = "current")
   private Long current;
+
+  @Column(name = "date")
   private java.sql.Date date;
+
+  @Column(name = "description")
   private String description;
-  private Long unit_id;
-  private Long meter_id;
+
+  @ManyToOne
+  @JoinColumn(name = "meter_id")
+  private Meter meter;
 
   public Long getId() {
     return id;
@@ -49,19 +67,11 @@ public class Indicator {
     this.description = description;
   }
 
-  public Long getUnit_id() {
-    return unit_id;
+  public Meter getMeter_id() {
+    return meter;
   }
 
-  public void setUnit_id(Long unit_id) {
-    this.unit_id = unit_id;
-  }
-
-  public Long getMeter_id() {
-    return meter_id;
-  }
-
-  public void setMeter_id(Long meter_id) {
-    this.meter_id = meter_id;
+  public void setMeter(Meter meter) {
+    this.meter = meter;
   }
 }

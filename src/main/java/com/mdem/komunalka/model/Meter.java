@@ -1,6 +1,14 @@
-package com.mdem.komunalka.models;
+package com.mdem.komunalka.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "meter")
 public class Meter {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private Long id;
   private String name;
   private String description;

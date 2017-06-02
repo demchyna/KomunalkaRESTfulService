@@ -89,13 +89,7 @@ CREATE TABLE IF NOT EXISTS `komunalka`.`indicator` (
   `description` VARCHAR(255) NULL DEFAULT NULL,
   `meter_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_indicator_unit_idx` (`unit_id` ASC),
   INDEX `fk_indicator_meter1_idx` (`meter_id` ASC),
-  CONSTRAINT `fk_indicator_unit`
-    FOREIGN KEY (`unit_id`)
-    REFERENCES `komunalka`.`unit` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_indicator_meter`
     FOREIGN KEY (`meter_id`)
     REFERENCES `komunalka`.`meter` (`id`)

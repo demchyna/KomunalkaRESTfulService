@@ -22,13 +22,8 @@ public class CategoryController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Category> getAllCategory(HttpServletResponse response) throws IOException {
-        try {
-            List<Category> categories = categoryService.getAllCategories();
-            return categories;
-        } catch (RuntimeException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
+    public List<Category> getAllCategory() throws IOException {
+        List<Category> categories = categoryService.getAllCategories();
+        return categories;
     }
 }

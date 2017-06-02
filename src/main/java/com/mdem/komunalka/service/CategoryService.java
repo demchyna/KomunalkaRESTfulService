@@ -15,16 +15,6 @@ public class CategoryService {
 
     public List<Category> getAllCategories() {
         List<Category> categories = categoryDAO.getAllCategories();
-        if (!categories.isEmpty()) {
-
-            System.out.println("Is not empty!");
-
-            return categories;
-        } else {
-
-            System.out.println("Is empty!");
-
-            throw new RuntimeException("Resources not found");
-        }
+        return categories;
     }
 }

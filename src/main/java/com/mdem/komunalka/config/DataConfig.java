@@ -1,5 +1,7 @@
 package com.mdem.komunalka.config;
 
+
+import com.mdem.komunalka.model.Category;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 
 import javax.sql.DataSource;
@@ -35,14 +37,16 @@ public class DataConfig {
 
     @Autowired
     @Bean
-    public SessionFactory getSessionFactory(DataSource dataSource) {
-        LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
+    public LocalSessionFactoryBean getSessionFactory(DataSource dataSource) {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource);
 
-        sessionBuilder.scanPackages("com.mdem.komunalka.model");
-        sessionBuilder.addProperties(getHibernateProperties());
+        sessionFactory.setPackagesToScan(new String[] { "com.mdem.komunalka.model" });
+        sessionFactory.setHibernateProperties(getHibernateProperties());
 
-        return sessionBuilder.buildSessionFactory();
+        return sessionFactory;
     }
+
 
     @Autowired
     @Bean

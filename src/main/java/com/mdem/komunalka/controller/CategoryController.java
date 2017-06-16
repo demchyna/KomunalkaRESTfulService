@@ -42,7 +42,7 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCategory(@RequestBody Category category) {
         try {
-            categoryService.update(category, category.getId());
+            categoryService.update(category);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@RequestBody Category category) {
         try {
-            categoryService.delete(category, category.getId());
+            categoryService.delete(category);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,9 +1,11 @@
 package com.mdem.komunalka.DAO;
 
+import com.mdem.komunalka.model.IEntity;
+
 import java.io.Serializable;
 import java.util.List;
 
-public interface IAbstractDao<T, K extends Serializable> {
+public interface IAbstractDao<T extends IEntity, K extends Serializable> {
     void create(T entity);
     T getById(K id);
     void update(T entity);

@@ -1,6 +1,7 @@
 package com.mdem.komunalka.DAO.common;
 
 import com.mdem.komunalka.DAO.IAbstractDao;
+import com.mdem.komunalka.model.IEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Repository
-public abstract class AbstractDao<T, K extends Serializable> implements IAbstractDao<T, K> {
+public abstract class AbstractDao<T extends IEntity, K extends Serializable> implements IAbstractDao<T, K> {
 
     private static SessionFactory sessionFactory;
     private Class<T> entityType;
@@ -55,10 +56,6 @@ public abstract class AbstractDao<T, K extends Serializable> implements IAbstrac
     public List<T> getAll() {
         @SuppressWarnings("unchecked")
         List<T> entities = getSession().createQuery("FROM " + entityType.getName()).list();
-        if (!entities.isEmpty()) {
-            return entities;
-        } else {
-            return null;
-        }
+        return entities;
     }
 }

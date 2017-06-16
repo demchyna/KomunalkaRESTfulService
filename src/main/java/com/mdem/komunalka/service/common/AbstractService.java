@@ -1,6 +1,7 @@
 package com.mdem.komunalka.service.common;
 
 import com.mdem.komunalka.DAO.IAbstractDao;
+import com.mdem.komunalka.model.IEntity;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Service
-public abstract class AbstractService<T, K extends Serializable> implements IAbstractService<T, K> {
+public abstract class AbstractService<T extends IEntity, K extends Serializable> implements IAbstractService<T, K> {
 
     @Autowired
     private IAbstractDao<T, K> abstractDao;
@@ -39,31 +40,26 @@ public abstract class AbstractService<T, K extends Serializable> implements IAbs
 
     @Override
     @Transactional
-    public void update(T entity, K id) throws Exception {
+    public void update(T entity) throws Exception {
         if (entity != null) {
-            T updEntity = abstractDao.getById(id);
-            if (updEntity != null) {
-                abstractDao.update(entity);
-            } else {
-                throw new Exception("Record with id " + id  +" not found in database");
-            }
+            abstractDao.update(entity);
         } else {
-            throw new Exception("Record cannot be updated in database");
+            throw new Exception("Entity is NULL");
         }
     }
 
     @Override
     @Transactional
-    public void delete(T entity, K id) throws Exception {
+    public void delete(T entity) throws Exception {
         if (entity != null) {
-            T delEntity = abstractDao.getById(id);
+            T delEntity = abstractDao.getById((K) entity.getId());
             if (delEntity != null) {
                 abstractDao.delete(entity);
             } else {
-                throw new Exception("Record with id " + id  +" not found in database");
+                throw new Exception("Record with id " + entity.getId()  +" not found in database");
             }
         } else {
-            throw new Exception("Record cannot be updated in database");
+            throw new Exception("Entity is NULL");
         }
     }
 

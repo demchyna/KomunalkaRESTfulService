@@ -1,21 +1,25 @@
 package com.mdem.komunalka.DAO.common;
 
-import com.mdem.komunalka.DAO.IGenericDao;
+import com.mdem.komunalka.DAO.IAbstractDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Repository
-public class AbstractDao <T extends Serializable> implements IGenericDao<T> {
-
-    private Class<T> entityType = (Class<T>) GenericTypeResolver.resolveTypeArgument(getClass(), AbstractDao.class);
+public abstract class AbstractDao<T, K extends Serializable> implements IAbstractDao<T, K> {
 
     private static SessionFactory sessionFactory;
+    private Class<T> entityType;
+
+    public AbstractDao() {
+        ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
+        this.entityType = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+    }
 
     @Autowired
     private void setSessionFactory(SessionFactory sessionFactory) {
@@ -32,8 +36,8 @@ public class AbstractDao <T extends Serializable> implements IGenericDao<T> {
     }
 
     @Override
-    public T getById(Long id) {
-        T entity = (T) getSession().get(entityType, id);
+    public T getById(K id) {
+        T entity = getSession().get(entityType, id);
         return entity;
     }
 

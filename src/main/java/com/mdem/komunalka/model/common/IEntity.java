@@ -1,4 +1,4 @@
-package com.mdem.komunalka.model;
+package com.mdem.komunalka.model.common;
 
 import java.io.Serializable;
 

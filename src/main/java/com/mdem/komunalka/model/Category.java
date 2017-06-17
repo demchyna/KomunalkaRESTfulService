@@ -1,7 +1,8 @@
 package com.mdem.komunalka.model;
 
+import com.mdem.komunalka.model.common.IEntity;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "category")
@@ -41,4 +42,23 @@ public class Category implements IEntity {
   public void setDescription(String description) {
     this.description = description;
   }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        if (!name.equals(category.name)) return false;
+        return description != null ? description.equals(category.description) : category.description == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
+    }
 }

@@ -19,43 +19,26 @@ public class CategoryController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createCategory(@RequestBody Category category) {
-        try {
-            categoryService.create(category);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        categoryService.create(category);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public Category getCategoryById(@PathVariable Long id) {
-        Category category = null;
-        try {
-            category = categoryService.getById(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Category category = categoryService.getById(id);
         return category;
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateCategory(@RequestBody Category category) {
-        try {
-            categoryService.update(category);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        categoryService.update(category);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@RequestBody Category category) {
-        try {
-            categoryService.delete(category);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        categoryService.delete(category);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)

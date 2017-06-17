@@ -1,7 +1,7 @@
 package com.mdem.komunalka.DAO.common;
 
 import com.mdem.komunalka.DAO.IAbstractDao;
-import com.mdem.komunalka.model.IEntity;
+import com.mdem.komunalka.model.common.IEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public abstract class AbstractDao<T extends IEntity, K extends Serializable> imp
 
     @Override
     public void update(T entity) {
-        getSession().update(entity);
+        getSession().merge(entity);
     }
 
     @Override

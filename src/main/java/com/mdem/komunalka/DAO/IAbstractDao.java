@@ -1,6 +1,6 @@
 package com.mdem.komunalka.DAO;
 
-import com.mdem.komunalka.model.IEntity;
+import com.mdem.komunalka.model.common.IEntity;
 
 import java.io.Serializable;
 import java.util.List;

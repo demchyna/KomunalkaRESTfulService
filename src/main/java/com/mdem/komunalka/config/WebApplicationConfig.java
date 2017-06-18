@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.mdem.komunalka")
 @EnableTransactionManagement
-class WebConfig extends WebMvcConfigurerAdapter {
+class WebApplicationConfig extends WebMvcConfigurerAdapter {
 
     /*@Bean
     public InternalResourceViewResolver viewResolver() {

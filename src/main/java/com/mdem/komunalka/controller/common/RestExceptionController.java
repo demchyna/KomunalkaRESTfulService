@@ -1,4 +1,4 @@
-package com.mdem.komunalka.controller;
+package com.mdem.komunalka.controller.common;
 
 import com.mdem.komunalka.exception.ConflictDataException;
 import com.mdem.komunalka.exception.DataNotFoundException;

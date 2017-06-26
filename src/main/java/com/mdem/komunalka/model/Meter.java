@@ -1,10 +1,12 @@
 package com.mdem.komunalka.model;
 
+import com.mdem.komunalka.model.common.IEntity;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "meter")
-public class Meter {
+public class Meter implements IEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,6 @@
 package com.mdem.komunalka.controller;
 
-import com.mdem.komunalka.model.Category;
+import com.mdem.komunalka.model.Unit;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,41 +10,41 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/unit")
+public class UnitController {
 
     @Autowired
-    private IAbstractService<Category, Long> categoryService;
+    private IAbstractService<Unit, Long> unitService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createCategory(@RequestBody Category category) {
-        categoryService.create(category);
+    public void createUnit(@RequestBody Unit unit) {
+        unitService.create(unit);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public Category getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getById(id);
-        return category;
+    public Unit getUnitById(@PathVariable Long id) {
+        Unit unit = unitService.getById(id);
+        return unit;
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCategory(@RequestBody Category category) {
-        categoryService.update(category);
+    public void updateUnit(@RequestBody Unit unit) {
+        unitService.update(unit);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteCategory(@RequestBody Category category) {
-        categoryService.delete(category);
+    public void deleteUnit(@RequestBody Unit unit) {
+        unitService.delete(unit);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Category> getAllCategories() throws IOException {
-        List<Category> categories = categoryService.getAll();
-        return categories;
+    public List<Unit> getAllUnits() throws IOException {
+        List<Unit> units = unitService.getAll();
+        return units;
     }
 }

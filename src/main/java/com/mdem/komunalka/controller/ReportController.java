@@ -1,6 +1,6 @@
 package com.mdem.komunalka.controller;
 
-import com.mdem.komunalka.model.Category;
+import com.mdem.komunalka.model.Report;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,41 +10,41 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/report")
+public class ReportController {
 
     @Autowired
-    private IAbstractService<Category, Long> categoryService;
+    private IAbstractService<Report, Long> reportService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createCategory(@RequestBody Category category) {
-        categoryService.create(category);
+    public void createReport(@RequestBody Report report) {
+        reportService.create(report);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public Category getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getById(id);
-        return category;
+    public Report getReportById(@PathVariable Long id) {
+        Report report = reportService.getById(id);
+        return report;
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateCategory(@RequestBody Category category) {
-        categoryService.update(category);
+    public void updateReport(@RequestBody Report report) {
+        reportService.update(report);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteCategory(@RequestBody Category category) {
-        categoryService.delete(category);
+    public void deleteReport(@RequestBody Report report) {
+        reportService.delete(report);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Category> getAllCategories() throws IOException {
-        List<Category> categories = categoryService.getAll();
-        return categories;
+    public List<Report> getAllReports() throws IOException {
+        List<Report> reports = reportService.getAll();
+        return reports;
     }
 }

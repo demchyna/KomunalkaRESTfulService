@@ -42,7 +42,7 @@ public class IndicatorController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Indicator> getAllIndicator() throws IOException {
+    public List<Indicator> getAllIndicators() throws IOException {
         List<Indicator> indicators = indicatorService.getAll();
         return indicators;
     }

@@ -1,8 +1,10 @@
 package com.mdem.komunalka.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mdem.komunalka.model.common.IEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -12,12 +14,12 @@ public class Category implements IEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
-
-  @Column(name = "name")
   private String name;
-
-  @Column(name = "description")
   private String description;
+
+    @OneToMany(mappedBy = "category_id")
+    @JsonIgnore
+    private List<Tariff> tariffs;
 
   public Long getId() {
     return id;
@@ -43,22 +45,11 @@ public class Category implements IEntity {
     this.description = description;
   }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Category category = (Category) o;
-
-        if (!name.equals(category.name)) return false;
-        return description != null ? description.equals(category.description) : category.description == null;
-
+    public List<Tariff> getTariffs() {
+        return tariffs;
     }
 
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
+    public void setTariffs(List<Tariff> tariffs) {
+        this.tariffs = tariffs;
     }
 }

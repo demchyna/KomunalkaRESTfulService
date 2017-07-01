@@ -27,7 +27,7 @@ public class Indicator implements IEntity {
 
   @ManyToOne
   @JoinColumn(name = "meter_id")
-  private Meter meter;
+  private Meter meter_id;
 
   public Long getId() {
     return id;
@@ -70,10 +70,10 @@ public class Indicator implements IEntity {
   }
 
   public Meter getMeter_id() {
-    return meter;
+    return meter_id;
   }
 
-  public void setMeter(Meter meter) {
-    this.meter = meter;
+  public void setMeter_id(Meter meter_id) {
+    this.meter_id = meter_id;
   }
 }

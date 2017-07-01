@@ -49,11 +49,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `komunalka`.`meter`
+-- Table `komunalka`.`meter_id`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `komunalka`.`meter` ;
+DROP TABLE IF EXISTS `komunalka`.`meter_id` ;
 
-CREATE TABLE IF NOT EXISTS `komunalka`.`meter` (
+CREATE TABLE IF NOT EXISTS `komunalka`.`meter_id` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(31) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `komunalka`.`indicator` (
   INDEX `fk_indicator_meter1_idx` (`meter_id` ASC),
   CONSTRAINT `fk_indicator_meter`
     FOREIGN KEY (`meter_id`)
-    REFERENCES `komunalka`.`meter` (`id`)
+    REFERENCES `komunalka`.`meter_id` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -106,7 +106,7 @@ DROP TABLE IF EXISTS `komunalka`.`tariff` ;
 
 CREATE TABLE IF NOT EXISTS `komunalka`.`tariff` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `nane` VARCHAR(31) NOT NULL,
+  `name` VARCHAR(31) NOT NULL,
   `currency` VARCHAR(15) NOT NULL,
   `begin_date` DATE NOT NULL,
   `end_date` VARCHAR(45) NULL DEFAULT NULL,

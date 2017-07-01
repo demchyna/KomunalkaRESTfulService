@@ -3,6 +3,7 @@ package com.mdem.komunalka.model;
 import com.mdem.komunalka.model.common.IEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "tariff")
@@ -12,12 +13,16 @@ public class Tariff implements IEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
-  private String nane;
+  private String name;
   private String currency;
+  private java.math.BigDecimal price;
   private java.sql.Date begin_date;
   private String end_date;
   private String description;
-  private Long category_id;
+
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category_id;
 
   public Long getId() {
     return id;
@@ -27,12 +32,12 @@ public class Tariff implements IEntity {
     this.id = id;
   }
 
-  public String getNane() {
-    return nane;
+  public String getName() {
+    return name;
   }
 
-  public void setNane(String nane) {
-    this.nane = nane;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getCurrency() {
@@ -41,6 +46,14 @@ public class Tariff implements IEntity {
 
   public void setCurrency(String currency) {
     this.currency = currency;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+    this.price = price;
   }
 
   public java.sql.Date getBegin_date() {
@@ -67,11 +80,11 @@ public class Tariff implements IEntity {
     this.description = description;
   }
 
-  public Long getCategory_id() {
+  public Category getCategory_id() {
     return category_id;
   }
 
-  public void setCategory_id(Long category_id) {
+  public void setCategory_id(Category category_id) {
     this.category_id = category_id;
   }
 }

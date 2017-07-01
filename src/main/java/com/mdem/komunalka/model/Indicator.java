@@ -12,17 +12,9 @@ public class Indicator implements IEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
-
-  @Column(name = "previous")
   private Long previous;
-
-  @Column(name = "current")
   private Long current;
-
-  @Column(name = "date")
   private java.sql.Date date;
-
-  @Column(name = "description")
   private String description;
 
   @ManyToOne

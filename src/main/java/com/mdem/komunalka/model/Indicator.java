@@ -8,64 +8,64 @@ import javax.persistence.*;
 @Table(name = "indicator")
 public class Indicator implements IEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-  private Long previous;
-  private Long current;
-  private java.sql.Date date;
-  private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    private Long previous;
+    private Long current;
+    private java.sql.Date date;
+    private String description;
 
-  @ManyToOne
-  @JoinColumn(name = "meter_id")
-  private Meter meter_id;
+    @ManyToOne
+    @JoinColumn(name = "meter_id")
+    private Meter meter_id;
 
-  public Long getId() {
+    public Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+    public void setId(Long id) {
     this.id = id;
   }
 
-  public Long getPrevious() {
+    public Long getPrevious() {
     return previous;
   }
 
-  public void setPrevious(Long previous) {
+    public void setPrevious(Long previous) {
     this.previous = previous;
   }
 
-  public Long getCurrent() {
+    public Long getCurrent() {
     return current;
   }
 
-  public void setCurrent(Long current) {
+    public void setCurrent(Long current) {
     this.current = current;
   }
 
-  public java.sql.Date getDate() {
+    public java.sql.Date getDate() {
     return date;
   }
 
-  public void setDate(java.sql.Date date) {
+    public void setDate(java.sql.Date date) {
     this.date = date;
   }
 
-  public String getDescription() {
+    public String getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
+    public void setDescription(String description) {
     this.description = description;
   }
 
-  public Meter getMeter_id() {
+    public Meter getMeter_id() {
     return meter_id;
   }
 
-  public void setMeter_id(Meter meter_id) {
+    public void setMeter_id(Meter meter_id) {
     this.meter_id = meter_id;
   }
 }

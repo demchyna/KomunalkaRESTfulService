@@ -2,6 +2,8 @@ package com.mdem.komunalka.DAO.common;
 
 import com.mdem.komunalka.DAO.IAbstractDao;
 import com.mdem.komunalka.model.common.IEntity;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository

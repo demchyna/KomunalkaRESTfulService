@@ -22,7 +22,7 @@ public class Tariff implements IEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category_id;
+    private Category category;
 
     public Long getId() {
       return id;
@@ -80,11 +80,11 @@ public class Tariff implements IEntity {
       this.description = description;
     }
 
-    public Category getCategory_id() {
-      return category_id;
+    public Category getCategory() {
+      return category;
     }
 
-    public void setCategory_id(Category category_id) {
-      this.category_id = category_id;
+    public void setCategory(Category category) {
+      this.category = category;
     }
 }

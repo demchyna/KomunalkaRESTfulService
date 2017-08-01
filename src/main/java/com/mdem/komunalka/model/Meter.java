@@ -16,10 +16,16 @@ public class Meter implements IEntity {
     private Long id;
     private String name;
     private String description;
-    private Long unit_id;
-    private Long category_id;
 
-    @OneToMany(mappedBy = "meter_id")
+    @ManyToOne
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @OneToMany(mappedBy = "meter")
     @JsonIgnore
     private List<Indicator> indicators;
 
@@ -47,20 +53,20 @@ public class Meter implements IEntity {
       this.description = description;
     }
 
-    public Long getUnit_id() {
-      return unit_id;
+    public Unit getUnit() {
+      return unit;
     }
 
-    public void setUnit_id(Long unit_id) {
-      this.unit_id = unit_id;
+    public void setUnit(Unit unit) {
+      this.unit = unit;
     }
 
-    public Long getCategory_id() {
-      return category_id;
+    public Category getCategory() {
+      return category;
     }
 
-    public void setCategory_id(Long category_id) {
-      this.category_id = category_id;
+    public void setCategory(Category category) {
+      this.category = category;
     }
 
     public List<Indicator> getIndicators() {

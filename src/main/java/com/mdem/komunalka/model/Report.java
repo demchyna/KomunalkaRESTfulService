@@ -8,52 +8,58 @@ import javax.persistence.*;
 @Table(name = "report")
 public class Report implements IEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
-  private java.sql.Date date;
-  private String description;
-  private Long category_id;
-  private Long user_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    private java.sql.Date date;
+    private String description;
 
-  public Long getId() {
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+    public void setId(Long id) {
     this.id = id;
   }
 
-  public java.sql.Date getDate() {
+    public java.sql.Date getDate() {
     return date;
   }
 
-  public void setDate(java.sql.Date date) {
+    public void setDate(java.sql.Date date) {
     this.date = date;
   }
 
-  public String getDescription() {
+    public String getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
+    public void setDescription(String description) {
     this.description = description;
   }
 
-  public Long getCategory_id() {
-    return category_id;
+    public Category getCategory() {
+    return category;
   }
 
-  public void setCategory_id(Long category_id) {
-    this.category_id = category_id;
+    public void setCategory(Category category) {
+    this.category = category;
   }
 
-  public Long getUser_id() {
-    return user_id;
+    public User getUser() {
+    return user;
   }
 
-  public void setUser_id(Long user_id) {
-    this.user_id = user_id;
+    public void setUser(User user) {
+    this.user = user;
   }
 }

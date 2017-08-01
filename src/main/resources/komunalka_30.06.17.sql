@@ -83,14 +83,14 @@ CREATE TABLE `meter_id` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `unit_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
+  `unit` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_meter_category1_idx` (`category_id`),
-  KEY `fk_meter_unit_idx` (`unit_id`),
-  CONSTRAINT `fk_meter_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_meter_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_meter_category1_idx` (`category`),
+  KEY `fk_meter_unit_idx` (`unit`),
+  CONSTRAINT `fk_meter_category` FOREIGN KEY (`category`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_meter_unit` FOREIGN KEY (`unit`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -115,14 +115,14 @@ CREATE TABLE `report` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `category_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_report_category1_idx` (`category_id`),
-  KEY `fk_report_user_idx` (`user_id`),
-  CONSTRAINT `fk_report_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_report_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_report_category1_idx` (`category`),
+  KEY `fk_report_user_idx` (`user`),
+  CONSTRAINT `fk_report_category` FOREIGN KEY (`category`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_report_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -177,11 +177,11 @@ CREATE TABLE `tariff` (
   `begin_date` date NOT NULL,
   `end_date` date DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `category_id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_tariff_category1_idx` (`category_id`),
-  CONSTRAINT `fk_tariff_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_tariff_category1_idx` (`category`),
+  CONSTRAINT `fk_tariff_category` FOREIGN KEY (`category`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -261,14 +261,14 @@ DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_user_role_role_idx` (`role_id`),
-  KEY `fk_user_role_user_idx` (`user_id`),
+  KEY `fk_user_role_user_idx` (`user`),
   CONSTRAINT `fk_user_role_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_role_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_user_role_user` FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

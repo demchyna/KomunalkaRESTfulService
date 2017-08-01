@@ -57,18 +57,18 @@ CREATE TABLE IF NOT EXISTS `komunalka`.`meter_id` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(31) NOT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
-  `unit_id` INT(11) NOT NULL,
-  `category_id` INT(11) NOT NULL,
+  `unit` INT(11) NOT NULL,
+  `category` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_meter_unit1_idx` (`unit_id` ASC),
-  INDEX `fk_meter_category1_idx` (`category_id` ASC),
+  INDEX `fk_meter_unit1_idx` (`unit` ASC),
+  INDEX `fk_meter_category1_idx` (`category` ASC),
   CONSTRAINT `fk_meter_unit`
-    FOREIGN KEY (`unit_id`)
+    FOREIGN KEY (`unit`)
     REFERENCES `komunalka`.`unit` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_meter_category`
-    FOREIGN KEY (`category_id`)
+    FOREIGN KEY (`category`)
     REFERENCES `komunalka`.`category` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -111,11 +111,11 @@ CREATE TABLE IF NOT EXISTS `komunalka`.`tariff` (
   `begin_date` DATE NOT NULL,
   `end_date` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
-  `category_id` INT(11) NOT NULL,
+  `category` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_tariff_category1_idx` (`category_id` ASC),
+  INDEX `fk_tariff_category1_idx` (`category` ASC),
   CONSTRAINT `fk_tariff_category`
-    FOREIGN KEY (`category_id`)
+    FOREIGN KEY (`category`)
     REFERENCES `komunalka`.`category` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -150,18 +150,18 @@ CREATE TABLE IF NOT EXISTS `komunalka`.`report` (
   `id` INT(11) NOT NULL,
   `date` DATE NOT NULL,
   `description` VARCHAR(255) NULL,
-  `category_id` INT(11) NOT NULL,
-  `user_id` INT(11) NOT NULL,
+  `category` INT(11) NOT NULL,
+  `user` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_report_category1_idx` (`category_id` ASC),
-  INDEX `fk_report_user1_idx` (`user_id` ASC),
+  INDEX `fk_report_category1_idx` (`category` ASC),
+  INDEX `fk_report_user1_idx` (`user` ASC),
   CONSTRAINT `fk_report_category`
-    FOREIGN KEY (`category_id`)
+    FOREIGN KEY (`category`)
     REFERENCES `komunalka`.`category` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_report_user`
-    FOREIGN KEY (`user_id`)
+    FOREIGN KEY (`user`)
     REFERENCES `komunalka`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -188,13 +188,13 @@ DROP TABLE IF EXISTS `komunalka`.`user_role` ;
 
 CREATE TABLE IF NOT EXISTS `komunalka`.`user_role` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `user_id` INT(11) NOT NULL,
+  `user` INT(11) NOT NULL,
   `role_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_user_role_user1_idx` (`user_id` ASC),
+  INDEX `fk_user_role_user1_idx` (`user` ASC),
   INDEX `fk_user_role_role1_idx` (`role_id` ASC),
   CONSTRAINT `fk_user_role_user`
-    FOREIGN KEY (`user_id`)
+    FOREIGN KEY (`user`)
     REFERENCES `komunalka`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,

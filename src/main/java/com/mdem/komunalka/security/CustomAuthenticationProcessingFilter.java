@@ -1,7 +1,6 @@
 package com.mdem.komunalka.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,24 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
-public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class CustomAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
+    public CustomAuthenticationProcessingFilter(String url) {
         super(new AntPathRequestMatcher(url));
-        setAuthenticationManager(authManager);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         UserCredentials credentials = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
 
-        return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        credentials.getLogin(),
-                        credentials.getPassword(),
-                        Collections.emptyList()
-                )
-        );
+        Authentication authentication = new UsernamePasswordAuthenticationToken(credentials.getLogin(), credentials.getPassword(), Collections.emptyList());
+
+        return getAuthenticationManager().authenticate(authentication);
     }
 
     @Override

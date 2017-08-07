@@ -15,13 +15,13 @@ public class TokenAuthenticationService {
     private static final long EXPIRATION_TIME = 600000; // 10 minutes
     private static final String SECRET = "SpringJWT";
     private static final String TOKEN_PREFIX = "Bearer";
-    private static final String HEADER_STRING = "Authorization";
+    private static final String HEADER_STRING = "Auth-Token";
 
-    public static void setAuthentication(HttpServletResponse response, String login) {
+    public static void setAuthentication(HttpServletResponse response, Authentication auth) {
 
         // Create the token
         String JWT = Jwts.builder()
-                .setSubject(login)
+                .setSubject(auth.getName())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();

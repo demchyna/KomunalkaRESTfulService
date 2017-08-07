@@ -1,8 +1,10 @@
 package com.mdem.komunalka.config;
 
-import com.mdem.komunalka.security.CustomAuthenticationProcessingFilter;
 import com.mdem.komunalka.security.JWTAuthenticationFilter;
 import com.mdem.komunalka.security.JWTLoginFilter;
+import com.mdem.komunalka.security.handler.JwtAccessDeniedHandler;
+import com.mdem.komunalka.security.handler.JwtAuthenticationFailureHandler;
+import com.mdem.komunalka.security.handler.JwtAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,11 +14,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import javax.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,21 +38,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .rememberMe().disable()
 
-                .addFilterBefore(customAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
-
                 // We filter the api/login requests
-                //.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtLoginFilter("/login"), UsernamePasswordAuthenticationFilter.class)
 
                 // And filter other requests to check the presence of JWT in header
-                .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+
+                .exceptionHandling()
+                .accessDeniedHandler(getAccessDeniedHandler());
     }
 
     @Bean
-    public AbstractAuthenticationProcessingFilter customAuthenticationProcessingFilter() throws Exception {
-        CustomAuthenticationProcessingFilter filter = new CustomAuthenticationProcessingFilter("/login");
+    public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+        return new JwtAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler getAuthenticationFailureHandler() {
+        return new JwtAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AccessDeniedHandler getAccessDeniedHandler() {
+        return new JwtAccessDeniedHandler();
+    }
+
+    @Bean
+    public JWTLoginFilter jwtLoginFilter(String url) throws Exception {
+        JWTLoginFilter filter = new JWTLoginFilter(url);
         filter.setAuthenticationManager(authenticationManager());
-        //filter.setAuthenticationSuccessHandler(getAuthenticationSuccessHandler());
-        //filter.setAuthenticationFailureHandler(getAuthenticationFailureHandler());
+        filter.setAuthenticationSuccessHandler(getAuthenticationSuccessHandler());
+        filter.setAuthenticationFailureHandler(getAuthenticationFailureHandler());
         return filter;
     }
 

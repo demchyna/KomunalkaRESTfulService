@@ -17,26 +17,26 @@ import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
+    public JWTLoginFilter(String url) {
         super(new AntPathRequestMatcher(url));
-        setAuthenticationManager(authManager);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         UserCredentials credentials = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
 
-        return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        credentials.getLogin(),
-                        credentials.getPassword(),
-                        Collections.emptyList()
-                )
-        );
+        Authentication authentication = new UsernamePasswordAuthenticationToken(credentials.getLogin(), credentials.getPassword(), Collections.emptyList());
+
+        return getAuthenticationManager().authenticate(authentication);
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
-        TokenAuthenticationService.setAuthentication(response, auth.getName());
+        TokenAuthenticationService.setAuthentication(response, auth);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
     }
 }

@@ -15,6 +15,19 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+-- -----------------------------------------------------
+-- Schema komunalka
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `komunalka` ;
+
+-- -----------------------------------------------------
+-- Schema komunalka
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `komunalka` DEFAULT CHARACTER SET utf8 ;
+USE `komunalka` ;
+
+
 --
 -- Table structure for table `category`
 --
@@ -54,11 +67,11 @@ CREATE TABLE `indicator` (
   `current` int(11) NOT NULL,
   `date` date NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `meter_id` int(11) NOT NULL,
+  `meter` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_indicator_meter1_idx` (`meter_id`),
-  CONSTRAINT `fk_indicator_meter` FOREIGN KEY (`meter_id`) REFERENCES `meter_id` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_indicator_meter1_idx` (`meter`),
+  CONSTRAINT `fk_indicator_meter` FOREIGN KEY (`meter`) REFERENCES `meter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -73,13 +86,13 @@ INSERT INTO `indicator` VALUES (1,1700,2000,'2017-06-27',NULL,2);
 UNLOCK TABLES;
 
 --
--- Table structure for table `meter_id`
+-- Table structure for table `meter`
 --
 
-DROP TABLE IF EXISTS `meter_id`;
+DROP TABLE IF EXISTS `meter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `meter_id` (
+CREATE TABLE `meter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -95,13 +108,13 @@ CREATE TABLE `meter_id` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `meter_id`
+-- Dumping data for table `meter`
 --
 
-LOCK TABLES `meter_id` WRITE;
-/*!40000 ALTER TABLE `meter_id` DISABLE KEYS */;
-INSERT INTO `meter_id` VALUES (1,'Вода (туалет)',NULL,1,2),(2,'Газ (кухня)',NULL,1,1),(3,'Електроенергія (коридор)',NULL,2,3);
-/*!40000 ALTER TABLE `meter_id` ENABLE KEYS */;
+LOCK TABLES `meter` WRITE;
+/*!40000 ALTER TABLE `meter` DISABLE KEYS */;
+INSERT INTO `meter` VALUES (1,'Вода (туалет)',NULL,1,2),(2,'Газ (кухня)',NULL,1,1),(3,'Електроенергія (коридор)',NULL,2,3);
+/*!40000 ALTER TABLE `meter` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

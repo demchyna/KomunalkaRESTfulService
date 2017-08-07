@@ -5,6 +5,8 @@ import com.mdem.komunalka.exception.DataNotFoundException;
 import com.mdem.komunalka.exception.NoDataException;
 import com.mdem.komunalka.model.common.ErrorInfo;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,5 +41,23 @@ public class RestExceptionController {
         String errorMessage = exception.getMessage();
 
         return new ErrorInfo(HttpStatus.BAD_REQUEST.value(), errorURL, errorMessage);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public ErrorInfo accessDeniedException(HttpServletRequest request, AccessDeniedException exception) {
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+
+        return new ErrorInfo(HttpStatus.FORBIDDEN.value(), errorURL, errorMessage);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorInfo authenticationException(HttpServletRequest request, AuthenticationException exception) {
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+
+        return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 }

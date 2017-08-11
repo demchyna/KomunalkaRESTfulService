@@ -3,6 +3,7 @@ package com.mdem.komunalka.service;
 import com.mdem.komunalka.exception.ConflictDataException;
 import com.mdem.komunalka.exception.DataNotFoundException;
 import com.mdem.komunalka.exception.NoDataException;
+import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.model.common.IEntity;
 
 import java.io.Serializable;

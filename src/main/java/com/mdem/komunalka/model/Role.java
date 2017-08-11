@@ -2,13 +2,14 @@ package com.mdem.komunalka.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mdem.komunalka.model.common.IEntity;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "role")
-public class Role implements IEntity {
+public class Role implements IEntity, GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,5 +52,10 @@ public class Role implements IEntity {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

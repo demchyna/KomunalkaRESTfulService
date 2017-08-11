@@ -2,7 +2,11 @@ package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.service.IAbstractService;
+import com.mdem.komunalka.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +18,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private IAbstractService<User, Long> userService;
+    private UserService userService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -46,5 +50,12 @@ public class UserController {
     public List<User> getAllUsers() throws IOException {
         List<User> users = userService.getAll();
         return users;
+    }
+
+    @RequestMapping(value = "/login/{login}", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public User getUserByLogin(@PathVariable String login) {
+        User user = userService.getUserByLogin(login);
+        return user;
     }
 }

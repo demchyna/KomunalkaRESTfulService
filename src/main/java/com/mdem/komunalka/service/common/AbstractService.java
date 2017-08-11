@@ -7,14 +7,12 @@ import com.mdem.komunalka.exception.NoDataException;
 import com.mdem.komunalka.model.common.IEntity;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-@Service
 public abstract class AbstractService<T extends IEntity, K extends Serializable> implements IAbstractService<T, K> {
 
     @Autowired

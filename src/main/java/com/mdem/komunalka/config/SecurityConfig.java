@@ -5,7 +5,9 @@ import com.mdem.komunalka.security.JWTLoginFilter;
 import com.mdem.komunalka.security.handler.JwtAccessDeniedHandler;
 import com.mdem.komunalka.security.handler.JwtAuthenticationFailureHandler;
 import com.mdem.komunalka.security.handler.JwtAuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,14 +17,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.GenericFilterBean;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan(basePackages = "com.mdem.komunalka")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private String LOGIN_URL = "/login";
+
+    @Autowired private JWTLoginFilter jwtLoginFilter;
+    @Autowired private JWTAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired private JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().disable()
@@ -39,36 +50,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().disable()
 
                 // We filter the api/login requests
-                .addFilterBefore(jwtLoginFilter("/login"), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
 
                 // And filter other requests to check the presence of JWT in header
-                .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-                .exceptionHandling()
-                .accessDeniedHandler(getAccessDeniedHandler());
+                //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler);
     }
 
     @Bean
-    public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
-        return new JwtAuthenticationSuccessHandler();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler getAuthenticationFailureHandler() {
-        return new JwtAuthenticationFailureHandler();
-    }
-
-    @Bean
-    public AccessDeniedHandler getAccessDeniedHandler() {
-        return new JwtAccessDeniedHandler();
-    }
-
-    @Bean
-    public JWTLoginFilter jwtLoginFilter(String url) throws Exception {
-        JWTLoginFilter filter = new JWTLoginFilter(url);
+    public JWTLoginFilter getJwtLoginFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
+        JWTLoginFilter filter = new JWTLoginFilter(LOGIN_URL);
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(getAuthenticationSuccessHandler());
-        filter.setAuthenticationFailureHandler(getAuthenticationFailureHandler());
+        filter.setAuthenticationSuccessHandler(successHandler);
+        filter.setAuthenticationFailureHandler(failureHandler);
         return filter;
     }
 
@@ -81,5 +76,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .password("1111")
                 .roles("ADMIN");
     }
-
 }

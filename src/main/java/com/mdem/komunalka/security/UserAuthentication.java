@@ -10,10 +10,12 @@ import java.util.List;
 
 public class UserAuthentication implements Authentication {
 
-    private final User user;
-    private boolean authenticated = true;
+    private String token;
+    private User user;
+    private boolean authenticated;
 
-    public UserAuthentication(User user) {
+    public UserAuthentication(String token, User user) {
+        this.token = token;
         this.user = user;
     }
 
@@ -29,12 +31,12 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public Object getDetails() {
-        return user;
+        return null;
     }
 
     @Override
     public Object getPrincipal() {
-        return user.getLogin();
+        return user;
     }
 
     @Override
@@ -47,8 +49,11 @@ public class UserAuthentication implements Authentication {
         this.authenticated = isAuthenticated;
     }
 
+
     @Override
     public String getName() {
-        return null;
+        return user.getLogin();
     }
+
+
 }

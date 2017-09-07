@@ -10,11 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class AuthenticationTokenFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        //throw exception;
 
-        System.out.println("!!!__onAuthenticationFailure__!!!");
     }
 }

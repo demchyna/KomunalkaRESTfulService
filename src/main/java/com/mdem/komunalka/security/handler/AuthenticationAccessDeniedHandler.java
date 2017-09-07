@@ -12,14 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+public class AuthenticationAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
-
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-        System.out.println("!!!___AccessDeniedHandler___!!!");
 
     }
 }

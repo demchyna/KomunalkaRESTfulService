@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Date;
 
-public class TokenAuthenticationService {
+public class AuthenticationTokenService {
 
     private static final long EXPIRATION_TIME = 600000; // 10 minutes
-    private static final String SECRET = "SpringJWT";
+    private static final String SECRET = "Komunalka";
     private static final String TOKEN_PREFIX = "Bearer";
-    private static final String HEADER_STRING = "Auth-Token";
+    private static final String HEADER_STRING = "Authentication";
 
-    public static void setAuthentication(HttpServletResponse response, Authentication auth) {
+    public static void setAuthenticationToken(HttpServletResponse response, Authentication auth) {
 
         // Create the token
         String JWT = Jwts.builder()
@@ -28,7 +28,7 @@ public class TokenAuthenticationService {
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
     }
 
-    public static Authentication getAuthentication(HttpServletRequest request) {
+    public static Authentication getAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
 

@@ -1,6 +1,7 @@
 package com.mdem.komunalka.config;
 
-import com.mdem.komunalka.security.AuthenticationFilter;
+import com.mdem.komunalka.security.TokenAuthenticationFilter;
+import com.mdem.komunalka.security.TokenAuthenticationManager;
 import com.mdem.komunalka.security.handler.AuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,10 +24,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private String LOGIN_URL = "/login";
+    private String LOGIN_URL = "/login/**";
 
-    @Autowired private AuthenticationFilter jwtLoginFilter;
-    @Autowired private AuthenticationAccessDeniedHandler jwtAccessDeniedHandler;
+    @Autowired private TokenAuthenticationFilter tokenAuthenticationFilter;
+    @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
+
+    //@Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
+                .antMatchers(HttpMethod.GET, LOGIN_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().disable()
@@ -42,15 +46,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().disable()
 
                 // We filter the api/login requests
-                .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler);
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**");
+    }
+
     @Bean
-    public AuthenticationFilter getJwtLoginFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter(LOGIN_URL);
-        filter.setAuthenticationManager(authenticationManager());
+    public TokenAuthenticationFilter getTokenAuthenticationFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
+        TokenAuthenticationFilter filter = new TokenAuthenticationFilter(LOGIN_URL);
+        filter.setAuthenticationManager(tokenAuthenticationManager);
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
         return filter;

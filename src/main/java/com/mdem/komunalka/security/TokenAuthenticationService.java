@@ -4,13 +4,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Date;
 
-public class AuthenticationTokenService {
+@Component
+public class TokenAuthenticationService {
 
     private static final long EXPIRATION_TIME = 600000; // 10 minutes
     private static final String SECRET = "Komunalka";

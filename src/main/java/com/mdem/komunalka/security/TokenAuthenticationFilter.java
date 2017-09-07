@@ -1,6 +1,8 @@
 package com.mdem.komunalka.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,19 +18,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
-public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    public AuthenticationFilter(String url) {
+    public TokenAuthenticationFilter(String url) {
         super(new AntPathRequestMatcher(url));
+    }
 
-
-
+    @Override
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        super.setAuthenticationManager(authenticationManager);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        String token = request.getHeader("Authentication");
+        /*String token = request.getHeader("Authentication");
 
         UserAuthentication userAuthentication;
 
@@ -42,7 +47,9 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 
         Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
 
-        return authentication;
+        return authentication;*/
+
+        return null;
     }
 
     @Override

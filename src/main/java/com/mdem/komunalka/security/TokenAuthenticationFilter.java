@@ -33,7 +33,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        /*String token = request.getHeader("Authentication");
+        String token = request.getHeader("Authentication");
 
         UserAuthentication userAuthentication;
 
@@ -43,9 +43,9 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         } else {
             userAuthentication = new UserAuthentication(null, null);
             userAuthentication.setAuthenticated(false);
-        }*/
+        }
 
-        Authentication authentication = getAuthenticationManager().authenticate(new UserAuthentication(null, null));
+        Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
 
         return authentication;
     }

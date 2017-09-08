@@ -1,9 +1,14 @@
 package com.mdem.komunalka.security;
 
+import com.mdem.komunalka.model.User;
+import com.mdem.komunalka.service.impl.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.token.TokenService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +24,29 @@ public class TokenAuthenticationService {
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authentication";
 
-    public static void setAuthenticationToken(HttpServletResponse response, Authentication auth) {
+    private String jsonWebToken;
+
+    @Autowired private UserService userService;
+
+    public String createTokenAuthentication(String login, String password) {
+
+        User user = userService.getUserByLogin(login);
+
+        if (user.getPassword().equals(password)) {
+            jsonWebToken = Jwts.builder()
+                    .setSubject(user.getLogin())
+                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                    .signWith(SignatureAlgorithm.HS512, SECRET)
+                    .compact();
+        } else {
+            jsonWebToken = null;
+        }
+
+        return jsonWebToken;
+    }
+
+
+    /*public static void setAuthenticationToken(HttpServletResponse response, Authentication auth) {
 
         // Create the token
         String JWT = Jwts.builder()
@@ -46,5 +73,5 @@ public class TokenAuthenticationService {
                     null;
         }
         return null;
-    }
+    }*/
 }

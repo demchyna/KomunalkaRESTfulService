@@ -21,6 +21,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
     @Autowired
     private UserDao userDao;
 
+    @Override
     @Transactional
     public User getUserByLogin(String login) {
 

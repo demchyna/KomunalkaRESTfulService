@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private String LOGIN_URL = "/login/**";
+    private String LOGIN_URL = "/login";
 
     @Autowired private TokenAuthenticationFilter tokenAuthenticationFilter;
     @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET, LOGIN_URL).permitAll()
+                .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().disable()

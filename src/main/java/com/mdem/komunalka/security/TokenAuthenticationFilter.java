@@ -43,13 +43,11 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         } else {
             userAuthentication = new UserAuthentication(null, null);
             userAuthentication.setAuthenticated(false);
-        }
+        }*/
 
-        Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
+        Authentication authentication = getAuthenticationManager().authenticate(new UserAuthentication(null, null));
 
-        return authentication;*/
-
-        return null;
+        return authentication;
     }
 
     @Override

@@ -49,7 +49,6 @@ public class UserAuthentication implements Authentication {
         this.authenticated = isAuthenticated;
     }
 
-
     @Override
     public String getName() {
         return user.getLogin();

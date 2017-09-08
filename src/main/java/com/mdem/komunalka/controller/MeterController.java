@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/meter")
+@RequestMapping("api/meter")
 public class MeterController {
 
     @Autowired

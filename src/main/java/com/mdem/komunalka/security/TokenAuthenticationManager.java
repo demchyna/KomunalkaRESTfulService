@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenAuthenticationManager implements AuthenticationManager {
 
-    @Autowired private UserService userService;
-    @Autowired private TokenAuthenticationService tokenAuthenticationService;
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        System.out.println("Hello from TokenAuthenticationManager!");
+        System.out.println(authentication.getName());
+
+
 
 
 

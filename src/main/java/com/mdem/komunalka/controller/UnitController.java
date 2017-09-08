@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/unit")
+@RequestMapping("api/unit")
 public class UnitController {
 
     @Autowired

@@ -26,21 +26,12 @@ public class TokenAuthenticationService {
 
     private String jsonWebToken;
 
-    @Autowired private UserService userService;
-
-    public String createTokenAuthentication(String login, String password) {
-
-        User user = userService.getUserByLogin(login);
-
-        if (user.getPassword().equals(password)) {
-            jsonWebToken = Jwts.builder()
-                    .setSubject(user.getLogin())
-                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                    .signWith(SignatureAlgorithm.HS512, SECRET)
-                    .compact();
-        } else {
-            jsonWebToken = null;
-        }
+    public String createTokenAuthentication(String username) {
+        jsonWebToken = Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
 
         return jsonWebToken;
     }

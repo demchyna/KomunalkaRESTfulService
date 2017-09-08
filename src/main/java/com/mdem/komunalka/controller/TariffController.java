@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tariff")
+@RequestMapping("api/tariff")
 public class TariffController {
 
     @Autowired

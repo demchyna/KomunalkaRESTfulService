@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/indicator")
+@RequestMapping("api/indicator")
 public class IndicatorController {
     @Autowired
     private IAbstractService<Indicator, Long> indicatorService;

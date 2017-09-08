@@ -14,9 +14,11 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,18 +28,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private String LOGIN_URL = "/login";
 
-    @Autowired private TokenAuthenticationFilter tokenAuthenticationFilter;
+    @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
     @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
 
     //@Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement()
+        http.csrf().ignoringAntMatchers(LOGIN_URL)
+                .disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -46,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().disable()
 
                 // We filter the api/login requests
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class);
 
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler);
     }
@@ -57,8 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public TokenAuthenticationFilter getTokenAuthenticationFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
-        TokenAuthenticationFilter filter = new TokenAuthenticationFilter(LOGIN_URL);
+    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
+        TokenAuthenticationFilter filter = new TokenAuthenticationFilter("/api/**");
         filter.setAuthenticationManager(tokenAuthenticationManager);
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);

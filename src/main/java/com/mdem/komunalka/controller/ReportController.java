@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/report")
+@RequestMapping("api/report")
 public class ReportController {
 
     @Autowired

@@ -24,18 +24,26 @@ public class TokenAuthenticationService {
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authentication";
 
-    private String jsonWebToken;
 
-    public String createTokenAuthentication(String username) {
-        jsonWebToken = Jwts.builder()
+    public static String createTokenAuthentication(String username) {
+        String token = Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
-        return jsonWebToken;
+        return token;
     }
 
+    public static String getUsernameFromToken(String token) {
+        String username = Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody()
+                .getSubject();
+
+        return username;
+    }
 
     /*public static void setAuthenticationToken(HttpServletResponse response, Authentication auth) {
 

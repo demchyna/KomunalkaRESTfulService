@@ -2,13 +2,16 @@ package com.mdem.komunalka.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mdem.komunalka.model.common.IEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User implements IEntity {
+public class User implements IEntity, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +35,12 @@ public class User implements IEntity {
     @JsonIgnore
     private List<Report> reports;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -64,6 +69,7 @@ public class User implements IEntity {
         this.login = login;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -110,5 +116,35 @@ public class User implements IEntity {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    @Override
+    public String getUsername() {
+        return getLogin();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

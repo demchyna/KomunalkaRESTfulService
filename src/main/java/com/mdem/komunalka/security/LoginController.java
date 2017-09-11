@@ -16,8 +16,6 @@ public class LoginController {
     private static final String TOKEN_PREFIX = "Bearer";
 
     @Autowired private UserService userService;
-    @Autowired private TokenAuthenticationService tokenAuthenticationService;
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
@@ -27,7 +25,7 @@ public class LoginController {
         String token;
 
         if (user.getPassword().equals(credential.getPassword())) {
-            token = tokenAuthenticationService.createTokenAuthentication(credential.getLogin());
+            token = TokenAuthenticationService.createTokenAuthentication(credential.getLogin());
             response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + token);
         } else {
             throw new IncorrectPasswordException("Password is incorrect");

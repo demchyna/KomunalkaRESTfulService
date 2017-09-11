@@ -3,6 +3,7 @@ package com.mdem.komunalka.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,22 +32,27 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         String token = request.getHeader("Authentication");
 
-        UserAuthentication userAuthentication;
-
         if (token != null) {
-            userAuthentication = new UserAuthentication(token, null);
-            userAuthentication.setAuthenticated(true);
+            UserAuthentication userAuthentication = new UserAuthentication(token);
+            Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
+            return authentication;
+
         } else {
-            userAuthentication = new UserAuthentication(null, null);
-            userAuthentication.setAuthenticated(false);
+            throw new AuthenticationServiceException("Authentication process fails");
         }
+    }
 
-        Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
+    @Override
+    public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        System.out.println("Hello from successfulAuthentication");
+    }
 
-        return authentication;
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        System.out.println("Hello from unsuccessfulAuthentication");
     }
 }

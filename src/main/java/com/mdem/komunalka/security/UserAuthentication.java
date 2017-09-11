@@ -1,42 +1,43 @@
 package com.mdem.komunalka.security;
 
-import com.mdem.komunalka.model.Role;
-import com.mdem.komunalka.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 public class UserAuthentication implements Authentication {
 
     private String token;
-    private User user;
+    private UserDetails userDetails;
     private boolean authenticated;
 
-    public UserAuthentication(String token, User user) {
+    public UserAuthentication(String token) {
         this.token = token;
-        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles();
+        return userDetails.getAuthorities();
     }
 
     @Override
     public Object getCredentials() {
-        return user.getPassword();
+        return userDetails.getPassword();
     }
 
     @Override
     public Object getDetails() {
-        return null;
+        return userDetails.toString();
+    }
+
+    public void setPrincipal(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 
     @Override
     public Object getPrincipal() {
-        return user;
+        return this.userDetails;
     }
 
     @Override
@@ -51,8 +52,10 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return user.getLogin();
+        return userDetails.getUsername();
     }
 
-
+    public String getToken() {
+        return token;
+    }
 }

@@ -1,5 +1,6 @@
 package com.mdem.komunalka.security;
 
+import com.mdem.komunalka.model.Role;
 import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.service.impl.UserService;
 import io.jsonwebtoken.Jwts;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class TokenAuthenticationService {
@@ -22,27 +25,34 @@ public class TokenAuthenticationService {
     private static final long EXPIRATION_TIME = 600000; // 10 minutes
     private static final String SECRET = "Komunalka";
     private static final String TOKEN_PREFIX = "Bearer";
-    private static final String HEADER_STRING = "Authentication";
 
-
-    public static String createTokenAuthentication(String username) {
+    public static String createTokenAuthentication(User user) {
         String token = Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getLogin())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .claim("scope", user.getRoles())
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
-        return token;
+        return TOKEN_PREFIX + " " + token;
     }
 
     public static String getUsernameFromToken(String token) {
         String username = Jwts.parser()
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                .getBody()
-                .getSubject();
+                .getBody().getSubject();
 
         return username;
+    }
+
+    public static List<Role> getRolesFromToken(String token) {
+        List roles = (List) Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody().get("scope");
+
+        return roles;
     }
 
     /*public static void setAuthenticationToken(HttpServletResponse response, Authentication auth) {

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User implements IEntity, UserDetails {
+public class User implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +69,6 @@ public class User implements IEntity, UserDetails {
         this.login = login;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -116,35 +115,5 @@ public class User implements IEntity, UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-
-    @Override
-    public String getUsername() {
-        return getLogin();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 }

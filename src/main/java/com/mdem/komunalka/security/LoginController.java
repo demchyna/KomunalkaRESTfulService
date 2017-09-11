@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class LoginController {
 
-    private static final String HEADER_STRING = "Authentication";
-    private static final String TOKEN_PREFIX = "Bearer";
+    private static final String HEADER_NAME = "Authentication";
 
     @Autowired private UserService userService;
 
@@ -22,11 +21,11 @@ public class LoginController {
     public void getAuthenticationToken(@RequestBody UserCredential credential, HttpServletResponse response) throws IncorrectPasswordException {
 
         User user = userService.getUserByLogin(credential.getLogin());
-        String token;
+        String fullToken;
 
         if (user.getPassword().equals(credential.getPassword())) {
-            token = TokenAuthenticationService.createTokenAuthentication(credential.getLogin());
-            response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + token);
+            fullToken = TokenAuthenticationService.createTokenAuthentication(user);
+            response.addHeader(HEADER_NAME, fullToken);
         } else {
             throw new IncorrectPasswordException("Password is incorrect");
         }

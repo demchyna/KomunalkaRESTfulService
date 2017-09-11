@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -32,7 +33,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
         String token = request.getHeader("Authentication");
 
@@ -40,9 +41,8 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
             UserAuthentication userAuthentication = new UserAuthentication(token);
             Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
             return authentication;
-
         } else {
-            throw new AuthenticationServiceException("Authentication process fails");
+            throw new BadCredentialsException("Token is not found");
         }
     }
 

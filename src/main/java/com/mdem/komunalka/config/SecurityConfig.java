@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private String LOGIN_URL = "/login";
+    private String SECURE_URL = "/api/**";
 
     @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
     @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
@@ -60,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
-        TokenAuthenticationFilter filter = new TokenAuthenticationFilter("/api/**");
+        TokenAuthenticationFilter filter = new TokenAuthenticationFilter(SECURE_URL);
         filter.setAuthenticationManager(tokenAuthenticationManager);
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);

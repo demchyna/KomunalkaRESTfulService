@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -48,7 +49,9 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
 
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        System.out.println("Hello from successfulAuthentication");
+        SecurityContextHolder.getContext().setAuthentication(authResult);
+
+        System.out.println(authResult.getName());
     }
 
     @Override

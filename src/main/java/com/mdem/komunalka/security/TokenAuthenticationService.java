@@ -30,11 +30,21 @@ public class TokenAuthenticationService {
         String token = Jwts.builder()
                 .setSubject(user.getLogin())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .claim("scope", user.getRoles())
+                .claim("roles", user.getRoles())
+                .claim("id", user.getId())
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
         return TOKEN_PREFIX + " " + token;
+    }
+
+    public static long getUserIdFromToken(String token) {
+        long userId = (long) Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                .getBody().get("id");
+
+        return userId;
     }
 
     public static String getUsernameFromToken(String token) {
@@ -50,7 +60,7 @@ public class TokenAuthenticationService {
         List roles = (List) Jwts.parser()
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                .getBody().get("scope");
+                .getBody().get("roles");
 
         return roles;
     }

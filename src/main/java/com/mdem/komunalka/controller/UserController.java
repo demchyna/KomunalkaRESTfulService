@@ -25,6 +25,7 @@ public class UserController {
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.userId)")
     public User getUserById(@PathVariable Long id) {
         User user = userService.getById(id);
         return user;
@@ -32,19 +33,21 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.login == authentication.principal.username)")
     public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.login == authentication.principal.username)")
     public void deleteUser(@RequestBody User user) {
         userService.delete(user);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers() throws IOException {
         List<User> users = userService.getAll();
         return users;

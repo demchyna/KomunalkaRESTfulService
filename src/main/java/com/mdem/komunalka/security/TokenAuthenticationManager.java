@@ -24,13 +24,15 @@ public class TokenAuthenticationManager implements AuthenticationManager {
         UserAuthentication userAuthentication = (UserAuthentication) authentication;
 
         try {
+            long userId = TokenAuthenticationService.getUserIdFromToken(userAuthentication.getToken());
             String username = TokenAuthenticationService.getUsernameFromToken(userAuthentication.getToken());
             List<Role> authorities = mapper.convertValue(
                     TokenAuthenticationService.getRolesFromToken(userAuthentication.getToken()),
                     new TypeReference<List<Role>>() { }
             );
 
-            Principal principal = new Principal(username, authorities);
+
+            Principal principal = new Principal(userId, username, authorities);
             userAuthentication.setPrincipal(principal);
             userAuthentication.setAuthenticated(true);
 

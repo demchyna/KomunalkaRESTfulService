@@ -7,12 +7,22 @@ import java.util.Collection;
 
 public class Principal implements UserDetails {
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private long userId;
     private String username;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public Principal(String username, Collection<? extends GrantedAuthority> authorities) {
+    public Principal(long userId, String username, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.authorities = authorities;
+    }
+
+    public long getId() {
+        return userId;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     @Override
@@ -23,11 +33,6 @@ public class Principal implements UserDetails {
     @Override
     public String getPassword() {
         return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
     @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
 
-    //@Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
+    @Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,10 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .rememberMe().disable()
 
-                // We filter the api/login requests
-                .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
 
-                //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler);
+                .exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.mdem.komunalka.exception.NoDataException;
 import com.mdem.komunalka.model.common.IEntity;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;

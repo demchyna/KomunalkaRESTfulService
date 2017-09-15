@@ -1,12 +1,8 @@
 package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.model.User;
-import com.mdem.komunalka.service.IAbstractService;
 import com.mdem.komunalka.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +44,7 @@ public class UserController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAllUsers() throws IOException {
         List<User> users = userService.getAll();
         return users;

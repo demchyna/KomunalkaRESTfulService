@@ -28,7 +28,7 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public Object getDetails() {
-        return userDetails.toString();
+        return userDetails;
     }
 
     public void setPrincipal(UserDetails userDetails) {

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mdem.komunalka.model.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -32,8 +31,8 @@ public class TokenAuthenticationManager implements AuthenticationManager {
             );
 
 
-            Principal principal = new Principal(userId, username, authorities);
-            userAuthentication.setPrincipal(principal);
+            UserProxy userProxy = new UserProxy(userId, username, authorities);
+            userAuthentication.setPrincipal(userProxy);
             userAuthentication.setAuthenticated(true);
 
         } catch (SignatureException se) {

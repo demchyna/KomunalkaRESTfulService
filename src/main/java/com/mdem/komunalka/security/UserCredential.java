@@ -1,15 +1,15 @@
 package com.mdem.komunalka.security;
 
 public class UserCredential {
-    private String login;
+    private String username;
     private String password;
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setLogin(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

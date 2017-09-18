@@ -4,6 +4,7 @@ import com.mdem.komunalka.model.Report;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class ReportController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated()")
     public void createReport(@RequestBody Report report) {
         reportService.create(report);
     }
@@ -31,6 +33,7 @@ public class ReportController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+
     public void updateReport(@RequestBody Report report) {
         reportService.update(report);
     }

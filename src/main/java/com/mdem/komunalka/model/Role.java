@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "role")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Role implements IEntity, GrantedAuthority {
 
     @Id
@@ -20,7 +19,7 @@ public class Role implements IEntity, GrantedAuthority {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "authorities")
     @JsonIgnore
     private List<User> users;
 
@@ -57,6 +56,7 @@ public class Role implements IEntity, GrantedAuthority {
     }
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return "ROLE_" + name.toUpperCase();
     }

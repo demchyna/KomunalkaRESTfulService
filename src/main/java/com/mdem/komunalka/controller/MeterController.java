@@ -4,6 +4,7 @@ import com.mdem.komunalka.model.Meter;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class MeterController {
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     public Meter getMeterById(@PathVariable Long id) {
         Meter meter = meterService.getById(id);
         return meter;
@@ -43,6 +45,7 @@ public class MeterController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     public List<Meter> getAllMeters() throws IOException {
         List<Meter> meters = meterService.getAll();
         return meters;

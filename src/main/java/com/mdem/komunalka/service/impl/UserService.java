@@ -16,20 +16,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserService extends AbstractService<User, Long> implements IUserService {
+public class UserService extends AbstractService<User, Long> implements IUserService, UserDetailsService {
 
     @Autowired
     private UserDao userDao;
 
     @Override
     @Transactional
-    public User getUserByLogin(String login) {
-
-        User user = userDao.getUserByLogin(login);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userDao.getUserByUsername(username);
         if (user != null) {
             return user;
         } else {
-            throw new DataNotFoundException("User with login " + login  +" not found in database");
+            throw new DataNotFoundException("User with login " + username  +" not found in database");
         }
     }
 }

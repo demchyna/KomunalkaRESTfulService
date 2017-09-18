@@ -20,7 +20,7 @@ public class LoginController {
     @ResponseStatus(value = HttpStatus.OK)
     public void getAuthenticationToken(@RequestBody UserCredential credential, HttpServletResponse response) throws IncorrectPasswordException {
 
-        User user = userService.getUserByLogin(credential.getLogin());
+        User user = (User)userService.loadUserByUsername(credential.getUsername());
         String fullToken;
 
         if (user.getPassword().equals(credential.getPassword())) {

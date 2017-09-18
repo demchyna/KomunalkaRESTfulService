@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 public class UserDao extends AbstractDao<User, Long> implements IUserDao {
 
     @Override
-    public User getUserByLogin(String login) {
-        Query query = getSession().createQuery("FROM " + User.class.getName() + " where login = :login");
-        query.setParameter("login", login);
+    public User getUserByUsername(String username) {
+        Query query = getSession().createQuery("FROM " + User.class.getName() + " where username = :username");
+        query.setParameter("username", username);
         return (User) query.getSingleResult();
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-public class User implements IEntity {
+public class User implements IEntity, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,17 +19,17 @@ public class User implements IEntity {
     private Long id;
     private String first_name;
     private String last_name;
-    private String login;
+    private String username;
     private String password;
     private String email;
     private java.sql.Date create_date;
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    private Collection authorities;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -61,12 +61,13 @@ public class User implements IEntity {
         this.last_name = last_name;
     }
 
-    public String getLogin() {
-        return login;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -101,6 +102,15 @@ public class User implements IEntity {
         this.description = description;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
     public List<Report> getReports() {
         return reports;
     }
@@ -109,11 +119,27 @@ public class User implements IEntity {
         this.reports = reports;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return false;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return false;
     }
 }

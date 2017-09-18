@@ -19,13 +19,14 @@ public class UserController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public void createUser(@RequestBody User user) {
         userService.create(user);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.userId)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
     public User getUserById(@PathVariable Long id) {
         User user = userService.getById(id);
         return user;
@@ -33,14 +34,14 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.login == authentication.principal.username)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.login == authentication.principal.username)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     public void deleteUser(@RequestBody User user) {
         userService.delete(user);
     }
@@ -56,7 +57,7 @@ public class UserController {
     @RequestMapping(value = "/login/{login}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public User getUserByLogin(@PathVariable String login) {
-        User user = userService.getUserByLogin(login);
+        User user = (User) userService.loadUserByUsername(login);
         return user;
     }
 }

@@ -4,6 +4,7 @@ import com.mdem.komunalka.model.Indicator;
 import com.mdem.komunalka.service.IAbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class IndicatorController {
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     public Indicator getIndicatorById(@PathVariable Long id) {
         Indicator indicator = indicatorService.getById(id);
         return indicator;
@@ -42,6 +44,7 @@ public class IndicatorController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     public List<Indicator> getAllIndicators() throws IOException {
         List<Indicator> indicators = indicatorService.getAll();
         return indicators;

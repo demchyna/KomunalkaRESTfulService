@@ -54,15 +54,6 @@ public class RestExceptionController {
         return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public ErrorInfo accessDeniedException(HttpServletRequest request, AccessDeniedException exception) {
-        String errorURL = request.getRequestURL().toString();
-        String errorMessage = exception.getMessage();
-
-        return new ErrorInfo(HttpStatus.FORBIDDEN.value(), errorURL, errorMessage);
-    }
-
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorInfo authenticationException(HttpServletRequest request, BadCredentialsException exception) {

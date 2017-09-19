@@ -26,12 +26,24 @@ public class TokenAuthenticationService {
     private static final String SECRET = "Komunalka";
     private static final String TOKEN_PREFIX = "Bearer";
 
-    public static String createTokenAuthentication(User user) {
+    public static String createToken(User user) {
         String token = Jwts.builder()
                 .setSubject(user.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .claim("id", user.getId())
                 .claim("roles", user.getAuthorities())
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
+
+        return TOKEN_PREFIX + " " + token;
+    }
+
+    public static String refreshToken(Authentication authentication) {
+        String token = Jwts.builder()
+                .setSubject(authentication.getName())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .claim("id", ((UserProxy)authentication.getDetails()).getId())
+                .claim("roles", authentication.getAuthorities())
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 

@@ -24,7 +24,7 @@ public class LoginController {
         String fullToken;
 
         if (user.getPassword().equals(credential.getPassword())) {
-            fullToken = TokenAuthenticationService.createTokenAuthentication(user);
+            fullToken = TokenAuthenticationService.createToken(user);
             response.addHeader(HEADER_NAME, fullToken);
         } else {
             throw new IncorrectPasswordException("Password is incorrect");

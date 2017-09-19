@@ -2,7 +2,7 @@ package com.mdem.komunalka.config;
 
 import com.mdem.komunalka.security.TokenAuthenticationFilter;
 import com.mdem.komunalka.security.TokenAuthenticationManager;
-import com.mdem.komunalka.security.handler.AuthenticationAccessDeniedHandler;
+import com.mdem.komunalka.security.AuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,11 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableWebSecurity
@@ -48,9 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .rememberMe().disable()
-
                 .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
-
                 .exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
     }
 
@@ -60,11 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter(AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) throws Exception {
+    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter() throws Exception {
         TokenAuthenticationFilter filter = new TokenAuthenticationFilter(SECURE_URL);
         filter.setAuthenticationManager(tokenAuthenticationManager);
-        filter.setAuthenticationSuccessHandler(successHandler);
-        filter.setAuthenticationFailureHandler(failureHandler);
         return filter;
     }
 }

@@ -37,7 +37,7 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return this.userDetails;
+        return userDetails;
     }
 
     @Override

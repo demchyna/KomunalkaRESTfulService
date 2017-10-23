@@ -2,29 +2,36 @@ package com.mdem.komunalka.security;
 
 import com.mdem.komunalka.model.Role;
 import com.mdem.komunalka.model.User;
-import com.mdem.komunalka.service.impl.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.token.TokenService;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class TokenAuthenticationService {
 
-    private static final long EXPIRATION_TIME = 600000; // 10 minutes
-    private static final String SECRET = "Komunalka";
-    private static final String TOKEN_PREFIX = "Bearer";
+    private static String TOKEN_PREFIX;
+    private static long EXPIRATION_TIME;
+    private static String SECRET;
+
+    @Value("${security.tokenPrefix}")
+    private void setTokenPrefix(String tokenPrefix) {
+        TOKEN_PREFIX = tokenPrefix;
+    }
+
+    @Value("${security.expirationTime}")
+    private void setExpirationTime(long expirationTime) {
+        EXPIRATION_TIME = expirationTime;
+    }
+
+    @Value("${security.secret}")
+    private void setSecret(String secret) {
+        SECRET = secret;
+    }
 
     public static String createToken(User user) {
         String token = Jwts.builder()

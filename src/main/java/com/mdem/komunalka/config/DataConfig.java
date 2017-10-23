@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -17,7 +18,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:database.properties")
+@PropertySources({
+        @PropertySource("classpath:database.properties"),
+        @PropertySource("classpath:hibernate.properties")
+})
 public class DataConfig {
 
     @Autowired
@@ -47,7 +51,6 @@ public class DataConfig {
         return sessionFactory;
     }
 
-
     @Autowired
     @Bean
     public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
@@ -58,8 +61,8 @@ public class DataConfig {
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
 
-        properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 
         return properties;
     }

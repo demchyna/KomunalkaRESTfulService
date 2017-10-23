@@ -11,20 +11,18 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "user/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
     public void createUser(@RequestBody User user) {
         userService.create(user);
     }
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "api/user/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
     public User getUserById(@PathVariable Long id) {
@@ -32,21 +30,21 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "api/user/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "api/user/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     public void deleteUser(@RequestBody User user) {
         userService.delete(user);
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "api/user/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers() throws IOException {

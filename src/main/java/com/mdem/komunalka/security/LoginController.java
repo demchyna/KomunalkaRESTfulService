@@ -4,6 +4,7 @@ import com.mdem.komunalka.exception.IncorrectPasswordException;
 import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class LoginController {
 
-    private static final String HEADER_NAME = "Authentication";
+    @Value("${security.headerName}")
+    private String HEADER_NAME;
 
     @Autowired private UserService userService;
 

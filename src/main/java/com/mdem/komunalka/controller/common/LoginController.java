@@ -1,7 +1,9 @@
-package com.mdem.komunalka.security;
+package com.mdem.komunalka.controller.common;
 
 import com.mdem.komunalka.exception.IncorrectPasswordException;
 import com.mdem.komunalka.model.User;
+import com.mdem.komunalka.security.TokenAuthenticationService;
+import com.mdem.komunalka.security.UserCredential;
 import com.mdem.komunalka.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

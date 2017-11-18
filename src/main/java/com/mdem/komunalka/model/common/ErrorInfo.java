@@ -1,7 +1,5 @@
 package com.mdem.komunalka.model.common;
 
-import org.springframework.http.HttpStatus;
-
 public class ErrorInfo {
     private int status;
     private String url;

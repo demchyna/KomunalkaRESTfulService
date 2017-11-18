@@ -10,7 +10,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String CREATE_USER_URL;
 
     @Value("${urls.secureUrl}")
-    private String SECURE_URL/* = "/api/**"*/;
+    private String SECURE_URL;
 
     @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
     @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
@@ -47,9 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/*").permitAll()
-                .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
-                .antMatchers(HttpMethod.POST, CREATE_USER_URL).permitAll()
+                .antMatchers("/*", "/resources/**", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers(HttpMethod.POST, LOGIN_URL, CREATE_USER_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().disable()
@@ -57,11 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe().disable()
                 .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(authenticationAccessDeniedHandler);
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**");
     }
 
     @Bean

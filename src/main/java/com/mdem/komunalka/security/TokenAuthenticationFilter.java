@@ -1,6 +1,8 @@
 package com.mdem.komunalka.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -15,7 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@PropertySource("classpath:security.properties")
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    @Value("${security.headerName}")
+    private String HEADER_NAME;
 
     public TokenAuthenticationFilter(String url) {
         super(new AntPathRequestMatcher(url));
@@ -30,7 +36,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        String token = request.getHeader("Authentication");
+        String token = request.getHeader(HEADER_NAME);
 
         if (token != null) {
             UserAuthentication userAuthentication = new UserAuthentication(token);
@@ -44,7 +50,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        response.setHeader("Authentication", TokenAuthenticationService.refreshToken(authentication));
+        response.setHeader(HEADER_NAME, TokenAuthenticationService.refreshToken(authentication));
         chain.doFilter(request, response);
     }
 

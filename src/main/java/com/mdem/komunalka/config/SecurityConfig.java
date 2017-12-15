@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
     @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
-
     @Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
 
     @Override

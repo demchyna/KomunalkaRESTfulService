@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `komunalka` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `komunalka`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: komunalka
@@ -232,14 +234,14 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(31) NOT NULL,
   `last_name` varchar(31) NOT NULL,
-  `login` varchar(31) NOT NULL,
+  `username` varchar(31) NOT NULL,
   `password` varchar(63) NOT NULL,
   `email` varchar(31) NOT NULL,
   `create_date` date NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,7 +271,7 @@ CREATE TABLE `user_role` (
   KEY `fk_user_role_user_idx` (`user_id`),
   CONSTRAINT `fk_user_role_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_role_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,4 +293,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-08-11 16:33:43
+-- Dump completed on 2017-12-11 15:07:33

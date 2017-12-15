@@ -24,8 +24,7 @@ import java.util.Properties;
 })
 public class DataConfig {
 
-    @Autowired
-    private Environment env;
+    @Autowired private Environment env;
 
     @Bean
     public DriverManagerDataSource getDataSource() {
@@ -45,7 +44,7 @@ public class DataConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
 
-        sessionFactory.setPackagesToScan(new String[] { "com.mdem.komunalka.model" });
+        sessionFactory.setPackagesToScan("com.mdem.komunalka.model");
         sessionFactory.setHibernateProperties(getHibernateProperties());
 
         return sessionFactory;
@@ -54,8 +53,7 @@ public class DataConfig {
     @Autowired
     @Bean
     public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
-        return transactionManager;
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     private Properties getHibernateProperties() {

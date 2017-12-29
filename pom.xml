@@ -114,6 +114,21 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>4.2.0</version>
+        <configuration>
+          <locations>
+            <location>filesystem:src/main/resources/db_scripts</location>
+          </locations>
+          <driver>com.mysql.jdbc.Driver</driver>
+          <url>jdbc:mysql://35.160.22.123:3306/komunalka</url>
+          <user>root</user>
+          <password>1111</password>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 </project>

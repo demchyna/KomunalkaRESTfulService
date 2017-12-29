@@ -123,9 +123,12 @@
             <location>filesystem:src/main/resources/db_scripts</location>
           </locations>
           <driver>com.mysql.jdbc.Driver</driver>
-          <url>jdbc:mysql://35.160.22.123:3306/komunalka</url>
-          <user>root</user>
-          <password>1111</password>
+          <url>jdbc:mysql://35.160.22.123:3306</url>
+          <user>mdem</user>
+          <password>q2;A{-Z6</password>
+          <schemas>
+            <schema>komunalka</schema>
+          </schemas>
         </configuration>
       </plugin>
 

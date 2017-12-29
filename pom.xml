@@ -111,7 +111,7 @@
           <server>TomcatServer</server>
           <username>mdem</username>
           <password>q2;A{-Z6</password>
-          <path>/</path>
+          <path>/komunalka</path>
         </configuration>
       </plugin>
 

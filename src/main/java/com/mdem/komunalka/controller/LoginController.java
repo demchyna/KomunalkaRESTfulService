@@ -1,10 +1,12 @@
-package com.mdem.komunalka.controller.common;
+package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.exception.IncorrectPasswordException;
 import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.security.TokenAuthenticationService;
 import com.mdem.komunalka.security.UserCredential;
 import com.mdem.komunalka.service.impl.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ public class LoginController {
 
     @Autowired private UserService userService;
 
+    @ApiOperation(value = "Get authentication token by User credentials")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public void getAuthenticationToken(@RequestBody UserCredential credential, HttpServletResponse response) throws IncorrectPasswordException {

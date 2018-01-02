@@ -5,7 +5,7 @@
   <artifactId>KomunalkaRESTfulService</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>KomunalkaRESTfulService Maven Webapp</name>
+  <name>KomunalkaRESTfulService Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
@@ -107,7 +107,7 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <url>http://52.24.122.23:8080/manager/text</url>
+          <url>http://185.65.244.83/manager/text</url>
           <server>TomcatServer</server>
           <username>mdem</username>
           <password>q2;A{-Z6</password>
@@ -124,7 +124,7 @@
             <location>filesystem:src/main/resources/db_scripts</location>
           </locations>
           <driver>com.mysql.jdbc.Driver</driver>
-          <url>jdbc:mysql://35.160.22.123:3306</url>
+          <url>jdbc:mysql://185.65.244.83:3306</url>
           <user>mdem</user>
           <password>q2;A{-Z6</password>
           <schemas>

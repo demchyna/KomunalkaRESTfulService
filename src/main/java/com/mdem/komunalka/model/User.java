@@ -31,7 +31,7 @@ public class User implements IEntity, UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection authorities;
+    private Collection<Role> authorities;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -105,11 +105,11 @@ public class User implements IEntity, UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<Role> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+    public void setAuthorities(Collection<Role> authorities) {
         this.authorities = authorities;
     }
 

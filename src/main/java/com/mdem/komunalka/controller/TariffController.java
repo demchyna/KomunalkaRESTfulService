@@ -2,6 +2,7 @@ package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.model.Tariff;
 import com.mdem.komunalka.service.IAbstractService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/tariff")
+@Api(tags = {"Tariff"}, description="Operations for work with tariffs on services")
 public class TariffController {
 
     @Autowired

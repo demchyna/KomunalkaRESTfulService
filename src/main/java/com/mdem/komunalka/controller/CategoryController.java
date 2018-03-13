@@ -2,6 +2,8 @@ package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.model.Category;
 import com.mdem.komunalka.service.IAbstractService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/category")
+@Api(tags = {"Category"}, description="Operations for work with categories of services")
 public class CategoryController {
 
     @Autowired
@@ -20,6 +23,7 @@ public class CategoryController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
+    @ApiOperation(value = "Add a new category")
     public void createCategory(@RequestBody Category category) {
         categoryService.create(category);
     }
@@ -27,6 +31,7 @@ public class CategoryController {
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
+    @ApiOperation(value = "Search a category with an ID", response = Category.class)
     public Category getCategoryById(@PathVariable Long id) {
         Category category = categoryService.getById(id);
         return category;
@@ -35,6 +40,7 @@ public class CategoryController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
+    @ApiOperation(value = "Update an existing category")
     public void updateCategory(@RequestBody Category category) {
         categoryService.update(category);
     }
@@ -42,6 +48,7 @@ public class CategoryController {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
+    @ApiOperation(value = "Delete an existing category")
     public void deleteCategory(@RequestBody Category category) {
         categoryService.delete(category);
     }
@@ -49,6 +56,7 @@ public class CategoryController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
+    @ApiOperation(value = "View a list of available categories", response = Iterable.class)
     public List<Category> getAllCategories() throws IOException {
         List<Category> categories = categoryService.getAll();
         return categories;

@@ -12,8 +12,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "role")
-//@JsonDeserialize(using = RoleDeserializer.class)
-//@JsonDeserialize(as = Role.class)
 public class Role implements IEntity, GrantedAuthority {
 
     @Id
@@ -23,7 +21,7 @@ public class Role implements IEntity, GrantedAuthority {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "authorities")
+    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;
 

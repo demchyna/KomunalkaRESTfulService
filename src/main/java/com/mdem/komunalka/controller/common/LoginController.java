@@ -5,6 +5,7 @@ import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.security.TokenAuthenticationService;
 import com.mdem.komunalka.security.UserCredential;
 import com.mdem.komunalka.service.impl.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@Api(tags = {"LogIn"}, description="Operation for login registered users")
 public class LoginController {
-
     @Value("${security.headerName}")
     private String HEADER_NAME;
 

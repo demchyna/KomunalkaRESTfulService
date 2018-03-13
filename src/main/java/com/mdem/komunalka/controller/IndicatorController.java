@@ -2,6 +2,7 @@ package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.model.Indicator;
 import com.mdem.komunalka.service.IAbstractService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/indicator")
+@Api(tags = {"Indicator"}, description="Operations for work with indicators of meters")
 public class IndicatorController {
     @Autowired
     private IAbstractService<Indicator, Long> indicatorService;

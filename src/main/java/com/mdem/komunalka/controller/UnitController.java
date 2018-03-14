@@ -3,6 +3,7 @@ package com.mdem.komunalka.controller;
 import com.mdem.komunalka.model.Unit;
 import com.mdem.komunalka.service.IAbstractService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,14 @@ public class UnitController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
+    @ApiOperation(value = "Add a new unit")
     public void createUnit(@RequestBody Unit unit) {
         unitService.create(unit);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiOperation(value = "Search a unit with an ID", response = Unit.class)
     public Unit getUnitById(@PathVariable Long id) {
         Unit unit = unitService.getById(id);
         return unit;
@@ -33,18 +36,21 @@ public class UnitController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Update an existing unit")
     public void updateUnit(@RequestBody Unit unit) {
         unitService.update(unit);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Delete an existing unit")
     public void deleteUnit(@RequestBody Unit unit) {
         unitService.delete(unit);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiOperation(value = "View a list of available units", response = Iterable.class)
     public List<Unit> getAllUnits() throws IOException {
         List<Unit> units = unitService.getAll();
         return units;

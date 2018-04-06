@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
+
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService extends AbstractService<User, Long> implements IUserService, UserDetailsService {
@@ -23,7 +25,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = userDao.getUserByUsername(username);
         if (user != null) {
             return user;

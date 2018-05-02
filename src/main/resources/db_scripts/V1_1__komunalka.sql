@@ -250,7 +250,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Микола','Демчина','mdem','1111','mdem@mail.com','2017-06-27',NULL),(2,'Василина','Демчина','vaska','1111','vaska@mail.com','2017-06-27',NULL);
+INSERT INTO `user` VALUES (1,'Микола','Демчина','mdem','1111','mdem@mail.com','2017-06-27',NULL),(2,'Петро','Петренко','pepko','2222','pepko@mail.com','2017-07-15',NULL), (3,'Василь','Весилечко','vasya','3333','vasya@mail.com','2017-08-09',NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,7 +280,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,1,1),(2,1,2),(3,2,2);
+INSERT INTO `user_role` VALUES (1,1,1),(2,1,2),(3,2,2),(4,3,2);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

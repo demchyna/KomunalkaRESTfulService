@@ -42,7 +42,7 @@ public class TokenAuthenticationService {
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
-        return TOKEN_PREFIX + " " + token;
+        return token;
     }
 
     public static String refreshToken(Authentication authentication) {
@@ -54,7 +54,7 @@ public class TokenAuthenticationService {
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
-        return TOKEN_PREFIX + " " + token;
+        return token;
     }
 
     public static String getUsernameFromToken(String token) {

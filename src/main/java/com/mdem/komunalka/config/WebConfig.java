@@ -24,15 +24,11 @@ class WebConfig extends WebMvcConfigurerAdapter {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:4200");
-                registry.addMapping("/**").allowedMethods("POST, GET, PUT, DELETE, OPTIONS");
-                registry.addMapping("/**").exposedHeaders("Authorization");
-            }
-        };
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*");
+        registry.addMapping("/**").allowedMethods("*");
+        registry.addMapping("/**").allowedHeaders("*");
+        registry.addMapping("/**").exposedHeaders("Authorization");
     }
 }

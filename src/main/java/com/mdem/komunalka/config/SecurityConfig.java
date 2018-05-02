@@ -1,5 +1,6 @@
 package com.mdem.komunalka.config;
 
+import com.google.common.collect.ImmutableList;
 import com.mdem.komunalka.security.TokenAuthenticationFilter;
 import com.mdem.komunalka.security.TokenAuthenticationManager;
 import com.mdem.komunalka.security.AuthenticationAccessDeniedHandler;
@@ -15,6 +16,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,14 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+        http.csrf().disable()
+                .cors().and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/*", "/resources/**", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
                 .antMatchers(HttpMethod.POST, LOGIN_URL, CREATE_USER_URL).permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .anyRequest().authenticated().and()
                 .httpBasic().disable()
                 .formLogin().disable()
                 .rememberMe().disable()
@@ -66,5 +74,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.addExposedHeader("Authorization");
+        configuration.setAllowCredentials(true);
+
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", configuration);
+        return source;
     }
 }

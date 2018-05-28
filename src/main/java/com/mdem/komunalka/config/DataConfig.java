@@ -7,12 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import com.zaxxer.hikari.HikariDataSource;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.beans.PropertyVetoException;
 
-import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
@@ -22,28 +25,81 @@ import java.util.Properties;
 })
 public class DataConfig {
 
-    private Environment env;
+    private Environment environment;
 
     @Autowired
-    public DataConfig(Environment env) {
-        this.env = env;
+    public DataConfig(Environment environment) {
+        this.environment = environment;
     }
 
-    @Bean
-    public DriverManagerDataSource getDataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//    @Bean
+//    public javax.sql.DataSource getDataSource() {
+//
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUsername(environment.getProperty("jdbc.username"));
+//        dataSource.setPassword(environment.getProperty("jdbc.password"));
+//
+//        return dataSource;
+//    }
 
-        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("jdbc.url"));
-        dataSource.setUsername(env.getProperty("jdbc.username"));
-        dataSource.setPassword(env.getProperty("jdbc.password"));
+
+    /**
+     * The Tomcat JDBC Connection Pool
+     */
+
+    @Bean
+    public javax.sql.DataSource getDataSource() {
+
+        DataSource dataSource = new DataSource();
+
+        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        dataSource.setUrl(environment.getProperty("jdbc.url"));
+        dataSource.setUsername(environment.getProperty("jdbc.username"));
+        dataSource.setPassword(environment.getProperty("jdbc.password"));
 
         return dataSource;
     }
 
+    /**
+     * The HikariCP JDBC Connection Pool
+     */
+
+//    @Bean
+//    public javax.sql.DataSource getDataSource() {
+//
+//        HikariDataSource dataSource = new HikariDataSource();
+//
+//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUsername(environment.getProperty("jdbc.username"));
+//        dataSource.setPassword(environment.getProperty("jdbc.password"));
+//
+//        return dataSource;
+//    }
+
+    /**
+     * The C3P0 JDBC Connection Pool
+     */
+
+//    @Bean
+//    public javax.sql.DataSource getDataSource() throws PropertyVetoException {
+//
+//        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+//
+//        dataSource.setDriverClass(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUser(environment.getProperty("jdbc.username"));
+//        dataSource.setPassword(environment.getProperty("jdbc.password"));
+//
+//        return dataSource;
+//    }
+
     @Autowired
     @Bean
-    public LocalSessionFactoryBean getSessionFactory(DataSource dataSource) {
+    public LocalSessionFactoryBean getSessionFactory(javax.sql.DataSource dataSource) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
 
@@ -62,8 +118,8 @@ public class DataConfig {
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
 
-        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
 
         return properties;
     }

@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = {"Registration"}, description="Operation for users registration")
 public class RegistrationController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)

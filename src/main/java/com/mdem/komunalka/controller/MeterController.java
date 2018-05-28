@@ -17,8 +17,12 @@ import java.util.List;
 @Api(tags = {"Meter"}, description="Operations for work with meters")
 public class MeterController {
 
-    @Autowired
     private IAbstractService<Meter, Long> meterService;
+
+    @Autowired
+    public MeterController(IAbstractService<Meter, Long> meterService) {
+        this.meterService = meterService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -32,8 +36,7 @@ public class MeterController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "Search a meter with an ID", response = Meter.class)
     public Meter getMeterById(@PathVariable Long id) {
-        Meter meter = meterService.getById(id);
-        return meter;
+        return meterService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -55,7 +58,6 @@ public class MeterController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "View a list of available meters", response = Iterable.class)
     public List<Meter> getAllMeters() throws IOException {
-        List<Meter> meters = meterService.getAll();
-        return meters;
+        return meterService.getAll();
     }
 }

@@ -16,8 +16,12 @@ import java.util.List;
 @Api(tags = {"Role"}, description="Operations for work with user roles")
 public class RoleController {
 
-    @Autowired
     private IAbstractService<Role, Long> roleService;
+
+    @Autowired
+    public RoleController(IAbstractService<Role, Long> roleService) {
+        this.roleService = roleService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -30,8 +34,7 @@ public class RoleController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Search a role with an ID", response = Role.class)
     public Role getRoleById(@PathVariable Long id) {
-        Role role = roleService.getById(id);
-        return role;
+        return roleService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -52,7 +55,6 @@ public class RoleController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available roles", response = Iterable.class)
     public List<Role> getAllRoles() throws IOException {
-        List<Role> roles = roleService.getAll();
-        return roles;
+        return roleService.getAll();
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class TokenAuthenticationManager implements AuthenticationManager {
 
-    ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

@@ -16,8 +16,12 @@ import java.util.List;
 @Api(tags = {"Tariff"}, description="Operations for work with tariffs on services")
 public class TariffController {
 
-    @Autowired
     private IAbstractService<Tariff, Long> tariffService;
+
+    @Autowired
+    public TariffController(IAbstractService<Tariff, Long> tariffService) {
+        this.tariffService = tariffService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -30,8 +34,7 @@ public class TariffController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Search a tariff with an ID", response = Tariff.class)
     public Tariff getTariffById(@PathVariable Long id) {
-        Tariff tariff = tariffService.getById(id);
-        return tariff;
+        return tariffService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -52,7 +55,6 @@ public class TariffController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available tariffs", response = Iterable.class)
     public List<Tariff> getAllTariffs() throws IOException {
-        List<Tariff> tariffs = tariffService.getAll();
-        return tariffs;
+        return tariffService.getAll();
     }
 }

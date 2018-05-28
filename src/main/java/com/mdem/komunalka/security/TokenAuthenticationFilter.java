@@ -40,8 +40,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
 
         if (token != null) {
             UserAuthentication userAuthentication = new UserAuthentication(token);
-            Authentication authentication = getAuthenticationManager().authenticate(userAuthentication);
-            return authentication;
+            return getAuthenticationManager().authenticate(userAuthentication);
         } else {
             throw new BadCredentialsException("Token is not found");
         }

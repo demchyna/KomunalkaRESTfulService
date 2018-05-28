@@ -17,16 +17,19 @@ import java.util.List;
 @Api(tags = {"User"}, description="Operations for work with users")
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
     @ApiOperation(value = "Search a user with an ID", response = User.class)
     public User getUserById(@PathVariable Long id) {
-        User user = userService.getById(id);
-        return user;
+        return userService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -50,15 +53,13 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "View a list of available users", response = Iterable.class)
     public List<User> getAllUsers() throws IOException {
-        List<User> users = userService.getAll();
-        return users;
+        return (List<User>) userService.getAll();
     }
 
     @RequestMapping(value = "/login/{login}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Search a user with a login", response = User.class)
     public User getUserByLogin(@PathVariable String login) {
-        User user = (User) userService.loadUserByUsername(login);
-        return user;
+        return (User) userService.loadUserByUsername(login);
     }
 }

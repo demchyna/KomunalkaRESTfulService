@@ -41,8 +41,7 @@ public abstract class AbstractDao<T extends IEntity, K extends Serializable> imp
 
     @Override
     public T getById(K id) {
-        T entity = getSession().get(entityType, id);
-        return entity;
+        return getSession().get(entityType, id);
     }
 
     @Override

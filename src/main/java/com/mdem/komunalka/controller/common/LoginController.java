@@ -20,7 +20,12 @@ public class LoginController {
     @Value("${security.headerName}")
     private String HEADER_NAME;
 
-    @Autowired private UserService userService;
+    private UserService userService;
+
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)

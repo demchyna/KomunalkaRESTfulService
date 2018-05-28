@@ -16,8 +16,13 @@ import java.util.List;
 @RequestMapping("api/indicator")
 @Api(tags = {"Indicator"}, description="Operations for work with indicators of meters")
 public class IndicatorController {
-    @Autowired
+
     private IAbstractService<Indicator, Long> indicatorService;
+
+    @Autowired
+    public IndicatorController(IAbstractService<Indicator, Long> indicatorService) {
+        this.indicatorService = indicatorService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -31,8 +36,7 @@ public class IndicatorController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "Search a indicator with an ID", response = Indicator.class)
     public Indicator getIndicatorById(@PathVariable Long id) {
-        Indicator indicator = indicatorService.getById(id);
-        return indicator;
+        return indicatorService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -54,7 +58,6 @@ public class IndicatorController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "View a list of available indicators", response = Iterable.class)
     public List<Indicator> getAllIndicators() throws IOException {
-        List<Indicator> indicators = indicatorService.getAll();
-        return indicators;
+        return indicatorService.getAll();
     }
 }

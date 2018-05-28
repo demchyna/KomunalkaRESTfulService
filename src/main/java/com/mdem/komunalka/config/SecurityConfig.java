@@ -43,9 +43,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${urls.secureUrl}")
     private String SECURE_URL;
 
-    @Autowired private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
-    @Autowired private TokenAuthenticationManager tokenAuthenticationManager;
-    @Autowired private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
+    private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
+    private TokenAuthenticationManager tokenAuthenticationManager;
+    private AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler;
+
+    @Autowired
+    public void setTokenAuthenticationFilter(AbstractAuthenticationProcessingFilter tokenAuthenticationFilter) {
+        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
+    }
+
+    @Autowired
+    public void setTokenAuthenticationManager(TokenAuthenticationManager tokenAuthenticationManager) {
+        this.tokenAuthenticationManager = tokenAuthenticationManager;
+    }
+
+    @Autowired
+    public void setAuthenticationAccessDeniedHandler(AuthenticationAccessDeniedHandler authenticationAccessDeniedHandler) {
+        this.authenticationAccessDeniedHandler = authenticationAccessDeniedHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -20,8 +20,12 @@ import javax.persistence.NoResultException;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService extends AbstractService<User, Long> implements IUserService, UserDetailsService {
 
-    @Autowired
     private UserDao userDao;
+
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     @Transactional

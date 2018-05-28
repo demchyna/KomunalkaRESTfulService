@@ -1,7 +1,5 @@
 package com.mdem.komunalka.config;
 
-
-import com.mdem.komunalka.model.Category;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +22,12 @@ import java.util.Properties;
 })
 public class DataConfig {
 
-    @Autowired private Environment env;
+    private Environment env;
+
+    @Autowired
+    public DataConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DriverManagerDataSource getDataSource() {

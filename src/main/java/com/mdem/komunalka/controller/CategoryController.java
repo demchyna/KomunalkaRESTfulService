@@ -17,8 +17,12 @@ import java.util.List;
 @Api(tags = {"Category"}, description="Operations for work with categories of services")
 public class CategoryController {
 
-    @Autowired
     private IAbstractService<Category, Long> categoryService;
+
+    @Autowired
+    public CategoryController(IAbstractService<Category, Long> categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -33,8 +37,7 @@ public class CategoryController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "Search a category with an ID", response = Category.class)
     public Category getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getById(id);
-        return category;
+        return categoryService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -58,7 +61,6 @@ public class CategoryController {
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "View a list of available categories", response = Iterable.class)
     public List<Category> getAllCategories() throws IOException {
-        List<Category> categories = categoryService.getAll();
-        return categories;
+        return categoryService.getAll();
     }
 }

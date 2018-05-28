@@ -17,8 +17,12 @@ import java.util.List;
 @Api(tags = {"Report"}, description="Operations for work with user reports")
 public class ReportController {
 
-    @Autowired
     private IAbstractService<Report, Long> reportService;
+
+    @Autowired
+    public ReportController(IAbstractService<Report, Long> reportService) {
+        this.reportService = reportService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -32,8 +36,7 @@ public class ReportController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Search a report with an ID", response = Report.class)
     public Report getReportById(@PathVariable Long id) {
-        Report report = reportService.getById(id);
-        return report;
+        return reportService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -54,7 +57,6 @@ public class ReportController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available reports", response = Iterable.class)
     public List<Report> getAllReports() throws IOException {
-        List<Report> reports = reportService.getAll();
-        return reports;
+        return reportService.getAll();
     }
 }

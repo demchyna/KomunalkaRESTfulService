@@ -16,8 +16,12 @@ import java.util.List;
 @Api(tags = {"Unit"}, description="Operations for work with units of measurement")
 public class UnitController {
 
-    @Autowired
     private IAbstractService<Unit, Long> unitService;
+
+    @Autowired
+    public UnitController(IAbstractService<Unit, Long> unitService) {
+        this.unitService = unitService;
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -30,8 +34,7 @@ public class UnitController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Search a unit with an ID", response = Unit.class)
     public Unit getUnitById(@PathVariable Long id) {
-        Unit unit = unitService.getById(id);
-        return unit;
+        return unitService.getById(id);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -52,7 +55,6 @@ public class UnitController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available units", response = Iterable.class)
     public List<Unit> getAllUnits() throws IOException {
-        List<Unit> units = unitService.getAll();
-        return units;
+        return unitService.getAll();
     }
 }

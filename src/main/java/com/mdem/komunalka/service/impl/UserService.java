@@ -1,6 +1,5 @@
 package com.mdem.komunalka.service.impl;
 
-
 import com.mdem.komunalka.DAO.impl.UserDao;
 import com.mdem.komunalka.exception.DataNotFoundException;
 import com.mdem.komunalka.model.User;

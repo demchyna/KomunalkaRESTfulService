@@ -1,6 +1,5 @@
 package com.mdem.komunalka.config;
 
-import com.google.common.collect.ImmutableList;
 import com.mdem.komunalka.security.TokenAuthenticationFilter;
 import com.mdem.komunalka.security.TokenAuthenticationManager;
 import com.mdem.komunalka.security.AuthenticationAccessDeniedHandler;
@@ -20,9 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity

@@ -1,7 +1,12 @@
 package com.mdem.komunalka.config;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -29,5 +34,11 @@ class WebConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**").allowedMethods("*");
         registry.addMapping("/**").allowedHeaders("*");
         registry.addMapping("/**").exposedHeaders("Authorization");
+    }
+
+    @Bean
+    @Scope("prototype")
+    Logger getLogger(InjectionPoint injectionPoint){
+        return LogManager.getLogger(injectionPoint.getMethodParameter().getContainingClass());
     }
 }

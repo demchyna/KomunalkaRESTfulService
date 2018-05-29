@@ -32,20 +32,6 @@ public class DataConfig {
         this.environment = environment;
     }
 
-//    @Bean
-//    public javax.sql.DataSource getDataSource() {
-//
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//
-//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-//        dataSource.setUrl(environment.getProperty("jdbc.url"));
-//        dataSource.setUsername(environment.getProperty("jdbc.username"));
-//        dataSource.setPassword(environment.getProperty("jdbc.password"));
-//
-//        return dataSource;
-//    }
-
-
     /**
      * The Tomcat JDBC Connection Pool
      */
@@ -96,6 +82,27 @@ public class DataConfig {
 //
 //        return dataSource;
 //    }
+
+    /**
+     * The Spring JDBC Connection
+     */
+
+//    @Bean
+//    public javax.sql.DataSource getDataSource() {
+//
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUsername(environment.getProperty("jdbc.username"));
+//        dataSource.setPassword(environment.getProperty("jdbc.password"));
+//
+//        return dataSource;
+//    }
+
+    /**
+     * Build session
+     */
 
     @Autowired
     @Bean

@@ -1,10 +1,7 @@
 package com.mdem.komunalka.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mdem.komunalka.model.common.IEntity;
-import com.mdem.komunalka.model.common.RoleDeserializer;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;

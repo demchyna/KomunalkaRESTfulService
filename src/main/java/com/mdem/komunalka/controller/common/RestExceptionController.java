@@ -1,9 +1,6 @@
 package com.mdem.komunalka.controller.common;
 
-import com.mdem.komunalka.exception.ConflictDataException;
-import com.mdem.komunalka.exception.DataNotFoundException;
-import com.mdem.komunalka.exception.IncorrectPasswordException;
-import com.mdem.komunalka.exception.NoDataException;
+import com.mdem.komunalka.exception.*;
 import com.mdem.komunalka.model.common.ErrorInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -54,9 +51,9 @@ public class RestExceptionController {
         return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler(BadTokenException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public ErrorInfo authenticationException(HttpServletRequest request, BadCredentialsException exception) {
+    public ErrorInfo authenticationException(HttpServletRequest request, BadTokenException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
 

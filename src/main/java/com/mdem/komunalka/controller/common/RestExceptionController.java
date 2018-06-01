@@ -92,14 +92,14 @@ public class RestExceptionController {
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
+    @ResponseStatus(value = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     public ErrorInfo mediaTypeNotSupportedException(HttpServletRequest request, HttpMediaTypeNotSupportedException exception)   {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
 
         logger.error(errorMessage, exception);
 
-        return new ErrorInfo(HttpStatus.METHOD_NOT_ALLOWED.value(), errorURL, errorMessage);
+        return new ErrorInfo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), errorURL, errorMessage);
     }
 
 

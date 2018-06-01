@@ -56,22 +56,9 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
             try {
                 return getAuthenticationManager().authenticate(userAuthentication);
             } catch (BadTokenException bte) {
-                response.setContentType("application/json;charset=UTF-8");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-                String errorURL = request.getRequestURL().toString();
-                String errorMessage = bte.getMessage();
-                ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
-
-                PrintWriter out = response.getWriter();
-                String jsonString = new ObjectMapper().writeValueAsString(errorInfo);
-
-                out.print(jsonString);
-                out.flush();
-
+                UserAuthentication.authenticationErrorResponse(request, response, bte);
                 logger.error(bte.getMessage(), bte);
             }
-
         } else {
             throw new BadCredentialsException("Token is not found");
         }
@@ -86,22 +73,9 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         SecurityContextHolder.clearContext();
-
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-        String errorURL = request.getRequestURL().toString();
-        String errorMessage = exception.getMessage();
-        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
-
-        PrintWriter out = response.getWriter();
-        String jsonString = new ObjectMapper().writeValueAsString(errorInfo);
-
-        out.print(jsonString);
-        out.flush();
-
+        UserAuthentication.authenticationErrorResponse(request, response, exception);
         logger.error(exception.getMessage(), exception);
     }
 }

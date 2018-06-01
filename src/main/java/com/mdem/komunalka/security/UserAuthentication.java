@@ -1,9 +1,16 @@
 package com.mdem.komunalka.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mdem.komunalka.model.common.ErrorInfo;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 
 public class UserAuthentication implements Authentication {
@@ -57,5 +64,21 @@ public class UserAuthentication implements Authentication {
 
     public String getToken() {
         return token;
+    }
+
+
+    public static void authenticationErrorResponse(HttpServletRequest request, HttpServletResponse response, RuntimeException exception) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
+
+        PrintWriter out = response.getWriter();
+        String jsonString = new ObjectMapper().writeValueAsString(errorInfo);
+
+        out.print(jsonString);
+        out.flush();
     }
 }

@@ -26,19 +26,7 @@ public class AuthenticationAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-        String errorURL = request.getRequestURL().toString();
-        String errorMessage = exception.getMessage();
-        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.FORBIDDEN.value(), errorURL, errorMessage);
-
-        PrintWriter out = response.getWriter();
-        String jsonString = new ObjectMapper().writeValueAsString(errorInfo);
-
-        out.print(jsonString);
-        out.flush();
-
+        UserAuthentication.authenticationErrorResponse(request, response, exception);
         logger.error(exception.getMessage(), exception);
     }
 }

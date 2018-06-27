@@ -4,9 +4,7 @@ import com.mdem.komunalka.exception.*;
 import com.mdem.komunalka.model.common.ErrorInfo;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -69,16 +67,16 @@ public class RestExceptionController {
         return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ErrorInfo resourceNotFoundException(HttpServletRequest request, ResourceNotFoundException exception) {
-        String errorURL = request.getRequestURL().toString();
-        String errorMessage = exception.getMessage();
-
-        logger.error(errorMessage, exception);
-
-        return new ErrorInfo(HttpStatus.NOT_FOUND.value(), errorURL, errorMessage);
-    }
+//    @ExceptionHandler(ResourceNotFoundException.class)
+//    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+//    public ErrorInfo resourceNotFoundException(HttpServletRequest request, ResourceNotFoundException exception) {
+//        String errorURL = request.getRequestURL().toString();
+//        String errorMessage = exception.getMessage();
+//
+//        logger.error(errorMessage, exception);
+//
+//        return new ErrorInfo(HttpStatus.NOT_FOUND.value(), errorURL, errorMessage);
+//    }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)

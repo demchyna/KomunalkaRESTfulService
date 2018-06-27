@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ResourceNotFoundController {
 
-    @RequestMapping(path = "/**", method = {RequestMethod.GET/*, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE*/})
-    public void resourceNotFoundHandler() {
-        throw new ResourceNotFoundException("Resource not found on the server!");
-    }
+//    @RequestMapping(path = "/**", method = {RequestMethod.GET})
+//    public void resourceNotFoundHandler() {
+//        throw new ResourceNotFoundException("Resource not found on the server!");
+//    }
 }

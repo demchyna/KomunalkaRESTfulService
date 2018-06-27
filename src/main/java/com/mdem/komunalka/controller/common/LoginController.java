@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +22,12 @@ public class LoginController {
     private String HEADER_NAME;
 
     private UserService userService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -35,7 +38,7 @@ public class LoginController {
         User user = (User)userService.loadUserByUsername(credential.getUsername());
         String fullToken;
 
-        if (user.getPassword().equals(credential.getPassword())) {
+        if (bCryptPasswordEncoder.matches(credential.getPassword(), user.getPassword())) {
             fullToken = TokenAuthenticationService.createToken(user);
             response.addHeader(HEADER_NAME, fullToken);
         } else {

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,13 +33,13 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${urls.loginUrl}")
-    private String LOGIN_URL;
+    private String LOGIN_URL;           // /login
 
     @Value("${urls.createUserUrl}")
-    private String CREATE_USER_URL;
+    private String CREATE_USER_URL;     // /user/create
 
     @Value("${urls.secureUrl}")
-    private String SECURE_URL;
+    private String SECURE_URL;          // /api/**
 
     private AbstractAuthenticationProcessingFilter tokenAuthenticationFilter;
     private TokenAuthenticationManager tokenAuthenticationManager;
@@ -81,6 +82,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         TokenAuthenticationFilter filter = new TokenAuthenticationFilter(SECURE_URL);
         filter.setAuthenticationManager(tokenAuthenticationManager);
         return filter;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

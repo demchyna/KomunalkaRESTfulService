@@ -25,10 +25,10 @@ import java.util.List;
 public class SwaggerConfig {
 
     @Value("${security.headerName}")
-    private String HEADER_NAME;
+    private String HEADER_NAME;     // Authorization
 
     @Value("${urls.secureUrl}")
-    private String SECURE_URL;
+    private String SECURE_URL;      // /api/**
 
     @Bean
     public Docket api() {

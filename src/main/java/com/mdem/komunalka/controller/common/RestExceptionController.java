@@ -67,17 +67,6 @@ public class RestExceptionController {
         return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 
-//    @ExceptionHandler(ResourceNotFoundException.class)
-//    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-//    public ErrorInfo resourceNotFoundException(HttpServletRequest request, ResourceNotFoundException exception) {
-//        String errorURL = request.getRequestURL().toString();
-//        String errorMessage = exception.getMessage();
-//
-//        logger.error(errorMessage, exception);
-//
-//        return new ErrorInfo(HttpStatus.NOT_FOUND.value(), errorURL, errorMessage);
-//    }
-
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
     public ErrorInfo methodNotSupportedException(HttpServletRequest request, HttpRequestMethodNotSupportedException exception)   {

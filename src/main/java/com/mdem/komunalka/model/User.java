@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mdem.komunalka.model.common.IEntity;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,7 +26,11 @@ public class User implements IEntity, UserDetails {
     private String username;
     private String password;
     private String email;
-    private java.sql.Date create_date;
+
+    @Column(name="create_date", nullable = false,
+            columnDefinition="create_date default CURRENT_TIMESTAMP")
+    private java.sql.Timestamp create_date = new Timestamp(System.currentTimeMillis());
+
     private String description;
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
@@ -34,8 +40,7 @@ public class User implements IEntity, UserDetails {
     private Collection<Role> authorities;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<Report> reports;
+    @JsonIgnore private List<Report> reports;
 
     @Override
     public Long getId() {
@@ -72,6 +77,7 @@ public class User implements IEntity, UserDetails {
         this.username = username;
     }
 
+    //@JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -88,11 +94,11 @@ public class User implements IEntity, UserDetails {
         this.email = email;
     }
 
-    public java.sql.Date getCreate_date() {
+    public java.sql.Timestamp getCreate_date() {
         return create_date;
     }
 
-    public void setCreate_date(java.sql.Date create_date) {
+    public void setCreate_date(java.sql.Timestamp create_date) {
         this.create_date = create_date;
     }
 

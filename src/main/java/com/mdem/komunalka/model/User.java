@@ -42,6 +42,9 @@ public class User implements IEntity, UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore private List<Report> reports;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore private List<Meter> meters;
+
     @Override
     public Long getId() {
         return id;
@@ -125,6 +128,14 @@ public class User implements IEntity, UserDetails {
 
     public void setReports(List<Report> reports) {
         this.reports = reports;
+    }
+
+    public List<Meter> getMeters() {
+        return meters;
+    }
+
+    public void setMeters(List<Meter> meters) {
+        this.meters = meters;
     }
 
     @Override

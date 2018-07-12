@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `indicator`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `indicator` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `previous` int(11) NOT NULL,
+  `previousId` int(11) NOT NULL,
   `current` int(11) NOT NULL,
   `date` date NOT NULL,
   `description` varchar(255) DEFAULT NULL,

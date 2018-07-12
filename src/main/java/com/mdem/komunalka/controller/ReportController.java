@@ -46,17 +46,17 @@ public class ReportController {
         reportService.update(report);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an existing report")
-    public void deleteReport(@RequestBody Report report) {
-        reportService.delete(report);
+    public void deleteReport(@PathVariable Long id) {
+        reportService.delete(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available reports", response = Iterable.class)
-    public List<Report> getAllReports() throws IOException {
+    public List<Report> getAllReports() {
         return reportService.getAll();
     }
 }

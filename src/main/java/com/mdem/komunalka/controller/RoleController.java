@@ -44,17 +44,17 @@ public class RoleController {
         roleService.update(role);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an existing role")
-    public void deleteRole(@RequestBody Role role) {
-        roleService.delete(role);
+    public void deleteRole(@PathVariable Long id) {
+        roleService.delete(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available roles", response = Iterable.class)
-    public List<Role> getAllRoles() throws IOException {
+    public List<Role> getAllRoles() {
         return roleService.getAll();
     }
 }

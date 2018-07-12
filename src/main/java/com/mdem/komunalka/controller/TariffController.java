@@ -44,17 +44,17 @@ public class TariffController {
         tariffService.update(tariff);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an existing tariff")
-    public void deleteTariff(@RequestBody Tariff tariff) {
-        tariffService.delete(tariff);
+    public void deleteTariff(@PathVariable Long id) {
+        tariffService.delete(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available tariffs", response = Iterable.class)
-    public List<Tariff> getAllTariffs() throws IOException {
+    public List<Tariff> getAllTariffs() {
         return tariffService.getAll();
     }
 }

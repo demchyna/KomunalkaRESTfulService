@@ -12,30 +12,37 @@ public class Indicator implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private Long previous;
+
     private Long current;
     private java.sql.Date date;
     private String description;
+
+    //@ManyToOne
+    //@JoinColumn(name = "previous_id", referencedColumnName = "id")
+    //private Indicator previousId;
+
+    @Column(name = "previous_id")
+    private Long previousId;
 
     @ManyToOne
     @JoinColumn(name = "meter_id")
     private Meter meter;
 
     public Long getId() {
-    return id;
-  }
+        return id;
+    }
 
     public void setId(Long id) {
-    this.id = id;
-  }
+        this.id = id;
+    }
 
-    public Long getPrevious() {
-    return previous;
-  }
+    public Long getPreviousId() {
+        return previousId;
+    }
 
-    public void setPrevious(Long previous) {
-    this.previous = previous;
-  }
+    public void setPreviousId(Long previousId) {
+        this.previousId = previousId;
+    }
 
     public Long getCurrent() {
     return current;

@@ -44,17 +44,17 @@ public class UnitController {
         unitService.update(unit);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an existing unit")
-    public void deleteUnit(@RequestBody Unit unit) {
-        unitService.delete(unit);
+    public void deleteUnit(@PathVariable Long id) {
+        unitService.delete(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "View a list of available units", response = Iterable.class)
-    public List<Unit> getAllUnits() throws IOException {
+    public List<Unit> getAllUnits() {
         return unitService.getAll();
     }
 }

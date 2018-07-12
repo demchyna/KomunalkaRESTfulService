@@ -40,19 +40,19 @@ public class UserController {
         userService.update(user);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
     @ApiOperation(value = "Delete an existing user")
-    public void deleteUser(@RequestBody User user) {
-        userService.delete(user);
+    public void deleteUser(@PathVariable Long id) {
+        userService.delete(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "View a list of available users", response = Iterable.class)
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() {
         return (List<User>) userService.getAll();
     }
 

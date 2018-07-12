@@ -48,19 +48,19 @@ public class CategoryController {
         categoryService.update(category);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete an existing category")
-    public void deleteCategory(@RequestBody Category category) {
-        categoryService.delete(category);
+    public void deleteCategory(@PathVariable Long id) {
+        categoryService.delete(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "View a list of available categories", response = Iterable.class)
-    public List<Category> getAllCategories() throws IOException {
+    public List<Category> getAllCategories() {
         return categoryService.getAll();
     }
 }

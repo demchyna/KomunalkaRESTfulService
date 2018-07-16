@@ -44,13 +44,13 @@ INSERT INTO `category` VALUES (1,'Газ',NULL),(2,'Вода',NULL),(3,'Елек
 UNLOCK TABLES;
 
 --
--- Table structure for table `indicator`
+-- Table structure for table `tariff`
 --
 
-DROP TABLE IF EXISTS `indicator`;
+DROP TABLE IF EXISTS `tariff`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `indicator` (
+CREATE TABLE `tariff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `previousId` int(11) NOT NULL,
   `current` int(11) NOT NULL,
@@ -65,13 +65,13 @@ CREATE TABLE `indicator` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `indicator`
+-- Dumping data for table `tariff`
 --
 
-LOCK TABLES `indicator` WRITE;
-/*!40000 ALTER TABLE `indicator` DISABLE KEYS */;
-INSERT INTO `indicator` VALUES (1,1700,2000,'2017-06-27',NULL,2);
-/*!40000 ALTER TABLE `indicator` ENABLE KEYS */;
+LOCK TABLES `tariff` WRITE;
+/*!40000 ALTER TABLE `tariff` DISABLE KEYS */;
+INSERT INTO `tariff` VALUES (1,1700,2000,'2017-06-27',NULL,2);
+/*!40000 ALTER TABLE `tariff` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -175,7 +175,7 @@ CREATE TABLE `tariff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(31) NOT NULL,
   `currency` varchar(15) NOT NULL,
-  `price` decimal(10,5) NOT NULL,
+  `rate` decimal(10,5) NOT NULL,
   `begin_date` date NOT NULL,
   `end_date` date DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,

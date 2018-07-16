@@ -39,7 +39,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Газ',NULL),(2,'Вода',NULL),(3,'Електроенергія',NULL),(4,'Інтернет',NULL),(5,'Телебачення',NULL),(6,'Каналізація',NULL);
+INSERT INTO `category` VALUES (1,'Газопостачання',NULL),(2,'Електроенергія',NULL),(3,'Інтернет',NULL),(4,'Телебачення',NULL),(5,'Водопостачання',NULL);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,16 +52,18 @@ DROP TABLE IF EXISTS `tariff`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tariff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `previousId` int(11) NOT NULL,
   `current` int(11) NOT NULL,
   `date` date NOT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `previous_id` int(11) DEFAULT NULL,
   `meter_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_indicator_meter1_idx` (`meter_id`),
+  KEY `fk_indicator_indicator_idx` (`previous_id`),
+  CONSTRAINT `fk_indicator_indicator` FOREIGN KEY (`previous_id`) REFERENCES `tariff` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_indicator_meter` FOREIGN KEY (`meter_id`) REFERENCES `meter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +72,7 @@ CREATE TABLE `tariff` (
 
 LOCK TABLES `tariff` WRITE;
 /*!40000 ALTER TABLE `tariff` DISABLE KEYS */;
-INSERT INTO `tariff` VALUES (1,1700,2000,'2017-06-27',NULL,2);
+INSERT INTO `tariff` VALUES (12,100,'2017-06-15',NULL,NULL,2),(13,200,'2017-07-10',NULL,12,2),(14,300,'2017-08-06',NULL,13,2),(15,400,'2017-09-23',NULL,14,2),(16,500,'2017-10-17',NULL,15,2);
 /*!40000 ALTER TABLE `tariff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,13 +89,16 @@ CREATE TABLE `meter` (
   `description` varchar(255) DEFAULT NULL,
   `unit_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_meter_category1_idx` (`category_id`),
   KEY `fk_meter_unit_idx` (`unit_id`),
+  KEY `fk_meter_user_idx` (`user_id`),
   CONSTRAINT `fk_meter_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_meter_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_meter_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_meter_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +107,7 @@ CREATE TABLE `meter` (
 
 LOCK TABLES `meter` WRITE;
 /*!40000 ALTER TABLE `meter` DISABLE KEYS */;
-INSERT INTO `meter` VALUES (1,'Вода (туалет)',NULL,1,2),(2,'Газ (кухня)',NULL,1,1),(3,'Електроенергія (коридор)',NULL,2,3);
+INSERT INTO `meter` VALUES (1,'Вода (туалет)',NULL,1,5,4),(2,'Газ (кухня)',NULL,1,1,4),(3,'Електроенергія (коридор)',NULL,2,2,4),(4,'Вода (кухня)',NULL,1,5,4);
 /*!40000 ALTER TABLE `meter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +197,7 @@ CREATE TABLE `schema_version` (
 
 LOCK TABLES `schema_version` WRITE;
 /*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
-INSERT INTO `schema_version` VALUES (1,NULL,'<< Flyway Schema Creation >>','SCHEMA','`komunalka`',NULL,'mdem','2018-05-02 11:35:20',0,1),(2,'1.1','komunalka','SQL','V1_1__komunalka.sql',620129207,'mdem','2018-05-02 11:35:21',578,1);
+INSERT INTO `schema_version` VALUES (1,NULL,'<< Flyway Schema Creation >>','SCHEMA','`komunalka`',NULL,'mdem','2018-05-02 11:35:20',0,1),(2,'1.1','komunalka','SQL','V1_1__komunalka.sql',620129207,'mdem','2018-05-02 11:35:21',578,1),(3,'2.1','komunalka','SQL','V2_1__komunalka.sql',-1308367496,'mdem','2018-07-02 11:50:14',559,1);
 /*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,7 +256,7 @@ CREATE TABLE `unit` (
 
 LOCK TABLES `unit` WRITE;
 /*!40000 ALTER TABLE `unit` DISABLE KEYS */;
-INSERT INTO `unit` VALUES (1,'м.куб.',NULL),(2,'кВат/год',NULL),(3,'місяць',NULL);
+INSERT INTO `unit` VALUES (1,'м. куб.',NULL),(2,'кВат/год',NULL),(3,'місяць',NULL);
 /*!40000 ALTER TABLE `unit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,11 +274,11 @@ CREATE TABLE `user` (
   `username` varchar(31) NOT NULL,
   `password` varchar(63) NOT NULL,
   `email` varchar(31) NOT NULL,
-  `create_date` date NOT NULL,
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,7 +287,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'Mykola','Demchyna','admin','$2a$10$d.h91bICFa8hP1tBZgGxhu0Pp.3NA0aRWgcIjeq2ipQwYRD0GSJbC','mdem@mail.com','2018-06-27','');
+INSERT INTO `user` VALUES (4,'Микола','Демчина','mdem','$2a$10$d.h91bICFa8hP1tBZgGxhu0Pp.3NA0aRWgcIjeq2ipQwYRD0GSJbC','mdem@mail.com','2018-06-27 00:00:00','The best User!'),(5,'Василь','Пупкін','pupko','$2a$10$2q6ea3MTSlQehVkujz/00.vMBUVufCxEiHzbSmZWuj2T9XKrDnE0K','pupko@mail.com','2018-07-03 00:00:00',''),(38,'Test','Test','test','$2a$10$jTNFBeRhnFoPau9w0KL61u9w4TkzLTMAK2HXGTE3geUz3YXf8xmvS','test@mail.com','2018-07-09 17:13:37','');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +308,7 @@ CREATE TABLE `user_role` (
   KEY `fk_user_role_user_idx` (`user_id`),
   CONSTRAINT `fk_user_role_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_role_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,7 +317,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (6,4,1);
+INSERT INTO `user_role` VALUES (31,4,1),(32,4,2),(65,5,2),(67,38,2);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -325,4 +330,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-02 14:43:27
+-- Dump completed on 2018-07-16 15:03:45

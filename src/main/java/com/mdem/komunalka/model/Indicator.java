@@ -15,6 +15,7 @@ public class Indicator implements IEntity {
 
     private Long current;
     private java.sql.Date date;
+    private Boolean status;
     private String description;
 
     //@ManyToOne
@@ -27,6 +28,10 @@ public class Indicator implements IEntity {
     @ManyToOne
     @JoinColumn(name = "meter_id")
     private Meter meter;
+
+    @ManyToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
 
     public Long getId() {
         return id;
@@ -60,6 +65,14 @@ public class Indicator implements IEntity {
     this.date = date;
   }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     public String getDescription() {
     return description;
   }
@@ -75,4 +88,12 @@ public class Indicator implements IEntity {
     public void setMeter(Meter meter) {
     this.meter = meter;
   }
+
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
+    }
 }

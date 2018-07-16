@@ -21,14 +21,6 @@ public class Category implements IEntity {
     @JsonIgnore
     private List<Meter> meters;
 
-    @OneToMany(mappedBy = "category")
-    @JsonIgnore
-    private List<Tariff> tariffs;
-
-    @OneToMany(mappedBy = "category")
-    @JsonIgnore
-    private List<Report> reports;
-
     public Long getId() {
     return id;
   }
@@ -59,21 +51,5 @@ public class Category implements IEntity {
 
     public void setMeters(List<Meter> meters) {
         this.meters = meters;
-    }
-
-    public List<Tariff> getTariffs() {
-        return tariffs;
-    }
-
-    public void setTariffs(List<Tariff> tariffs) {
-        this.tariffs = tariffs;
-    }
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 }

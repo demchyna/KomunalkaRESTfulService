@@ -40,9 +40,6 @@ public class User implements IEntity, UserDetails {
     private Collection<Role> authorities;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore private List<Report> reports;
-
-    @OneToMany(mappedBy = "user")
     @JsonIgnore private List<Meter> meters;
 
     @Override
@@ -80,7 +77,6 @@ public class User implements IEntity, UserDetails {
         this.username = username;
     }
 
-    //@JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -120,14 +116,6 @@ public class User implements IEntity, UserDetails {
 
     public void setAuthorities(Collection<Role> authorities) {
         this.authorities = authorities;
-    }
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     public List<Meter> getMeters() {

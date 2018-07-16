@@ -1,9 +1,11 @@
 package com.mdem.komunalka.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mdem.komunalka.model.common.IEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "tariff")
@@ -15,14 +17,14 @@ public class Tariff implements IEntity {
     private Long id;
     private String name;
     private String currency;
-    private java.math.BigDecimal price;
+    private java.math.BigDecimal rate;
     private java.sql.Date begin_date;
     private String end_date;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @OneToMany(mappedBy = "tariff")
+    @JsonIgnore
+    private List<Indicator> indicators;
 
     public Long getId() {
       return id;
@@ -48,12 +50,12 @@ public class Tariff implements IEntity {
       this.currency = currency;
     }
 
-    public BigDecimal getPrice() {
-      return price;
+    public BigDecimal getRate() {
+      return rate;
     }
 
-    public void setPrice(BigDecimal price) {
-      this.price = price;
+    public void setRate(BigDecimal rate) {
+      this.rate = rate;
     }
 
     public java.sql.Date getBegin_date() {
@@ -80,11 +82,11 @@ public class Tariff implements IEntity {
       this.description = description;
     }
 
-    public Category getCategory() {
-      return category;
+    public List<Indicator> getIndicators() {
+        return indicators;
     }
 
-    public void setCategory(Category category) {
-      this.category = category;
+    public void setIndicators(List<Indicator> indicators) {
+        this.indicators = indicators;
     }
 }

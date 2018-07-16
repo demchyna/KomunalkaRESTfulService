@@ -6,6 +6,7 @@ public class IndicatorDto {
     private Long id;
     private Long current;
     private java.sql.Date date;
+    private Boolean status;
     private String description;
     private Long previous;
     private Long meterId;
@@ -13,10 +14,11 @@ public class IndicatorDto {
     public IndicatorDto() {
     }
 
-    public IndicatorDto(Long id, Long current, Date date, String description, Long previous, Long meterId) {
+    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long meterId) {
         this.id = id;
         this.current = current;
         this.date = date;
+        this.status = status;
         this.description = description;
         this.previous = previous;
         this.meterId = meterId;
@@ -44,6 +46,14 @@ public class IndicatorDto {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public String getDescription() {

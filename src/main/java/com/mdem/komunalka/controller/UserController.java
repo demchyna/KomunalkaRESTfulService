@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,9 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
     @ApiOperation(value = "Search a user with an ID", response = User.class)
     public User getUserById(@PathVariable Long id) {
-        return userService.getById(id);
+        User user = userService.getById(id);
+        user.setPassword("");
+        return user;
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -53,7 +56,9 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "View a list of available users", response = Iterable.class)
     public List<User> getAllUsers() {
-        return (List<User>) userService.getAll();
+        List<User> users = userService.getAll();
+        users.forEach(user -> user.setPassword(""));
+        return users;
     }
 
     @RequestMapping(value = "/login/{login}", method = RequestMethod.GET)

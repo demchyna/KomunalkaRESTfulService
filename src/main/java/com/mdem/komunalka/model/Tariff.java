@@ -22,6 +22,14 @@ public class Tariff implements IEntity {
     private String end_date;
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+
     @OneToMany(mappedBy = "tariff")
     @JsonIgnore
     private List<Indicator> indicators;
@@ -80,6 +88,22 @@ public class Tariff implements IEntity {
 
     public void setDescription(String description) {
       this.description = description;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     public List<Indicator> getIndicators() {

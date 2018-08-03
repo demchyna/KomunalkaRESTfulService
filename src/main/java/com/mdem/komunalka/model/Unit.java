@@ -21,6 +21,10 @@ public class Unit implements IEntity {
     @JsonIgnore
     private List<Meter> meters;
 
+    @OneToMany(mappedBy = "unit")
+    @JsonIgnore
+    private List<Tariff> tariffs;
+
     public Long getId() {
       return id;
     }
@@ -51,5 +55,13 @@ public class Unit implements IEntity {
 
     public void setMeters(List<Meter> meters) {
       this.meters = meters;
+    }
+
+    public List<Tariff> getTariffs() {
+        return tariffs;
+    }
+
+    public void setTariffs(List<Tariff> tariffs) {
+        this.tariffs = tariffs;
     }
 }

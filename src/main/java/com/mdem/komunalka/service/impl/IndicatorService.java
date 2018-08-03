@@ -28,4 +28,10 @@ public class IndicatorService extends AbstractService<Indicator, Long> implement
     public List<Indicator> getIndicatorsByMeterId(long meterId) {
         return indicatorDao.getIndicatorsByMeterId(meterId);
     }
+
+    @Override
+    @Transactional
+    public Indicator getLastAddedIndicatorByMeterId(long meterId) {
+        return indicatorDao.getLastAddedIndicatorByMeterId(meterId);
+    }
 }

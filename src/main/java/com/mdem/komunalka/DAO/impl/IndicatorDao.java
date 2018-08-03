@@ -13,9 +13,20 @@ public class IndicatorDao extends AbstractDao<Indicator, Long> implements IIndic
 
     @Override
     public List<Indicator> getIndicatorsByMeterId(long meterId) {
-        Query query = getSession().createQuery("FROM " + Indicator.class.getName() + " where meter_id = :meter_id");
+        Query query = getSession().createQuery("FROM " + Indicator.class.getName() + " WHERE meter_id = :meter_id ORDER BY date");
         query.setParameter("meter_id", meterId);
-
         return (List<Indicator>) query.getResultList();
+    }
+
+    @Override
+    public Indicator getLastAddedIndicatorByMeterId(long meterId) {
+        Query query = getSession().createQuery("FROM " + Indicator.class.getName() + " WHERE meter_id = :meter_id ORDER BY date DESC");
+        query.setParameter("meter_id", meterId);
+        query.setFirstResult(0);
+        query.setMaxResults(1);
+        if (query.getResultList().isEmpty()) {
+            return null;
+        }
+        return (Indicator) query.getResultList().get(0);
     }
 }

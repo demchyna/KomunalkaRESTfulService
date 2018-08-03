@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IIndicatorService {
     List<Indicator> getIndicatorsByMeterId(long meterId);
+    Indicator getLastAddedIndicatorByMeterId(long meterId);
 }

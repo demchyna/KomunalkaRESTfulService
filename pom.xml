@@ -135,36 +135,36 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <url>http://localhost:8080/manager/text</url>
-          <server>TomcatServer</server>
-          <username>mdem</username>
-          <password>1111</password>
-          <path>/</path>
-        </configuration>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.apache.tomcat.maven</groupId>-->
+        <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+        <!--<version>2.2</version>-->
+        <!--<configuration>-->
+          <!--<url>http://localhost:8080/manager/text</url>-->
+          <!--<server>TomcatServer</server>-->
+          <!--<username>mdem</username>-->
+          <!--<password>1111</password>-->
+          <!--<path>/</path>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
 
-      <plugin>
-        <groupId>org.flywaydb</groupId>
-        <artifactId>flyway-maven-plugin</artifactId>
-        <version>4.2.0</version>
-        <configuration>
-          <locations>
-            <location>filesystem:src/main/resources/db_scripts</location>
-          </locations>
-          <driver>com.mysql.jdbc.Driver</driver>
-          <url>jdbc:mysql://localhost:3306</url>
-          <user>mdem</user>
-          <password>1111</password>
-          <schemas>
-            <schema>komunalka</schema>
-          </schemas>
-        </configuration>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>org.flywaydb</groupId>-->
+        <!--<artifactId>flyway-maven-plugin</artifactId>-->
+        <!--<version>4.2.0</version>-->
+        <!--<configuration>-->
+          <!--<locations>-->
+            <!--<location>filesystem:src/main/resources/db_scripts</location>-->
+          <!--</locations>-->
+          <!--<driver>com.mysql.jdbc.Driver</driver>-->
+          <!--<url>jdbc:mysql://localhost:3306</url>-->
+          <!--<user>mdem</user>-->
+          <!--<password>1111</password>-->
+          <!--<schemas>-->
+            <!--<schema>komunalka</schema>-->
+          <!--</schemas>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
 
     </plugins>
   </build>

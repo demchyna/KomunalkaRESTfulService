@@ -53,35 +53,35 @@ public class DataConfig {
      * The HikariCP JDBC Connection Pool
      */
 
-    @Bean
-    public javax.sql.DataSource getDataSource() {
-
-        HikariDataSource dataSource = new HikariDataSource();
-
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.username"));
-        dataSource.setPassword(environment.getProperty("jdbc.password"));
-
-        return dataSource;
-    }
+//    @Bean
+//    public javax.sql.DataSource getDataSource() {
+//
+//        HikariDataSource dataSource = new HikariDataSource();
+//
+//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUsername(environment.getProperty("jdbc.username"));
+//        dataSource.setPassword(environment.getProperty("jdbc.password"));
+//
+//        return dataSource;
+//    }
 
     /**
      * The C3P0 JDBC Connection Pool
      */
 
-//    @Bean
-//    public javax.sql.DataSource getDataSource() throws PropertyVetoException {
-//
-//        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-//
-//        dataSource.setDriverClass(environment.getProperty("jdbc.driverClassName"));
-//        dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
-//        dataSource.setUser(environment.getProperty("jdbc.username"));
-//        dataSource.setPassword(environment.getProperty("jdbc.password"));
-//
-//        return dataSource;
-//    }
+    @Bean
+    public javax.sql.DataSource getDataSource() throws PropertyVetoException {
+
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+
+        dataSource.setDriverClass(environment.getProperty("jdbc.driverClassName"));
+        dataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
+        dataSource.setUser(environment.getProperty("jdbc.username"));
+        dataSource.setPassword(environment.getProperty("jdbc.password"));
+
+        return dataSource;
+    }
 
     /**
      * The Spring JDBC Connection

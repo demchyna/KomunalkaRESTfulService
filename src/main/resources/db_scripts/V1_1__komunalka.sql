@@ -1,5 +1,9 @@
-CREATE DATABASE  IF NOT EXISTS `komunalka` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `komunalka`;
+-- CREATE DATABASE  IF NOT EXISTS `komunalka` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+-- USE `komunalka`;
+
+USE `demchyna_komuna`;
+
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: komunalka
@@ -30,7 +34,7 @@ CREATE TABLE `category` (
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,39 +43,45 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Газ',NULL),(2,'Вода',NULL),(3,'Електроенергія',NULL),(4,'Інтернет',NULL),(5,'Телебачення',NULL),(6,'Каналізація',NULL);
+INSERT INTO `category` VALUES (1,'Газопостачання',NULL),(2,'Електроенергія',NULL),(3,'Інтернет',NULL),(4,'Телебачення',NULL),(5,'Водопостачання',NULL);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tariff`
+-- Table structure for table `indicator`
 --
 
-DROP TABLE IF EXISTS `tariff`;
+DROP TABLE IF EXISTS `indicator`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tariff` (
+CREATE TABLE `indicator` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `previousId` int(11) NOT NULL,
   `current` int(11) NOT NULL,
   `date` date NOT NULL,
+  `status` bit(1) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `previous_id` int(11) DEFAULT NULL,
   `meter_id` int(11) NOT NULL,
+  `tariff_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_indicator_meter1_idx` (`meter_id`),
-  CONSTRAINT `fk_indicator_meter` FOREIGN KEY (`meter_id`) REFERENCES `meter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `fk_indicator_indicator_idx` (`previous_id`),
+  KEY `fk_indicator_tariff_idx` (`tariff_id`),
+  CONSTRAINT `fk_indicator_indicator` FOREIGN KEY (`previous_id`) REFERENCES `indicator` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_indicator_meter` FOREIGN KEY (`meter_id`) REFERENCES `meter` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_indicator_tariff` FOREIGN KEY (`tariff_id`) REFERENCES `tariff` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tariff`
+-- Dumping data for table `indicator`
 --
 
-LOCK TABLES `tariff` WRITE;
-/*!40000 ALTER TABLE `tariff` DISABLE KEYS */;
-INSERT INTO `tariff` VALUES (1,1700,2000,'2017-06-27',NULL,2);
-/*!40000 ALTER TABLE `tariff` ENABLE KEYS */;
+LOCK TABLES `indicator` WRITE;
+/*!40000 ALTER TABLE `indicator` DISABLE KEYS */;
+INSERT INTO `indicator` VALUES (18,100,'2018-03-12','\0',NULL,NULL,2,1),(19,190,'2018-04-21','\0',NULL,18,2,1),(27,134,'2018-08-01','','',NULL,3,3),(28,286,'2018-08-02','','',27,3,3),(29,312,'2018-08-07','\0','',28,3,2),(30,493,'2018-08-15','','',29,3,3),(31,483,'2018-08-22','\0','',30,3,2),(37,1,'2018-08-02','','',NULL,5,5),(38,2,'2018-08-30','\0','',37,5,5);
+/*!40000 ALTER TABLE `indicator` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -87,13 +97,16 @@ CREATE TABLE `meter` (
   `description` varchar(255) DEFAULT NULL,
   `unit_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_meter_category1_idx` (`category_id`),
   KEY `fk_meter_unit_idx` (`unit_id`),
+  KEY `fk_meter_user_idx` (`user_id`),
   CONSTRAINT `fk_meter_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_meter_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_meter_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_meter_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,40 +115,8 @@ CREATE TABLE `meter` (
 
 LOCK TABLES `meter` WRITE;
 /*!40000 ALTER TABLE `meter` DISABLE KEYS */;
-INSERT INTO `meter` VALUES (1,'Вода (туалет)',NULL,1,2),(2,'Газ (кухня)',NULL,1,1),(3,'Електроенергія (коридор)',NULL,2,3);
+INSERT INTO `meter` VALUES (1,'Вода (туалет)',NULL,1,5,4),(2,'Газ (кухня)',NULL,1,1,4),(3,'Електроенергія (коридор)',NULL,2,2,4),(4,'Вода (кухня)',NULL,1,5,4),(5,'Інтернет (Uteam)','Uteam provider',3,3,4),(6,'Кабельне (Discovery)','Discovery provider',3,4,4),(7,'Газ (кухня)','',1,1,38);
 /*!40000 ALTER TABLE `meter` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `report`
---
-
-DROP TABLE IF EXISTS `report`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `category_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_report_category1_idx` (`category_id`),
-  KEY `fk_report_user_idx` (`user_id`),
-  CONSTRAINT `fk_report_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_report_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `report`
---
-
-LOCK TABLES `report` WRITE;
-/*!40000 ALTER TABLE `report` DISABLE KEYS */;
-INSERT INTO `report` VALUES (1,'2017-06-27',NULL,1,1);
-/*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -173,18 +154,21 @@ DROP TABLE IF EXISTS `tariff`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tariff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(31) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `currency` varchar(15) NOT NULL,
   `rate` decimal(10,5) NOT NULL,
   `begin_date` date NOT NULL,
   `end_date` date DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `category_id` int(11) NOT NULL,
+  `unit_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_tariff_category1_idx` (`category_id`),
-  CONSTRAINT `fk_tariff_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `fk_tariff_category_idx` (`category_id`),
+  KEY `fk_tariff_unit_idx` (`unit_id`),
+  CONSTRAINT `fk_tariff_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tariff_unit` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +177,7 @@ CREATE TABLE `tariff` (
 
 LOCK TABLES `tariff` WRITE;
 /*!40000 ALTER TABLE `tariff` DISABLE KEYS */;
-INSERT INTO `tariff` VALUES (1,'Тариф на газ','грн.',6.95790,'2017-04-01','2018-04-01',NULL,1);
+INSERT INTO `tariff` VALUES (1,'Тариф на газ','грн.',6.95790,'2017-04-01','2018-04-01',NULL,1,1),(2,'Тариф на електроенергію (до 100)','грн.',0.90000,'2017-03-01',NULL,NULL,2,2),(3,'Тариф на електроенергію (понад 100)','грн.',1.68000,'2017-03-01',NULL,NULL,2,2),(5,'Тариф на інтернет','грн.',80.00000,'2018-08-02','2018-12-19','Тариф на інтернет',3,3),(6,'Тариф на кабельне телебачення','грн.',70.00000,'2018-08-03','2018-12-31','Тариф на кабельне телебачення',4,3);
 /*!40000 ALTER TABLE `tariff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,11 +221,11 @@ CREATE TABLE `user` (
   `username` varchar(31) NOT NULL,
   `password` varchar(63) NOT NULL,
   `email` varchar(31) NOT NULL,
-  `create_date` date NOT NULL,
+  `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,7 +234,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Микола','Демчина','mdem','1111','mdem@mail.com','2017-06-27',NULL),(2,'Петро','Петренко','pepko','2222','pepko@mail.com','2017-07-15',NULL), (3,'Василь','Весилечко','vasya','3333','vasya@mail.com','2017-08-09',NULL);
+INSERT INTO `user` VALUES (4,'Микола','Демчина','mdem','$2a$10$d.h91bICFa8hP1tBZgGxhu0Pp.3NA0aRWgcIjeq2ipQwYRD0GSJbC','mdem@mail.com','2018-06-27 00:00:00','The best User!'),(5,'Василь','Пупкін','pupko','$2a$10$2q6ea3MTSlQehVkujz/00.vMBUVufCxEiHzbSmZWuj2T9XKrDnE0K','pupko@mail.com','2018-07-03 00:00:00',''),(38,'Test','Test','test','$2a$10$jTNFBeRhnFoPau9w0KL61u9w4TkzLTMAK2HXGTE3geUz3YXf8xmvS','test@mail.com','2018-07-09 17:13:37','');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,8 +254,8 @@ CREATE TABLE `user_role` (
   KEY `fk_user_role_role_idx` (`role_id`),
   KEY `fk_user_role_user_idx` (`user_id`),
   CONSTRAINT `fk_user_role_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_role_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_user_role_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -280,7 +264,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (1,1,1),(2,1,2),(3,2,2),(4,3,2);
+INSERT INTO `user_role` VALUES (31,4,1),(32,4,2),(65,5,2),(67,38,2);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -293,4 +277,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-11 15:07:33
+-- Dump completed on 2018-08-07 18:37:07

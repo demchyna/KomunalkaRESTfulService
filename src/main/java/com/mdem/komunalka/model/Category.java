@@ -17,6 +17,10 @@ public class Category implements IEntity {
     private String name;
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Meter> meters;
@@ -48,6 +52,14 @@ public class Category implements IEntity {
     public void setDescription(String description) {
     this.description = description;
   }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public List<Meter> getMeters() {
         return meters;

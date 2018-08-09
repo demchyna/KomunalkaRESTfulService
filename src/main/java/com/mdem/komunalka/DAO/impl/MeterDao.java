@@ -12,10 +12,9 @@ import java.util.List;
 public class MeterDao extends AbstractDao<Meter, Long> implements IMeterDao {
 
     @Override
-    public List<Meter> getMetersByCategoryIdAndUserId(long categoryId, long userId) {
-        Query query = getSession().createQuery("FROM " + Meter.class.getName() + " where category_id = :category_id and user_id = :user_id");
+    public List<Meter> getMetersByCategoryId(long categoryId) {
+        Query query = getSession().createQuery("FROM " + Meter.class.getName() + " where category_id = :category_id");
         query.setParameter("category_id", categoryId);
-        query.setParameter("user_id", userId);
 
         return (List<Meter>) query.getResultList();
     }

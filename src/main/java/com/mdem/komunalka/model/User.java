@@ -1,11 +1,7 @@
 package com.mdem.komunalka.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.mdem.komunalka.model.common.IEntity;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -40,7 +36,7 @@ public class User implements IEntity, UserDetails {
     private Collection<Role> authorities;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore private List<Meter> meters;
+    @JsonIgnore private List<Category> categories;
 
     @Override
     public Long getId() {
@@ -118,12 +114,12 @@ public class User implements IEntity, UserDetails {
         this.authorities = authorities;
     }
 
-    public List<Meter> getMeters() {
-        return meters;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setMeters(List<Meter> meters) {
-        this.meters = meters;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     @Override

@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class UnitController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Add a new unit")
     public void createUnit(@RequestBody Unit unit) {
         unitService.create(unit);
@@ -32,6 +34,7 @@ public class UnitController {
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "Search a unit with an ID", response = Unit.class)
     public Unit getUnitById(@PathVariable Long id) {
         return unitService.getById(id);
@@ -39,20 +42,23 @@ public class UnitController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Update an existing unit")
     public void updateUnit(@RequestBody Unit unit) {
         unitService.update(unit);
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete an existing unit")
-    public void deleteUnit(@PathVariable Long id) {
-        unitService.delete(id);
+    public void deleteUnit(@RequestBody Unit unit) {
+        unitService.delete(unit);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     @ApiOperation(value = "View a list of available units", response = Iterable.class)
     public List<Unit> getAllUnits() {
         return unitService.getAll();

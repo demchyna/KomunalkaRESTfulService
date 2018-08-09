@@ -33,7 +33,8 @@ public class IndicatorTransformer {
                 previousId,
                 currentIndicator.getMeter().getId(),
                 currentIndicator.getTariff().getId(),
-                calculatePrice(currentIndicator, previousValue)
+                calculatePrice(currentIndicator, previousValue),
+                currentIndicator.getMeter().getCategory().getUser().getId()
         );
     }
 

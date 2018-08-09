@@ -18,7 +18,7 @@ public class Role implements IEntity, GrantedAuthority {
     private String name;
     private String description;
 
-    @ManyToMany(mappedBy = "authorities", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "authorities", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;
 

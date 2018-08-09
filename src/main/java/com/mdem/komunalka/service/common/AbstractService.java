@@ -69,12 +69,12 @@ public abstract class AbstractService<T extends IEntity, K extends Serializable>
 
     @Override
     @Transactional
-    public void delete(K id) throws DataNotFoundException {
-        T delEntity = abstractDao.getById(id);
+    public void delete(T entity) throws DataNotFoundException {
+        T delEntity = abstractDao.getById((K) entity.getId());
         if (delEntity != null) {
             abstractDao.delete(delEntity);
         } else {
-            throw new DataNotFoundException("Record with id " + id  +" not found in database");
+            throw new DataNotFoundException("Record with id " + entity.getId()  +" not found in database");
         }
     }
 

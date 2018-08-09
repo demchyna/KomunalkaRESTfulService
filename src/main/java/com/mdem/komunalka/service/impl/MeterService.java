@@ -26,7 +26,7 @@ public class MeterService extends AbstractService<Meter, Long> implements IMeter
 
     @Override
     @Transactional
-    public List<Meter> getMetersByCategoryIdAndUserId(long categoryId, long userId) {
-        return meterDao.getMetersByCategoryIdAndUserId(categoryId, userId);
+    public List<Meter> getMetersByCategoryId(long categoryId) {
+        return meterDao.getMetersByCategoryId(categoryId);
     }
 }

@@ -14,11 +14,12 @@ public class IndicatorDto {
     private Long meterId;
     private Long tariffId;
     private BigDecimal price;
+    private Long userId;
 
     public IndicatorDto() {
     }
 
-    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal price) {
+    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal price, Long userId) {
         this.id = id;
         this.current = current;
         this.date = date;
@@ -29,6 +30,7 @@ public class IndicatorDto {
         this.meterId = meterId;
         this.tariffId = tariffId;
         this.price = price;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -109,5 +111,13 @@ public class IndicatorDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -25,10 +25,6 @@ public class Meter implements IEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @OneToMany(mappedBy = "meter")
     @JsonIgnore
     private List<Indicator> indicators;
@@ -71,14 +67,6 @@ public class Meter implements IEntity {
 
     public void setCategory(Category category) {
       this.category = category;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<Indicator> getIndicators() {

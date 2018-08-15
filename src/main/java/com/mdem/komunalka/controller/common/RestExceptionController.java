@@ -88,6 +88,4 @@ public class RestExceptionController {
 
         return new ErrorInfo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), errorURL, errorMessage);
     }
-
-
 }

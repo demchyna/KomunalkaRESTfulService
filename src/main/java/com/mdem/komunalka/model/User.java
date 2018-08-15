@@ -29,14 +29,15 @@ public class User implements IEntity, UserDetails {
 
     private String description;
 
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> authorities;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore private List<Category> categories;
+    @JsonIgnore
+    private List<Category> categories;
 
     @Override
     public Long getId() {

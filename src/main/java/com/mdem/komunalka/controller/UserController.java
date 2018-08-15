@@ -31,7 +31,6 @@ public class UserController {
     @ApiOperation(value = "Search a user with an ID", response = User.class)
     public User getUserById(@PathVariable Long id) {
         User user = userService.getById(id);
-        user.setPassword("");
         return user;
     }
 

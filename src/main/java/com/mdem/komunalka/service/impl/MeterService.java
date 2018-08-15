@@ -1,7 +1,10 @@
 package com.mdem.komunalka.service.impl;
 
+import com.mdem.komunalka.DAO.impl.CategoryDao;
 import com.mdem.komunalka.DAO.impl.MeterDao;
+import com.mdem.komunalka.exception.DataNotFoundException;
 import com.mdem.komunalka.exception.NoDataException;
+import com.mdem.komunalka.model.Category;
 import com.mdem.komunalka.model.Meter;
 import com.mdem.komunalka.service.IMeterService;
 import com.mdem.komunalka.service.common.AbstractService;
@@ -18,15 +21,25 @@ import java.util.List;
 public class MeterService extends AbstractService<Meter, Long> implements IMeterService {
 
     private MeterDao meterDao;
+    private CategoryDao categoryDao;
 
     @Autowired
     public void setMeterDao(MeterDao meterDao) {
         this.meterDao = meterDao;
     }
 
+    @Autowired
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
+
     @Override
     @Transactional
     public List<Meter> getMetersByCategoryId(long categoryId) {
+        Category category = categoryDao.getById(categoryId);
+        if (category == null) {
+            throw new DataNotFoundException("Record with id " + categoryId  +" not found in database");
+        }
         return meterDao.getMetersByCategoryId(categoryId);
     }
 }

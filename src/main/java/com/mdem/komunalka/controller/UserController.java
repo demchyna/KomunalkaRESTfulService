@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     @ApiOperation(value = "Update an existing user")
-    public void updateUser(@RequestBody User user) {
+    public void updateUser(@Validated @RequestBody User user) {
         userService.update(user);
     }
 
@@ -46,7 +47,7 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     @ApiOperation(value = "Delete an existing user")
-    public void deleteUser(@RequestBody User user) {
+    public void deleteUser(@Validated @RequestBody User user) {
         userService.delete(user);
     }
 

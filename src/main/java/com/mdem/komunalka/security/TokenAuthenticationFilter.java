@@ -68,7 +68,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        response.setHeader(HEADER_NAME, TokenAuthenticationService.refreshToken(authentication));
+        response.setHeader(HEADER_NAME, "Bearer " + TokenAuthenticationService.refreshToken(authentication));
         chain.doFilter(request, response);
     }
 

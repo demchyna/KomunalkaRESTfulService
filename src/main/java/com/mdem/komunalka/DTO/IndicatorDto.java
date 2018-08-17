@@ -1,20 +1,26 @@
 package com.mdem.komunalka.DTO;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Date;
 
 public class IndicatorDto {
     private Long id;
+
+    @NotNull
+    @Range(min = 1L, max = 9999999999L)
     private Long current;
-    private java.sql.Date date;
-    private Boolean status;
+    @NotNull private java.sql.Date date;
+    @NotNull private Boolean status;
     private String description;
     private Long previous;
     private Long previousId;
-    private Long meterId;
-    private Long tariffId;
+    @NotNull private Long meterId;
+    @NotNull private Long tariffId;
     private BigDecimal price;
-    private Long userId;
+    @NotNull private Long userId;
 
     public IndicatorDto() {
     }

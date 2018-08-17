@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mdem.komunalka.model.common.IEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -15,19 +16,36 @@ public class Tariff implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotNull
+    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
+    @Size(min = 2, max = 31)
     private String name;
+
+    @NotNull
+    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
+    @Size(min = 2, max = 31)
     private String currency;
+
+    @NotNull
+    @DecimalMin(value = "0.1")
+    @DecimalMax(value = "999999.99999")
     private java.math.BigDecimal rate;
+
+    @NotNull
     private java.sql.Date begin_date;
+
     private String end_date;
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @NotNull
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")
+    @NotNull
     private Unit unit;
 
     @OneToMany(mappedBy = "tariff")

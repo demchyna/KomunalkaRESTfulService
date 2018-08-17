@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class UnitController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Add a new unit")
-    public void createUnit(@RequestBody Unit unit) {
+    public void createUnit(@Validated @RequestBody Unit unit) {
         unitService.create(unit);
     }
 
@@ -44,7 +45,7 @@ public class UnitController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Update an existing unit")
-    public void updateUnit(@RequestBody Unit unit) {
+    public void updateUnit(@Validated @RequestBody Unit unit) {
         unitService.update(unit);
     }
 
@@ -52,7 +53,7 @@ public class UnitController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Delete an existing unit")
-    public void deleteUnit(@RequestBody Unit unit) {
+    public void deleteUnit(@Validated @RequestBody Unit unit) {
         unitService.delete(unit);
     }
 

@@ -69,11 +69,11 @@ public class UserAuthentication implements Authentication {
 
     public static void authenticationErrorResponse(HttpServletRequest request, HttpServletResponse response, RuntimeException exception) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
+        ErrorInfo errorInfo = new ErrorInfo(HttpStatus.FORBIDDEN.value(), errorURL, errorMessage);
 
         PrintWriter out = response.getWriter();
         String jsonString = new ObjectMapper().writeValueAsString(errorInfo);

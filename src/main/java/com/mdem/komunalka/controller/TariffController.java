@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class TariffController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #tariff.category.user.id == authentication.details.id)")
     @ApiOperation(value = "Add a new tariff")
-    public void createTariff(@RequestBody Tariff tariff) {
+    public void createTariff(@Validated @RequestBody Tariff tariff) {
         tariffService.create(tariff);
     }
 
@@ -50,7 +51,7 @@ public class TariffController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #tariff.category.user.id == authentication.details.id)")
     @ApiOperation(value = "Update an existing tariff")
-    public void updateTariff(@RequestBody Tariff tariff) {
+    public void updateTariff(@Validated @RequestBody Tariff tariff) {
         tariffService.update(tariff);
     }
 
@@ -58,7 +59,7 @@ public class TariffController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #tariff.category.user.id == authentication.details.id)")
     @ApiOperation(value = "Delete an existing tariff")
-    public void deleteTariff(@RequestBody Tariff tariff) {
+    public void deleteTariff(@Validated @RequestBody Tariff tariff) {
         tariffService.delete(tariff);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -32,7 +33,7 @@ public class RoleController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "Add a new role")
-    public void createRole(@RequestBody Role role) {
+    public void createRole(@Validated @RequestBody Role role) {
         roleService.create(role);
     }
 
@@ -49,7 +50,7 @@ public class RoleController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update an existing role")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateRole(@RequestBody Role role) {
+    public void updateRole(@Validated @RequestBody Role role) {
         roleService.update(role);
     }
 
@@ -57,7 +58,7 @@ public class RoleController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete an existing role")
     @PreAuthorize("hasRole('ADMIN')")
-    public void deleteRole(@RequestBody Role role) {
+    public void deleteRole(@Validated @RequestBody Role role) {
         roleService.delete(role);
     }
 

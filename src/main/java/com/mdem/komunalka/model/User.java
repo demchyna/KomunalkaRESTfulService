@@ -5,6 +5,9 @@ import com.mdem.komunalka.model.common.IEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -17,14 +20,31 @@ public class User implements IEntity, UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Pattern(regexp = "[A-ZА-ЯІЇЄ][a-zа-яіїє]+")
+    @Size(min = 2, max = 31)
     private String first_name;
+
+    @Pattern(regexp = "[A-ZА-ЯІЇЄ][a-zа-яіїє]+")
+    @Size(min = 2, max = 31)
     private String last_name;
+
+    @NotNull
+    @Pattern(regexp = "[a-zA-Z0-9_\\-]+")
+    @Size(min = 2, max = 31)
     private String username;
+
+    @NotNull
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$")
+    //@Size(min = 8, max = 25)
     private String password;
+
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
     private String email;
 
-    @Column(name="create_date", nullable = false,
-            columnDefinition="create_date default CURRENT_TIMESTAMP")
+    @Column(name="create_date", nullable = false, columnDefinition="create_date default CURRENT_TIMESTAMP")
+    @NotNull
     private java.sql.Timestamp create_date = new Timestamp(System.currentTimeMillis());
 
     private String description;

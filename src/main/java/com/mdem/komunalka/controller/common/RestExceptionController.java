@@ -2,19 +2,27 @@ package com.mdem.komunalka.controller.common;
 
 import com.mdem.komunalka.exception.*;
 import com.mdem.komunalka.model.common.ErrorInfo;
+import com.mdem.komunalka.model.common.ValidationError;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
-public class RestExceptionController {
+public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ {
 
     private Logger logger;
 
@@ -87,5 +95,21 @@ public class RestExceptionController {
         logger.error(errorMessage, exception);
 
         return new ErrorInfo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), errorURL, errorMessage);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public ValidationError argumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception)   {
+
+        Map<String, String> validationErrors = new HashMap<>();
+
+        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+
+        logger.error(validationErrors.toString(), exception);
+
+        return new ValidationError(validationErrors);
     }
 }

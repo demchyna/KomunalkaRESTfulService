@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class IndicatorController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #indicatorDto.userId == authentication.details.id)")
     @ApiOperation(value = "Add a new indicator")
-    public void createIndicator(@RequestBody IndicatorDto indicatorDto) {
+    public void createIndicator(@Validated @RequestBody IndicatorDto indicatorDto) {
         Meter meter = meterService.getById(indicatorDto.getMeterId());
         Tariff tariff = tariffService.getById(indicatorDto.getTariffId());
         Indicator indicator = IndicatorTransformer.toIndicatorEntity(indicatorDto, meter, tariff);
@@ -64,7 +65,7 @@ public class IndicatorController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #indicatorDto.userId == authentication.details.id)")
     @ApiOperation(value = "Update an existing indicator")
-    public void updateIndicator(@RequestBody IndicatorDto indicatorDto) {
+    public void updateIndicator(@Validated @RequestBody IndicatorDto indicatorDto) {
         Meter meter = meterService.getById(indicatorDto.getMeterId());
         Tariff tariff = tariffService.getById(indicatorDto.getTariffId());
         Indicator indicator = IndicatorTransformer.toIndicatorEntity(indicatorDto, meter, tariff);
@@ -75,7 +76,7 @@ public class IndicatorController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #indicatorDto.userId == authentication.details.id)")
     @ApiOperation(value = "Delete an existing indicator")
-    public void deleteIndicator(@RequestBody IndicatorDto indicatorDto) {
+    public void deleteIndicator(@Validated @RequestBody IndicatorDto indicatorDto) {
         Meter meter = meterService.getById(indicatorDto.getMeterId());
         Tariff tariff = tariffService.getById(indicatorDto.getTariffId());
         Indicator indicator = IndicatorTransformer.toIndicatorEntity(indicatorDto, meter, tariff);

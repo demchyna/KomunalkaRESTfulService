@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mdem.komunalka.model.common.IEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -14,15 +17,21 @@ public class Meter implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotNull
+    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
+    @Size(min = 2, max = 31)
     private String name;
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")
+    @NotNull
     private Unit unit;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @NotNull
     private Category category;
 
     @OneToMany(mappedBy = "meter")

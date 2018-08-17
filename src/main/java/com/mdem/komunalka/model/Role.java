@@ -5,6 +5,9 @@ import com.mdem.komunalka.model.common.IEntity;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -15,6 +18,10 @@ public class Role implements IEntity, GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @NotNull
+    @Pattern(regexp = "[a-z]+")
+    @Size(min = 2, max = 31)
     private String name;
     private String description;
 

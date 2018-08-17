@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class MeterController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #meter.category.user.id == authentication.details.id)")
     @ApiOperation(value = "Add a new meter")
-    public void createMeter(@RequestBody Meter meter) {
+    public void createMeter(@Validated @RequestBody Meter meter) {
         meterService.create(meter);
     }
 
@@ -49,7 +50,7 @@ public class MeterController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #meter.category.user.id == authentication.details.id)")
     @ApiOperation(value = "Update an existing meter")
-    public void updateMeter(@RequestBody Meter meter) {
+    public void updateMeter(@Validated @RequestBody Meter meter) {
         meterService.update(meter);
     }
 
@@ -57,7 +58,7 @@ public class MeterController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #meter.category.user.id == authentication.details.id)")
     @ApiOperation(value = "Delete an existing meter")
-    public void deleteMeter(@RequestBody Meter meter) {
+    public void deleteMeter(@Validated @RequestBody Meter meter) {
         meterService.delete(meter);
     }
 

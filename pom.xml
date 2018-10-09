@@ -160,11 +160,11 @@
 
           <!--<url>jdbc:mysql://mydbinstance.c228yb6znvmi.us-west-2.rds.amazonaws.com:3306</url>-->
           <!--<user>demchyna</user>-->
-          <!--<password>453285kolya</password>-->
+          <!--<password>1111</password>-->
 
           <url>jdbc:mysql://demchyna.mysql.ukraine.com.ua:3306?characterEncoding=UTF-8</url>
           <user>demchyna_komuna</user>
-          <password>453285kolya</password>
+          <password>1111</password>
 
           <schemas>
 

@@ -43,7 +43,7 @@ public class User implements IEntity, UserDetails {
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
     private String email;
 
-    @Column(name="create_date", nullable = false, columnDefinition="create_date default CURRENT_TIMESTAMP")
+    @Column(name="create_date", nullable = false)
     @NotNull
     private java.sql.Timestamp create_date = new Timestamp(System.currentTimeMillis());
 

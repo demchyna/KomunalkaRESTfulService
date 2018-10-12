@@ -4,12 +4,8 @@ import com.mdem.komunalka.DTO.IndicatorDto;
 import com.mdem.komunalka.model.Indicator;
 import com.mdem.komunalka.model.Meter;
 import com.mdem.komunalka.model.Tariff;
-import com.mdem.komunalka.service.impl.IndicatorService;
-import com.mdem.komunalka.service.impl.MeterService;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 public class IndicatorTransformer {
 
@@ -33,6 +29,9 @@ public class IndicatorTransformer {
                 previousId,
                 currentIndicator.getMeter().getId(),
                 currentIndicator.getTariff().getId(),
+                currentIndicator.getTariff().getRate(),
+                currentIndicator.getTariff().getCurrency(),
+                currentIndicator.getTariff().getUnit().getName(),
                 calculatePrice(currentIndicator, previousValue),
                 currentIndicator.getMeter().getCategory().getUser().getId()
         );

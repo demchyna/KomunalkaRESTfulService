@@ -1,7 +1,6 @@
 package com.mdem.komunalka.DTO;
 
 import org.hibernate.validator.constraints.Range;
-
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -19,13 +18,16 @@ public class IndicatorDto {
     private Long previousId;
     @NotNull private Long meterId;
     @NotNull private Long tariffId;
+    private BigDecimal tariffRate;
+    private String tariffCurrency;
+    private String unitName;
     private BigDecimal price;
     @NotNull private Long userId;
 
     public IndicatorDto() {
     }
 
-    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal price, Long userId) {
+    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal tariffRate, String tariffCurrency, String unitName, BigDecimal price, Long userId) {
         this.id = id;
         this.current = current;
         this.date = date;
@@ -35,6 +37,9 @@ public class IndicatorDto {
         this.previousId = previousId;
         this.meterId = meterId;
         this.tariffId = tariffId;
+        this.tariffRate = tariffRate;
+        this.tariffCurrency = tariffCurrency;
+        this.unitName = unitName;
         this.price = price;
         this.userId = userId;
     }
@@ -109,6 +114,30 @@ public class IndicatorDto {
 
     public void setTariffId(Long tariffId) {
         this.tariffId = tariffId;
+    }
+
+    public BigDecimal getTariffRate() {
+        return tariffRate;
+    }
+
+    public void setTariffRate(BigDecimal tariffRate) {
+        this.tariffRate = tariffRate;
+    }
+
+    public String getTariffCurrency() {
+        return tariffCurrency;
+    }
+
+    public void setTariffCurrency(String tariffCurrency) {
+        this.tariffCurrency = tariffCurrency;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
     }
 
     public BigDecimal getPrice() {

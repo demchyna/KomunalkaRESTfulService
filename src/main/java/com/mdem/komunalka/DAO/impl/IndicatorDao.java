@@ -3,9 +3,12 @@ package com.mdem.komunalka.DAO.impl;
 import com.mdem.komunalka.DAO.IIndicatorDao;
 import com.mdem.komunalka.DAO.common.AbstractDao;
 import com.mdem.komunalka.model.Indicator;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -29,4 +32,5 @@ public class IndicatorDao extends AbstractDao<Indicator, Long> implements IIndic
         }
         return (Indicator) query.getResultList().get(0);
     }
+
 }

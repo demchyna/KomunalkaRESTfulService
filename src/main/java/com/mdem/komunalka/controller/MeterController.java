@@ -1,9 +1,13 @@
 package com.mdem.komunalka.controller;
 
+import com.mdem.komunalka.DTO.MeterDto;
+import com.mdem.komunalka.model.Category;
 import com.mdem.komunalka.model.Meter;
-import com.mdem.komunalka.service.IAbstractService;
+import com.mdem.komunalka.model.Unit;
 import com.mdem.komunalka.service.impl.CategoryService;
 import com.mdem.komunalka.service.impl.MeterService;
+import com.mdem.komunalka.service.impl.UnitService;
+import com.mdem.komunalka.transformer.MeterTransformer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController("meterController")
@@ -22,43 +27,55 @@ public class MeterController {
 
     private MeterService meterService;
     private CategoryService categoryService;
+    private UnitService unitService;
 
     @Autowired
-    public MeterController(MeterService meterService, CategoryService categoryService) {
+    public MeterController(MeterService meterService, CategoryService categoryService, UnitService unitService) {
         this.meterService = meterService;
         this.categoryService = categoryService;
+        this.unitService = unitService;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #meter.category.user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @meterController.getUserId(#meterDto.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Add a new meter")
-    public void createMeter(@Validated @RequestBody Meter meter) {
+    public void createMeter(@Validated @RequestBody MeterDto meterDto) {
+        Category category = categoryService.getById(meterDto.getCategoryId());
+        Unit unit = unitService.getById(meterDto.getUnitId());
+        Meter meter = MeterTransformer.toMeterEntity(meterDto, category, unit);
         meterService.create(meter);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and returnObject.category.user.id == authentication.details.id)")
+    @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and @meterController.getUserId(returnObject.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Search a meter with an ID", response = Meter.class)
-    public Meter getMeterById(@PathVariable Long id) {
-        return meterService.getById(id);
+    public MeterDto getMeterById(@PathVariable Long id) {
+        Meter meter = meterService.getById(id);
+        return MeterTransformer.toMeterDto(meter);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #meter.category.user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @meterController.getUserId(#meterDto.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Update an existing meter")
-    public void updateMeter(@Validated @RequestBody Meter meter) {
+    public void updateMeter(@Validated @RequestBody MeterDto meterDto) {
+        Category category = categoryService.getById(meterDto.getCategoryId());
+        Unit unit = unitService.getById(meterDto.getUnitId());
+        Meter meter = MeterTransformer.toMeterEntity(meterDto, category, unit);
         meterService.update(meter);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #meter.category.user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @meterController.getUserId(#meterDto.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Delete an existing meter")
-    public void deleteMeter(@Validated @RequestBody Meter meter) {
+    public void deleteMeter(@Validated @RequestBody MeterDto meterDto) {
+        Category category = categoryService.getById(meterDto.getCategoryId());
+        Unit unit = unitService.getById(meterDto.getUnitId());
+        Meter meter = MeterTransformer.toMeterEntity(meterDto, category, unit);
         meterService.delete(meter);
     }
 
@@ -66,8 +83,13 @@ public class MeterController {
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "View a list of available meters", response = Iterable.class)
-    public List<Meter> getAllMeters() {
-        return meterService.getAll();
+    public List<MeterDto> getAllMeters() {
+        List<Meter> meters = meterService.getAll();
+        List<MeterDto> metersDto = new ArrayList<>();
+        for (Meter meter : meters) {
+            metersDto.add(MeterTransformer.toMeterDto(meter));
+        }
+        return metersDto;
     }
 
     @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.GET)
@@ -75,8 +97,13 @@ public class MeterController {
     @PreAuthorize("isAuthenticated()")
     @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and @meterController.getUserId(#categoryId) == authentication.details.id)")
     @ApiOperation(value = "View a list of available meters from selected category", response = Iterable.class)
-    public List<Meter> getMetersByCategoryIdAndUserId(@PathVariable Long categoryId) {
-        return meterService.getMetersByCategoryId(categoryId);
+    public List<MeterDto> getMetersByCategoryIdAndUserId(@PathVariable Long categoryId) {
+        List<Meter> meters = meterService.getMetersByCategoryId(categoryId);
+        List<MeterDto> metersDto = new ArrayList<>();
+        for (Meter meter : meters) {
+            metersDto.add(MeterTransformer.toMeterDto(meter));
+        }
+        return metersDto;
     }
 
     public Long getUserId(Long categoryId) {

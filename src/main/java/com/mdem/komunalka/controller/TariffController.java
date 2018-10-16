@@ -1,9 +1,14 @@
 package com.mdem.komunalka.controller;
 
+import com.mdem.komunalka.DTO.TariffDto;
+import com.mdem.komunalka.model.Category;
 import com.mdem.komunalka.model.Tariff;
+import com.mdem.komunalka.model.Unit;
 import com.mdem.komunalka.service.IAbstractService;
 import com.mdem.komunalka.service.impl.CategoryService;
 import com.mdem.komunalka.service.impl.TariffService;
+import com.mdem.komunalka.service.impl.UnitService;
+import com.mdem.komunalka.transformer.TariffTransformer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController("tariffController")
@@ -23,43 +29,55 @@ public class TariffController {
 
     private TariffService tariffService;
     private CategoryService categoryService;
+    private UnitService unitService;
 
     @Autowired
-    public TariffController(TariffService tariffService, CategoryService categoryService) {
+    public TariffController(TariffService tariffService, CategoryService categoryService, UnitService unitService) {
         this.tariffService = tariffService;
         this.categoryService = categoryService;
+        this.unitService = unitService;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #tariff.category.user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @tariffController.getUserId(#tariffDto.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Add a new tariff")
-    public void createTariff(@Validated @RequestBody Tariff tariff) {
+    public void createTariff(@Validated @RequestBody TariffDto tariffDto) {
+        Unit unit = unitService.getById(tariffDto.getUnitId());
+        Category category = categoryService.getById(tariffDto.getCategoryId());
+        Tariff tariff = TariffTransformer.toTariffEntity(tariffDto, category, unit);
         tariffService.create(tariff);
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and returnObject.category.user.id == authentication.details.id)")
+    @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and @tariffController.getUserId(returnObject.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Search a tariff with an ID", response = Tariff.class)
-    public Tariff getTariffById(@PathVariable Long id) {
-        return tariffService.getById(id);
+    public TariffDto getTariffById(@PathVariable Long id) {
+        Tariff tariff = tariffService.getById(id);
+        return TariffTransformer.toTariffDto(tariff);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #tariff.category.user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @tariffController.getUserId(#tariffDto.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Update an existing tariff")
-    public void updateTariff(@Validated @RequestBody Tariff tariff) {
+    public void updateTariff(@Validated @RequestBody TariffDto tariffDto) {
+        Unit unit = unitService.getById(tariffDto.getUnitId());
+        Category category = categoryService.getById(tariffDto.getCategoryId());
+        Tariff tariff = TariffTransformer.toTariffEntity(tariffDto, category, unit);
         tariffService.update(tariff);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #tariff.category.user.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @tariffController.getUserId(#tariffDto.categoryId) == authentication.details.id)")
     @ApiOperation(value = "Delete an existing tariff")
-    public void deleteTariff(@Validated @RequestBody Tariff tariff) {
+    public void deleteTariff(@Validated @RequestBody TariffDto tariffDto) {
+        Unit unit = unitService.getById(tariffDto.getUnitId());
+        Category category = categoryService.getById(tariffDto.getCategoryId());
+        Tariff tariff = TariffTransformer.toTariffEntity(tariffDto, category, unit);
         tariffService.delete(tariff);
     }
 
@@ -67,8 +85,13 @@ public class TariffController {
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation(value = "View a list of available tariffs", response = Iterable.class)
-    public List<Tariff> getAllTariffs() {
-        return tariffService.getAll();
+    public List<TariffDto> getAllTariffs() {
+        List<Tariff> tariffs = tariffService.getAll();
+        List<TariffDto> metersDto = new ArrayList<>();
+        for (Tariff tariff : tariffs) {
+            metersDto.add(TariffTransformer.toTariffDto(tariff));
+        }
+        return metersDto;
     }
 
     @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.GET)
@@ -76,8 +99,13 @@ public class TariffController {
     @PreAuthorize("isAuthenticated()")
     @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and @tariffController.getUserId(#categoryId) == authentication.details.id)")
     @ApiOperation(value = "View a list of available tariffs from selected category", response = Iterable.class)
-    public List<Tariff> getTariffsByCategoryId(@PathVariable Long categoryId) {
-        return tariffService.getTariffsByCategoryId(categoryId);
+    public List<TariffDto> getTariffsByCategoryId(@PathVariable Long categoryId) {
+        List<Tariff> tariffs = tariffService.getTariffsByCategoryId(categoryId);
+        List<TariffDto> metersDto = new ArrayList<>();
+        for (Tariff tariff : tariffs) {
+            metersDto.add(TariffTransformer.toTariffDto(tariff));
+        }
+        return metersDto;
     }
 
     public Long getUserId(Long categoryId) {

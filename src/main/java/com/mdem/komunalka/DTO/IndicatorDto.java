@@ -8,26 +8,29 @@ import java.sql.Date;
 public class IndicatorDto {
     private Long id;
 
-    @NotNull
-    @Range(min = 1L, max = 9999999999L)
+    @NotNull(message = "{indicator.current.notNull}")
+    @Range(min = 1L, max = 9999999999L, message = "{indicator.current.range}")
     private Long current;
-    @NotNull private java.sql.Date date;
+
+    @NotNull(message = "{indicator.date.notNull}")
+    private java.sql.Date date;
     @NotNull private Boolean status;
     private String description;
     private Long previous;
     private Long previousId;
     @NotNull private Long meterId;
-    @NotNull private Long tariffId;
+
+    @NotNull(message = "{indicator.tariffId.notNull}")
+    private Long tariffId;
     private BigDecimal tariffRate;
     private String tariffCurrency;
     private String unitName;
     private BigDecimal price;
-    @NotNull private Long userId;
 
     public IndicatorDto() {
     }
 
-    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal tariffRate, String tariffCurrency, String unitName, BigDecimal price, Long userId) {
+    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal tariffRate, String tariffCurrency, String unitName, BigDecimal price) {
         this.id = id;
         this.current = current;
         this.date = date;
@@ -41,7 +44,6 @@ public class IndicatorDto {
         this.tariffCurrency = tariffCurrency;
         this.unitName = unitName;
         this.price = price;
-        this.userId = userId;
     }
 
     public Long getId() {
@@ -146,13 +148,5 @@ public class IndicatorDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 }

@@ -10,9 +10,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/user")
@@ -32,6 +37,7 @@ public class UserController {
     @ApiOperation(value = "Search a user with an ID", response = User.class)
     public User getUserById(@PathVariable Long id) {
         User user = userService.getById(id);
+        user.setPassword("");
         return user;
     }
 
@@ -40,6 +46,11 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     @ApiOperation(value = "Update an existing user")
     public void updateUser(@Validated @RequestBody User user) {
+        //User oldUser = userService.getById(user.getId());
+        //user.setPassword(oldUser.getPassword());
+        //Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        //Set<ConstraintViolation<User>> constraintViolations = validator.validateValue(User.class, "password", "");
+
         userService.update(user);
     }
 
@@ -65,6 +76,8 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Search a user with a login", response = User.class)
     public User getUserByLogin(@PathVariable String login) {
-        return (User) userService.loadUserByUsername(login);
+        User user = (User) userService.loadUserByUsername(login);
+        user.setPassword("");
+        return user;
     }
 }

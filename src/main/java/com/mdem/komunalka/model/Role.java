@@ -20,12 +20,12 @@ public class Role implements IEntity, GrantedAuthority {
     private Long id;
 
     @NotNull
-    @Pattern(regexp = "[a-z]+")
-    @Size(min = 2, max = 31)
+    @Pattern(regexp = "[a-z]+", message = "{role.name.pattern}")
+    @Size(min = 2, max = 31, message = "{role.name.size}")
     private String name;
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "authorities", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authorities", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<User> users;
 

@@ -151,8 +151,8 @@ CREATE TABLE `tariff` (
   `name` varchar(100) NOT NULL,
   `currency` varchar(15) NOT NULL,
   `rate` decimal(10,5) NOT NULL,
-  `begin_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
+  `beginDate` date NOT NULL,
+  `endDate` date DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `category_id` int(11) NOT NULL,
   `unit_id` int(11) NOT NULL,
@@ -210,12 +210,12 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(31) NOT NULL,
-  `last_name` varchar(31) NOT NULL,
+  `firstName` varchar(31) NOT NULL,
+  `lastName` varchar(31) NOT NULL,
   `username` varchar(31) NOT NULL,
   `password` varchar(63) NOT NULL,
   `email` varchar(31) NOT NULL,
-  `create_date` datetime NOT NULL,
+  `createDate` datetime NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)

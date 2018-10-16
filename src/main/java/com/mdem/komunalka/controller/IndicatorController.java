@@ -38,7 +38,7 @@ public class IndicatorController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #indicatorDto.userId == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @indicatorController.getUserId(#indicatorDto.meterId) == authentication.details.id)")
     @ApiOperation(value = "Add a new indicator")
     public void createIndicator(@Validated @RequestBody IndicatorDto indicatorDto) {
         Meter meter = meterService.getById(indicatorDto.getMeterId());
@@ -50,7 +50,7 @@ public class IndicatorController {
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and returnObject.userId == authentication.details.id)")
+    @PostAuthorize("hasRole('ADMIN') or (hasRole('USER') and @indicatorController.getUserId(returnObject.meterId) == authentication.details.id)")
     @ApiOperation(value = "Search a indicator with an ID", response = Indicator.class)
     public IndicatorDto getIndicatorById(@PathVariable Long id) {
         Indicator currentIndicator = indicatorService.getById(id);
@@ -63,7 +63,7 @@ public class IndicatorController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #indicatorDto.userId == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @indicatorController.getUserId(#indicatorDto.meterId) == authentication.details.id)")
     @ApiOperation(value = "Update an existing indicator")
     public void updateIndicator(@Validated @RequestBody IndicatorDto indicatorDto) {
         Meter meter = meterService.getById(indicatorDto.getMeterId());
@@ -74,7 +74,7 @@ public class IndicatorController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #indicatorDto.userId == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and @indicatorController.getUserId(#indicatorDto.meterId) == authentication.details.id)")
     @ApiOperation(value = "Delete an existing indicator")
     public void deleteIndicator(@Validated @RequestBody IndicatorDto indicatorDto) {
         Meter meter = meterService.getById(indicatorDto.getMeterId());

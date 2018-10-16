@@ -19,8 +19,8 @@ public class Unit implements IEntity {
     private Long id;
 
     @NotNull
-    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
-    @Size(min = 2, max = 31)
+    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*", message = "{unit.name.pattern}")
+    @Size(min = 2, max = 31, message = "{unit.name.size}")
     private String name;
     private String description;
 

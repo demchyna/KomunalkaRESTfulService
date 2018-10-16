@@ -21,41 +21,41 @@ public class User implements IEntity, UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Pattern(regexp = "[A-ZА-ЯІЇЄ][a-zа-яіїє]+")
-    @Size(min = 2, max = 31)
-    private String first_name;
+    @Pattern(regexp = "[A-ZА-ЯІЇЄ][a-zа-яіїє]+", message = "{user.firstName.pattern}")
+    @Size(min = 2, max = 31, message = "{user.firstName.size}")
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Pattern(regexp = "[A-ZА-ЯІЇЄ][a-zа-яіїє]+")
-    @Size(min = 2, max = 31)
-    private String last_name;
+    @Pattern(regexp = "[A-ZА-ЯІЇЄ][a-zа-яіїє]+", message = "{user.lastName.pattern}")
+    @Size(min = 2, max = 31, message = "{user.lastName.size}")
+    @Column(name = "last_name")
+    private String lastName;
 
     @NotNull
-    @Pattern(regexp = "[a-zA-Z0-9_\\-]+")
-    @Size(min = 2, max = 31)
+    @Pattern(regexp = "[a-zA-Z0-9_\\-]+", message = "{user.username.pattern}")
+    @Size(min = 2, max = 31, message = "{user.username.size}")
     private String username;
 
     @NotNull
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$")
-    //@Size(min = 8, max = 25)
     private String password;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")
+    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "{user.email.pattern}")
     private String email;
 
-    @Column(name="create_date", nullable = false)
     @NotNull
-    private java.sql.Timestamp create_date = new Timestamp(System.currentTimeMillis());
+    @Column(name="create_date", nullable = false)
+    private java.sql.Timestamp createDate = new Timestamp(System.currentTimeMillis());
 
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> authorities;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Category> categories;
 
@@ -69,20 +69,20 @@ public class User implements IEntity, UserDetails {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -110,12 +110,12 @@ public class User implements IEntity, UserDetails {
         this.email = email;
     }
 
-    public java.sql.Timestamp getCreate_date() {
-        return create_date;
+    public java.sql.Timestamp getCreateDate() {
+        return createDate;
     }
 
-    public void setCreate_date(java.sql.Timestamp create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(java.sql.Timestamp createDate) {
+        this.createDate = createDate;
     }
 
     public String getDescription() {

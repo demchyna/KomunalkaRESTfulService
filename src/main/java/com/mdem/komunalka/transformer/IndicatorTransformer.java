@@ -8,7 +8,6 @@ import com.mdem.komunalka.model.Tariff;
 import java.math.BigDecimal;
 
 public class IndicatorTransformer {
-
     public static IndicatorDto toIndicatorDto(Indicator currentIndicator, Indicator previousIndicator) {
 
         Long previousValue = 0L;
@@ -32,8 +31,7 @@ public class IndicatorTransformer {
                 currentIndicator.getTariff().getRate(),
                 currentIndicator.getTariff().getCurrency(),
                 currentIndicator.getTariff().getUnit().getName(),
-                calculatePrice(currentIndicator, previousValue),
-                currentIndicator.getMeter().getCategory().getUser().getId()
+                calculatePrice(currentIndicator, previousValue)
         );
     }
 

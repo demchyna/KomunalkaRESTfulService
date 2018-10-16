@@ -16,39 +16,26 @@ public class Tariff implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
-    @Size(min = 2, max = 31)
     private String name;
-
-    @NotNull
-    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
-    @Size(min = 2, max = 31)
     private String currency;
-
-    @NotNull
-    @DecimalMin(value = "0.1")
-    @DecimalMax(value = "999999.99999")
     private java.math.BigDecimal rate;
 
-    @NotNull
-    private java.sql.Date begin_date;
+    @Column(name = "begin_date")
+    private java.sql.Date beginDate;
 
-    private String end_date;
+    @Column(name = "end_date")
+    private java.sql.Date endDate;
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotNull
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")
-    @NotNull
     private Unit unit;
 
-    @OneToMany(mappedBy = "tariff")
+    @OneToMany(mappedBy = "tariff", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Indicator> indicators;
 
@@ -84,20 +71,20 @@ public class Tariff implements IEntity {
       this.rate = rate;
     }
 
-    public java.sql.Date getBegin_date() {
-      return begin_date;
+    public java.sql.Date getBeginDate() {
+      return beginDate;
     }
 
-    public void setBegin_date(java.sql.Date begin_date) {
-      this.begin_date = begin_date;
+    public void setBeginDate(java.sql.Date beginDate) {
+      this.beginDate = beginDate;
     }
 
-    public String getEnd_date() {
-      return end_date;
+    public java.sql.Date getEndDate() {
+      return endDate;
     }
 
-    public void setEnd_date(String end_date) {
-      this.end_date = end_date;
+    public void setEndDate(java.sql.Date endDate) {
+      this.endDate = endDate;
     }
 
     public String getDescription() {

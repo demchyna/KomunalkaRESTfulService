@@ -17,24 +17,18 @@ public class Meter implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Pattern(regexp = "[a-zA-Zа-яА-ЯіІїЇєЄ]+.*")
-    @Size(min = 2, max = 31)
     private String name;
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "unit_id")
-    @NotNull
-    private Unit unit;
-
-    @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotNull
     private Category category;
 
-    @OneToMany(mappedBy = "meter")
+    @ManyToOne
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
+
+    @OneToMany(mappedBy = "meter", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Indicator> indicators;
 
@@ -62,20 +56,20 @@ public class Meter implements IEntity {
       this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public Unit getUnit() {
       return unit;
     }
 
     public void setUnit(Unit unit) {
       this.unit = unit;
-    }
-
-    public Category getCategory() {
-      return category;
-    }
-
-    public void setCategory(Category category) {
-      this.category = category;
     }
 
     public List<Indicator> getIndicators() {

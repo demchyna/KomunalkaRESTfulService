@@ -1,7 +1,7 @@
 package com.mdem.komunalka.service.impl;
 
 import com.mdem.komunalka.DAO.impl.UserDao;
-import com.mdem.komunalka.exception.DataNotFoundException;
+import com.mdem.komunalka.exception.UserNotFoundException;
 import com.mdem.komunalka.model.User;
 import com.mdem.komunalka.service.IUserService;
 import com.mdem.komunalka.service.common.AbstractService;
@@ -30,7 +30,7 @@ public class UserService extends AbstractService<User, Long> implements IUserSer
         if (user != null) {
             return user;
         } else {
-            throw new DataNotFoundException("User with login " + username  +" not found in database");
+            throw new UserNotFoundException("User with login " + username  +" not found in database");
         }
     }
 }

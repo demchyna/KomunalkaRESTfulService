@@ -63,6 +63,17 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
         return new ErrorInfo(HttpStatus.BAD_REQUEST.value(), errorURL, errorMessage);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorInfo userNotFoundException(HttpServletRequest request, UserNotFoundException exception) {
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+
+        logger.error(errorMessage, exception);
+
+        return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
+    }
+
     @ExceptionHandler(IncorrectPasswordException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ErrorInfo incorrectPasswordException(HttpServletRequest request, IncorrectPasswordException exception) {

@@ -3,7 +3,6 @@ package com.mdem.komunalka.service.impl;
 import com.mdem.komunalka.DAO.impl.CategoryDao;
 import com.mdem.komunalka.DAO.impl.MeterDao;
 import com.mdem.komunalka.exception.DataNotFoundException;
-import com.mdem.komunalka.exception.NoDataException;
 import com.mdem.komunalka.model.Category;
 import com.mdem.komunalka.model.Meter;
 import com.mdem.komunalka.service.IMeterService;

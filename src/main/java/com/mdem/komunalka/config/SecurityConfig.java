@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter() throws Exception {
+    public AbstractAuthenticationProcessingFilter getTokenAuthenticationFilter() {
         TokenAuthenticationFilter filter = new TokenAuthenticationFilter(SECURE_URL);
         filter.setAuthenticationManager(tokenAuthenticationManager);
         return filter;

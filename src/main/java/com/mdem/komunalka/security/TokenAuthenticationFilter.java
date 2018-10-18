@@ -1,13 +1,10 @@
 package com.mdem.komunalka.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mdem.komunalka.exception.BadTokenException;
-import com.mdem.komunalka.model.common.ErrorInfo;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -21,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @PropertySource("classpath:security.properties")
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -73,7 +69,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         SecurityContextHolder.clearContext();
         UserAuthentication.authenticationErrorResponse(request, response, exception);
         logger.error(exception.getMessage(), exception);

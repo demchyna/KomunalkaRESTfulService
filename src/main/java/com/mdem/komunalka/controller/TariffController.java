@@ -4,7 +4,6 @@ import com.mdem.komunalka.DTO.TariffDto;
 import com.mdem.komunalka.model.Category;
 import com.mdem.komunalka.model.Tariff;
 import com.mdem.komunalka.model.Unit;
-import com.mdem.komunalka.service.IAbstractService;
 import com.mdem.komunalka.service.impl.CategoryService;
 import com.mdem.komunalka.service.impl.TariffService;
 import com.mdem.komunalka.service.impl.UnitService;
@@ -18,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

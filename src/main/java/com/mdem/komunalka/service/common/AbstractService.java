@@ -33,7 +33,7 @@ public abstract class AbstractService<T extends IEntity, K extends Serializable>
     @Override
     @Transactional
     public void create(T entity) throws ConflictDataException {
-        if (((T) entity).getId() != null) {
+        if (entity.getId() != null) {
             T extEntity = abstractDao.getById((K) entity.getId());
             if (extEntity == null) {
                 abstractDao.create(entity);

@@ -1,10 +1,8 @@
 package com.mdem.komunalka.model;
 
 import com.mdem.komunalka.model.common.IEntity;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "indicator")

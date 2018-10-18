@@ -10,11 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.apache.tomcat.jdbc.pool.DataSource;
 import com.zaxxer.hikari.HikariDataSource;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import java.beans.PropertyVetoException;
 
 import java.util.Properties;
 

@@ -17,7 +17,7 @@ public class TariffDto {
     @Size(min = 2, max = 31, message = "{tariff.currency.size}")
     private String currency;
 
-    @NotNull
+    @NotNull(message = "{tariff.rate.notNull}")
     @DecimalMin(value = "0.1", message = "{tariff.rate.decimalMin}")
     @DecimalMax(value = "999999.99999", message = "{tariff.rate.decimalMax}")
     private java.math.BigDecimal rate;

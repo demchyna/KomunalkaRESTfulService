@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +106,16 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
         logger.error(errorMessage, exception);
 
         return new ErrorInfo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), errorURL, errorMessage);
+    }
+
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorInfo internalServerErrorException(HttpServletRequest request, HttpServerErrorException exception) {
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+
+        logger.error(errorMessage, exception);
+
+        return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorURL, errorMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

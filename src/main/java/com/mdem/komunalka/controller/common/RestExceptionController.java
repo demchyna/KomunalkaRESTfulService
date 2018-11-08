@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;
 
 
+import javax.servlet.UnavailableException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +118,17 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
         logger.error(errorMessage, exception);
 
         return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorURL, errorMessage);
+    }
+
+    @ExceptionHandler(UnavailableException.class)
+    @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorInfo serviceUnavailableException(HttpServletRequest request, UnavailableException exception) {
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+
+        logger.error(errorMessage, exception);
+
+        return new ErrorInfo(HttpStatus.SERVICE_UNAVAILABLE.value(), errorURL, errorMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

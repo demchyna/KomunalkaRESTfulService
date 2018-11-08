@@ -31,7 +31,7 @@ public class LoginController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.HEAD)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     @ApiOperation(value = "Get an authentication token")
     public void getAuthenticationToken(@Validated @RequestBody UserCredential credential, HttpServletResponse response) throws IncorrectPasswordException {

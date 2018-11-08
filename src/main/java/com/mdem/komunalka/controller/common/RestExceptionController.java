@@ -37,9 +37,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo conflictDataException(HttpServletRequest request, ConflictDataException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.CONFLICT.value(), errorURL, errorMessage);
     }
 
@@ -48,9 +46,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo dataNotFoundException(HttpServletRequest request, DataNotFoundException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.NOT_FOUND.value(), errorURL, errorMessage);
     }
 
@@ -59,9 +55,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo noDataException(HttpServletRequest request, NoDataException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.BAD_REQUEST.value(), errorURL, errorMessage);
     }
 
@@ -70,9 +64,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo userNotFoundException(HttpServletRequest request, UserNotFoundException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 
@@ -81,9 +73,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo incorrectPasswordException(HttpServletRequest request, IncorrectPasswordException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.UNAUTHORIZED.value(), errorURL, errorMessage);
     }
 
@@ -92,9 +82,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo methodNotSupportedException(HttpServletRequest request, HttpRequestMethodNotSupportedException exception)   {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.METHOD_NOT_ALLOWED.value(), errorURL, errorMessage);
     }
 
@@ -103,9 +91,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo mediaTypeNotSupportedException(HttpServletRequest request, HttpMediaTypeNotSupportedException exception)   {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), errorURL, errorMessage);
     }
 
@@ -114,9 +100,7 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo internalServerErrorException(HttpServletRequest request, HttpServerErrorException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorURL, errorMessage);
     }
 
@@ -125,25 +109,19 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
     public ErrorInfo serviceUnavailableException(HttpServletRequest request, UnavailableException exception) {
         String errorURL = request.getRequestURL().toString();
         String errorMessage = exception.getMessage();
-
         logger.error(errorMessage, exception);
-
         return new ErrorInfo(HttpStatus.SERVICE_UNAVAILABLE.value(), errorURL, errorMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public ValidationError argumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception)   {
-
         Map<String, String> validationErrors = new HashMap<>();
-
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-
         logger.error(validationErrors.toString(), exception);
-
         return new ValidationError(validationErrors);
     }
 }

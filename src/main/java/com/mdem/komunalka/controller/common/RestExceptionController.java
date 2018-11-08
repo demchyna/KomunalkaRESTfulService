@@ -104,18 +104,18 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
         return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorURL, errorMessage);
     }
 
-    @ExceptionHandler(UnavailableException.class)
-    @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
-    public ErrorInfo serviceUnavailableException(HttpServletRequest request, UnavailableException exception) {
-        String errorURL = request.getRequestURL().toString();
-        String errorMessage = exception.getMessage();
-        logger.error(errorMessage, exception);
-        return new ErrorInfo(HttpStatus.SERVICE_UNAVAILABLE.value(), errorURL, errorMessage);
-    }
+//    @ExceptionHandler(UnavailableException.class)
+//    @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
+//    public ErrorInfo serviceUnavailableException(HttpServletRequest request, UnavailableException exception) {
+//        String errorURL = request.getRequestURL().toString();
+//        String errorMessage = exception.getMessage();
+//        logger.error(errorMessage, exception);
+//        return new ErrorInfo(HttpStatus.SERVICE_UNAVAILABLE.value(), errorURL, errorMessage);
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    public ValidationError argumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException exception)   {
+    public ValidationError argumentNotValidException(MethodArgumentNotValidException exception)   {
         Map<String, String> validationErrors = new HashMap<>();
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         for (FieldError fieldError : fieldErrors) {

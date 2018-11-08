@@ -95,23 +95,14 @@ public class RestExceptionController /*extends ResponseEntityExceptionHandler*/ 
         return new ErrorInfo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), errorURL, errorMessage);
     }
 
-//    @ExceptionHandler(HttpServerErrorException.class)
-//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorInfo internalServerErrorException(HttpServletRequest request, HttpServerErrorException exception) {
-//        String errorURL = request.getRequestURL().toString();
-//        String errorMessage = exception.getMessage();
-//        logger.error(errorMessage, exception);
-//        return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorURL, errorMessage);
-//    }
-
-//    @ExceptionHandler(UnavailableException.class)
-//    @ResponseStatus(value = HttpStatus.SERVICE_UNAVAILABLE)
-//    public ErrorInfo serviceUnavailableException(HttpServletRequest request, UnavailableException exception) {
-//        String errorURL = request.getRequestURL().toString();
-//        String errorMessage = exception.getMessage();
-//        logger.error(errorMessage, exception);
-//        return new ErrorInfo(HttpStatus.SERVICE_UNAVAILABLE.value(), errorURL, errorMessage);
-//    }
+    @ExceptionHandler(HttpServerErrorException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorInfo internalServerErrorException(HttpServletRequest request, HttpServerErrorException exception) {
+        String errorURL = request.getRequestURL().toString();
+        String errorMessage = exception.getMessage();
+        logger.error(errorMessage, exception);
+        return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorURL, errorMessage);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)

@@ -157,21 +157,11 @@
             <location>filesystem:src/main/resources/db_scripts</location>
           </locations>
           <driver>com.mysql.jdbc.Driver</driver>
-
-          <!--<url>jdbc:mysql://mydbinstance.c228yb6znvmi.us-west-2.rds.amazonaws.com:3306</url>-->
-          <!--<user>demchyna</user>-->
-          <!--<password>1111</password>-->
-
-          <url>jdbc:mysql://demchyna.mysql.ukraine.com.ua:3306?characterEncoding=UTF-8</url>
-          <user>demchyna_komuna</user>
-          <password>1111</password>
-
+          <url>jdbc:mysql://us-cdbr-iron-east-01.cleardb.net/heroku_c9a87fd5b00435d?reconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8</url>
+          <user>bd6e4967f5f837</user>
+          <password>2c0bba3a</password>
           <schemas>
-
-            <!--<schema>komunalka</schema>-->
-
-            <schema>demchyna_komuna</schema>
-
+            <schema>heroku_c9a87fd5b00435d</schema>
           </schemas>
         </configuration>
       </plugin>

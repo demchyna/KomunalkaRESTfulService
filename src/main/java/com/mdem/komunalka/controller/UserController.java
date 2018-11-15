@@ -39,11 +39,8 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     @ApiOperation(value = "Update an existing user")
     public void updateUser(@Validated @RequestBody User user) {
-        //User oldUser = userService.getById(user.getId());
-        //user.setPassword(oldUser.getPassword());
-        //Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        //Set<ConstraintViolation<User>> constraintViolations = validator.validateValue(User.class, "password", "");
-
+        User oldUser = userService.getById(user.getId());
+        user.setPassword(oldUser.getPassword());
         userService.update(user);
     }
 

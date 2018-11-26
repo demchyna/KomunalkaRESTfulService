@@ -22,7 +22,7 @@ public class IndicatorTransformer {
                 currentIndicator.getId(),
                 currentIndicator.getCurrent(),
                 currentIndicator.getDate(),
-                currentIndicator.getStatus(),
+                currentIndicator.getPayment(),
                 currentIndicator.getDescription(),
                 previousValue,
                 previousId,
@@ -43,7 +43,7 @@ public class IndicatorTransformer {
         }
         indicator.setCurrent(indicatorDto.getCurrent());
         indicator.setDate(indicatorDto.getDate());
-        indicator.setStatus(indicatorDto.getStatus());
+        indicator.setPayment(indicatorDto.getPayment());
         indicator.setDescription(indicatorDto.getDescription());
         indicator.setPreviousId(indicatorDto.getPreviousId());
         indicator.setMeter(meter);

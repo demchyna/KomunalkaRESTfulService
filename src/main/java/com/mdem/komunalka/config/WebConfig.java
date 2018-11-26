@@ -69,5 +69,4 @@ class WebConfig extends WebMvcConfigurerAdapter {
     public Validator getValidator() {
         return validator();
     }
-
 }

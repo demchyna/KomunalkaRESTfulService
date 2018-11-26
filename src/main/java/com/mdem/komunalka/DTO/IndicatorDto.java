@@ -14,7 +14,7 @@ public class IndicatorDto {
 
     @NotNull(message = "{indicator.date.notNull}")
     private java.sql.Date date;
-    @NotNull private Boolean status;
+    private BigDecimal payment;
     private String description;
     private Long previous;
     private Long previousId;
@@ -30,11 +30,11 @@ public class IndicatorDto {
     public IndicatorDto() {
     }
 
-    public IndicatorDto(Long id, Long current, Date date, Boolean status, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal tariffRate, String tariffCurrency, String unitName, BigDecimal price) {
+    public IndicatorDto(Long id, Long current, Date date, BigDecimal payment, String description, Long previous, Long previousId, Long meterId, Long tariffId, BigDecimal tariffRate, String tariffCurrency, String unitName, BigDecimal price) {
         this.id = id;
         this.current = current;
         this.date = date;
-        this.status = status;
+        this.payment = payment;
         this.description = description;
         this.previous = previous;
         this.previousId = previousId;
@@ -70,12 +70,12 @@ public class IndicatorDto {
         this.date = date;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public BigDecimal getPayment() {
+        return payment;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setPayment(BigDecimal payment) {
+        this.payment = payment;
     }
 
     public String getDescription() {

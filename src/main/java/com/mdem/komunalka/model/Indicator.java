@@ -3,6 +3,7 @@ package com.mdem.komunalka.model;
 import com.mdem.komunalka.model.common.IEntity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "indicator")
@@ -15,7 +16,7 @@ public class Indicator implements IEntity {
 
     private Long current;
     private java.sql.Date date;
-    private Boolean status;
+    private BigDecimal payment;
     private String description;
 
     //@ManyToOne
@@ -65,12 +66,12 @@ public class Indicator implements IEntity {
     this.date = date;
   }
 
-    public Boolean getStatus() {
-        return status;
+    public BigDecimal getPayment() {
+        return payment;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setPayment(BigDecimal payment) {
+        this.payment = payment;
     }
 
     public String getDescription() {

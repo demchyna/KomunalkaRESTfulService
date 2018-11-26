@@ -17,7 +17,7 @@ public class Tariff implements IEntity {
     private Long id;
     private String name;
     private String currency;
-    private java.math.BigDecimal rate;
+    private BigDecimal rate;
 
     @Column(name = "begin_date")
     private java.sql.Date beginDate;

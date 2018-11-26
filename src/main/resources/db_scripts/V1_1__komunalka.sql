@@ -1,9 +1,3 @@
--- CREATE DATABASE  IF NOT EXISTS `komunalka` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
--- USE `komunalka`;
-
-USE `demchyna_komuna`;
-
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: komunalka
@@ -221,7 +215,7 @@ CREATE TABLE `user` (
   `username` varchar(31) NOT NULL,
   `password` varchar(63) NOT NULL,
   `email` varchar(31) NOT NULL,
-  `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createDate` datetime NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)

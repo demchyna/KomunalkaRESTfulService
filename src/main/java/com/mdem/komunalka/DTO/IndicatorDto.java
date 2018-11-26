@@ -1,6 +1,9 @@
 package com.mdem.komunalka.DTO;
 
 import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -14,6 +17,10 @@ public class IndicatorDto {
 
     @NotNull(message = "{indicator.date.notNull}")
     private java.sql.Date date;
+
+    @NotNull(message = "{indicator.payment.notNull}")
+    @DecimalMin(value = "0.1", message = "{indicator.payment.decimalMin}")
+    @DecimalMax(value = "999999.99999", message = "{indicator.payment.decimalMax}")
     private BigDecimal payment;
     private String description;
     private Long previous;

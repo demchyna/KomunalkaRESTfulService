@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +19,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -42,6 +45,8 @@ public class UserController {
         User oldUser = userService.getById(user.getId());
         if(user.getPassword().equals("")) {
             user.setPassword(oldUser.getPassword());
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
         userService.update(user);
     }

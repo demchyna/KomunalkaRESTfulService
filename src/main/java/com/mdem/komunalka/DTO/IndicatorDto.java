@@ -19,7 +19,7 @@ public class IndicatorDto {
     private java.sql.Date date;
 
     @NotNull(message = "{indicator.payment.notNull}")
-    @DecimalMin(value = "0.1", message = "{indicator.payment.decimalMin}")
+    @DecimalMin(value = "0.0", message = "{indicator.payment.decimalMin}")
     @DecimalMax(value = "999999.99999", message = "{indicator.payment.decimalMax}")
     private BigDecimal payment;
     private String description;

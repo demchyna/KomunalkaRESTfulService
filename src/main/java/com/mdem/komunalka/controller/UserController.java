@@ -40,7 +40,9 @@ public class UserController {
     @ApiOperation(value = "Update an existing user")
     public void updateUser(@Validated @RequestBody User user) {
         User oldUser = userService.getById(user.getId());
-        user.setPassword(oldUser.getPassword());
+        if(user.getPassword().equals("")) {
+            user.setPassword(oldUser.getPassword());
+        }
         userService.update(user);
     }
 

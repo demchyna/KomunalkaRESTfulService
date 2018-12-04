@@ -6,12 +6,18 @@ import com.mdem.komunalka.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("api/user")
@@ -20,6 +26,9 @@ public class UserController {
 
     private UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Value("${user.password.pattern}")
+    private String USER_PASSWORD_PATTERN;
 
     @Autowired
     public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -41,11 +50,23 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     @ApiOperation(value = "Update an existing user")
-    public void updateUser(@Validated @RequestBody User user) {
+    public void updateUser(@Validated @RequestBody User user, BindingResult result) throws MethodArgumentNotValidException {
         User oldUser = userService.getById(user.getId());
         if(user.getPassword().equals("")) {
             user.setPassword(oldUser.getPassword());
         } else {
+
+            String validationPattern = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$";
+
+            Pattern pattern = Pattern.compile(validationPattern);
+            Matcher matcher = pattern.matcher(user.getPassword());
+
+            if (!matcher.matches()) {
+                FieldError error = new FieldError("user","password", USER_PASSWORD_PATTERN);
+                result.addError(error);
+                throw new MethodArgumentNotValidException(null, result);
+            }
+
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
         userService.update(user);
@@ -88,7 +109,5 @@ public class UserController {
             throw new NoDataException("Password is not correct");
         }
     }
-
-
 
 }

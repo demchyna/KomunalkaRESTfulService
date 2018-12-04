@@ -43,7 +43,7 @@ public class LoginController {
             fullToken = TokenAuthenticationService.createToken(user);
             response.addHeader(HEADER_NAME, "Bearer " + fullToken);
         } else {
-            throw new IncorrectPasswordException("Password is incorrect");
+            throw new IncorrectPasswordException("Password is not correct");
         }
     }
 }

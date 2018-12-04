@@ -1,6 +1,10 @@
 package com.mdem.komunalka.controller;
 
+import com.mdem.komunalka.exception.IncorrectPasswordException;
+import com.mdem.komunalka.exception.NoDataException;
 import com.mdem.komunalka.model.User;
+import com.mdem.komunalka.security.TokenAuthenticationService;
+import com.mdem.komunalka.security.UserCredential;
 import com.mdem.komunalka.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +14,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -43,11 +53,7 @@ public class UserController {
     @ApiOperation(value = "Update an existing user")
     public void updateUser(@Validated @RequestBody User user) {
         User oldUser = userService.getById(user.getId());
-        if(user.getPassword().equals("")) {
-            user.setPassword(oldUser.getPassword());
-        } else {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        }
+        user.setPassword(oldUser.getPassword());
         userService.update(user);
     }
 
@@ -77,4 +83,23 @@ public class UserController {
         user.setPassword("");
         return user;
     }
+
+    @RequestMapping(value = "/credential", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
+    @ApiOperation(value = "Check if user password is correct and update his")
+    public void checkPasswordAndUpdate(@Validated @RequestBody User user) {
+        User oldUser = (User) userService.loadUserByUsername(user.getUsername());
+        if (bCryptPasswordEncoder.matches(user.getPassword(), oldUser.getPassword())) {
+            if(user.getPassword().equals("")) {
+                user.setPassword(oldUser.getPassword());
+            } else {
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            }
+            userService.update(user);
+        } else {
+            throw new NoDataException("Password is not correct");
+        }
+    }
+
 }

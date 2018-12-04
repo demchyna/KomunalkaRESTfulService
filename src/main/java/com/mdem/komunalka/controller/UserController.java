@@ -80,18 +80,15 @@ public class UserController {
 
     @RequestMapping(value = "/credential", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userData.id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
     @ApiOperation(value = "Check if user password is correct")
-    public void checkPasswordByLogin(@RequestBody UserData userData) {
-        User oldUser = (User) userService.getById(userData.id);
-        if (!bCryptPasswordEncoder.matches(userData.password, oldUser.getPassword())) {
+    public void checkPasswordByLogin(@RequestBody User user) {
+        User oldUser = (User) userService.getById(user.getId());
+        if (!bCryptPasswordEncoder.matches(user.getPassword(), oldUser.getPassword())) {
             throw new NoDataException("Password is not correct");
         }
     }
 
-    private class UserData {
-        private long id;
-        private String password;
-    }
+
 
 }

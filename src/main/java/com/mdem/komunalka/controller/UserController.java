@@ -2,7 +2,6 @@ package com.mdem.komunalka.controller;
 
 import com.mdem.komunalka.exception.NoDataException;
 import com.mdem.komunalka.model.User;
-import com.mdem.komunalka.security.UserCredential;
 import com.mdem.komunalka.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -81,13 +80,18 @@ public class UserController {
 
     @RequestMapping(value = "/credential", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #id == authentication.details.id)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userData.id == authentication.details.id)")
     @ApiOperation(value = "Check if user password is correct")
-    public void checkPasswordByLogin(@RequestParam("id") long id, @RequestParam("password") String password) {
-        User oldUser = (User) userService.getById(id);
-        if (!bCryptPasswordEncoder.matches(password, oldUser.getPassword())) {
+    public void checkPasswordByLogin(@RequestBody UserData userData) {
+        User oldUser = (User) userService.getById(userData.id);
+        if (!bCryptPasswordEncoder.matches(userData.password, oldUser.getPassword())) {
             throw new NoDataException("Password is not correct");
         }
+    }
+
+    private class UserData {
+        private long id;
+        private String password;
     }
 
 }

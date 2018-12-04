@@ -53,7 +53,11 @@ public class UserController {
     @ApiOperation(value = "Update an existing user")
     public void updateUser(@Validated @RequestBody User user) {
         User oldUser = userService.getById(user.getId());
-        user.setPassword(oldUser.getPassword());
+        if(user.getPassword().equals("")) {
+            user.setPassword(oldUser.getPassword());
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
         userService.update(user);
     }
 
@@ -84,20 +88,13 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/credential", method = RequestMethod.PUT)
+    @RequestMapping(value = "/credential", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #user.id == authentication.details.id)")
-    @ApiOperation(value = "Check if user password is correct and update his")
-    public void checkPasswordAndUpdate(@Validated @RequestBody User user) {
-        User oldUser = (User) userService.loadUserByUsername(user.getUsername());
-        if (bCryptPasswordEncoder.matches(user.getPassword(), oldUser.getPassword())) {
-            if(user.getPassword().equals("")) {
-                user.setPassword(oldUser.getPassword());
-            } else {
-                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            }
-            userService.update(user);
-        } else {
+    @ApiOperation(value = "Check if user password is correct")
+    public void checkPasswordByLogin(@RequestBody UserCredential credential) {
+        User oldUser = (User) userService.loadUserByUsername(credential.getUsername());
+        if (!bCryptPasswordEncoder.matches(credential.getPassword(), oldUser.getPassword())) {
             throw new NoDataException("Password is not correct");
         }
     }
